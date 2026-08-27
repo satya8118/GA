@@ -1,0 +1,1565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Glimpse into Algebraic Varieties</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bg: '#000000',
+                        fg: '#E0E0E0',
+                        muted: '#555555',
+                        lime: '#00FF41',
+                        cyan: '#00FFFF',
+                        yellow: '#FFD700',
+                        orange: '#FF6B00',
+                        card: '#080808',
+                        border: '#1A1A1A',
+                    },
+                    fontFamily: {
+                        display: ['"Space Grotesk"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        :root {
+            --lime: #00FF41;
+            --cyan: #00FFFF;
+            --yellow: #FFD700;
+            --orange: #FF6B00;
+            --bg: #000000;
+            --fg: #E0E0E0;
+            --muted: #555555;
+        }
+
+        * { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { background: var(--bg); color: var(--fg); font-family: 'Space Grotesk', sans-serif; }
+
+        /* KaTeX color override for dark background */
+        .katex { color: var(--fg); }
+        .katex-display {
+            margin: 1.5em 0;
+            padding: 1em 1.5em;
+            background: rgba(255,255,255,0.02);
+            border-left: 3px solid var(--cyan);
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        /* Hero animated gradient */
+        @keyframes heroShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .hero-bg {
+            background:
+                radial-gradient(ellipse at 25% 40%, rgba(0,255,65,0.07) 0%, transparent 55%),
+                radial-gradient(ellipse at 75% 60%, rgba(0,255,255,0.06) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 90%, rgba(255,215,0,0.04) 0%, transparent 50%),
+                var(--bg);
+            background-size: 200% 200%;
+            animation: heroShift 20s ease infinite;
+        }
+
+        /* Gradient text for title */
+        .gradient-text {
+            background: linear-gradient(135deg, var(--lime) 0%, var(--cyan) 50%, var(--yellow) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Graph canvas glow effects */
+        .glow-lime { filter: drop-shadow(0 0 5px rgba(0,255,65,0.5)) drop-shadow(0 0 12px rgba(0,255,65,0.2)); }
+        .glow-cyan { filter: drop-shadow(0 0 5px rgba(0,255,255,0.5)) drop-shadow(0 0 12px rgba(0,255,255,0.2)); }
+        .glow-yellow { filter: drop-shadow(0 0 5px rgba(255,215,0,0.5)) drop-shadow(0 0 12px rgba(255,215,0,0.2)); }
+        .glow-orange { filter: drop-shadow(0 0 5px rgba(255,107,0,0.5)) drop-shadow(0 0 12px rgba(255,107,0,0.2)); }
+
+        .graph-canvas {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            border: 1px solid #1a1a1a;
+            background: #030303;
+            display: block;
+        }
+        .graph-3d {
+            width: 100%;
+            aspect-ratio: 5/4;
+            border-radius: 8px;
+            border: 1px solid #1a1a1a;
+            background: #030303;
+            display: block;
+            cursor: grab;
+        }
+        .graph-3d:active { cursor: grabbing; }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* Section divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, var(--border) 20%, var(--border) 80%, transparent 100%);
+        }
+
+        /* Accent underline */
+        .accent-underline {
+            position: relative;
+            display: inline-block;
+        }
+        .accent-underline::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            border-radius: 1px;
+        }
+        .accent-underline.lime::after { background: var(--lime); }
+        .accent-underline.cyan::after { background: var(--cyan); }
+        .accent-underline.yellow::after { background: var(--yellow); }
+        .accent-underline.orange::after { background: var(--orange); }
+
+        /* Dimension diagram */
+        .dim-block {
+            border: 1px solid #1a1a1a;
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            background: rgba(255,255,255,0.015);
+            transition: border-color 0.3s, background 0.3s;
+        }
+        .dim-block:hover {
+            border-color: var(--cyan);
+            background: rgba(0,255,255,0.03);
+        }
+
+        /* App card */
+        .app-card {
+            border: 1px solid #1a1a1a;
+            border-radius: 10px;
+            padding: 1.5rem;
+            background: rgba(255,255,255,0.01);
+            transition: border-color 0.3s, transform 0.3s, background 0.3s;
+        }
+        .app-card:hover {
+            border-color: var(--lime);
+            background: rgba(0,255,65,0.02);
+            transform: translateY(-2px);
+        }
+
+        /* Side nav dots */
+        .side-nav a {
+            display: block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333;
+            transition: background 0.3s, transform 0.3s;
+        }
+        .side-nav a.active,
+        .side-nav a:hover {
+            background: var(--cyan);
+            transform: scale(1.4);
+        }
+
+        /* Label tags on graphs */
+        .graph-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: rgba(255,255,255,0.06);
+            color: #999;
+        }
+
+        /* Quiz box */
+        .quiz-box {
+            border: 1px solid #1a1a1a;
+            border-radius: 10px;
+            padding: 1.5rem 1.75rem;
+            background: rgba(255,255,255,0.012);
+        }
+        .quiz-opt {
+            display: inline-block;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            padding: 8px 14px;
+            margin: 4px 6px 4px 0;
+            border-radius: 6px;
+            border: 1px solid #262626;
+            background: rgba(255,255,255,0.02);
+            color: #ccc;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, color 0.2s;
+        }
+        .quiz-opt:hover { border-color: var(--cyan); color: #fff; }
+        .quiz-opt.correct { border-color: var(--lime); background: rgba(0,255,65,0.08); color: var(--lime); }
+        .quiz-opt.wrong { border-color: var(--orange); background: rgba(255,107,0,0.08); color: var(--orange); }
+        .quiz-feedback {
+            display: none;
+            margin-top: 14px;
+            font-size: 0.88rem;
+            color: #9a9a9a;
+            line-height: 1.6;
+            border-left: 2px solid #262626;
+            padding-left: 12px;
+        }
+        .quiz-feedback.shown { display: block; }
+
+        /* Compact data table for dictionaries / summaries */
+        .av-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; margin: 1.25rem 0; }
+        .av-table th, .av-table td { border: 1px solid #1a1a1a; padding: 10px 14px; text-align: left; }
+        .av-table th { background: rgba(255,255,255,0.03); color: #ccc; font-weight: 600; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; }
+        .av-table td { color: #999; }
+        .av-table td.mono { font-family: 'JetBrains Mono', monospace; color: #bbb; }
+
+        /* Prefers reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .reveal { transition: none; opacity: 1; transform: none; }
+            .hero-bg { animation: none; }
+            .app-card { transition: none; }
+            .dim-block { transition: none; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .side-nav { display: none; }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Side Navigation Dots -->
+    <nav class="side-nav fixed right-4 top-1/2 -translate-y-1/2 z-50 flex flex-col gap-3" aria-label="Section navigation">
+        <a href="#familiar" title="Familiar Curves" aria-label="Familiar Curves"></a>
+        <a href="#surfaces" title="Surfaces" aria-label="Surfaces"></a>
+        <a href="#turning" title="Higher Degrees" aria-label="Higher Degrees"></a>
+        <a href="#symmetric" title="Symmetric Functions" aria-label="Symmetric Functions"></a>
+        <a href="#definition" title="Definition" aria-label="Definition"></a>
+        <a href="#reducible" title="Reducible vs Irreducible" aria-label="Reducible vs Irreducible"></a>
+        <a href="#projective" title="Affine vs Projective" aria-label="Affine vs Projective"></a>
+        <a href="#dimension" title="Dimension" aria-label="Dimension"></a>
+        <a href="#singularities" title="Singularities" aria-label="Singularities"></a>
+        <a href="#characterize" title="Characterizing Low Dimensions" aria-label="Characterizing Low Dimensions"></a>
+        <a href="#beyond" title="Beyond Visible" aria-label="Beyond Visible"></a>
+        <a href="#ideals" title="Ideals" aria-label="Ideals"></a>
+        <a href="#matters" title="Applications" aria-label="Applications"></a>
+        <a href="#deeper" title="Deeper View" aria-label="Deeper View"></a>
+        <a href="#summary" title="Summary" aria-label="Summary"></a>
+    </nav>
+
+    <!-- ==================== HERO ==================== -->
+    <header class="hero-bg min-h-screen flex flex-col items-center justify-center text-center px-6 relative">
+        <p class="font-mono text-sm tracking-widest uppercase text-muted mb-6 reveal">An Informal Exploration</p>
+        <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold gradient-text leading-tight mb-6 reveal reveal-delay-1">
+            Algebraic Varieties
+        </h1>
+        <p class="max-w-2xl text-lg sm:text-xl text-gray-400 leading-relaxed mb-10 reveal reveal-delay-2">
+            Not a lecture. Not a course. Just a taste of where familiar mathematics can lead — from circles to objects that live in higher dimensions.
+        </p>
+        <div class="flex gap-4 text-xs font-mono text-muted reveal reveal-delay-3">
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-lime inline-block"></span> Curves</span>
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-cyan inline-block"></span> Surfaces</span>
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-yellow inline-block"></span> Singularities</span>
+            <span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-orange inline-block"></span> Beyond</span>
+        </div>
+        <div class="absolute bottom-10 animate-bounce text-muted">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ==================== SECTION 1: FAMILIAR CURVES ==================== -->
+        <section id="familiar" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-lime tracking-widest uppercase mb-3">01 / Starting Point</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">Where We Begin: The Curves You Know</h2>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    In school mathematics, you have already met equations like these:
+                </p>
+                <div class="font-mono text-sm sm:text-base space-y-1 mb-8 pl-4 border-l-2 border-lime/30">
+                    <p><span class="text-lime">$x + y = 1$</span> &mdash; a straight line</p>
+                    <p><span class="text-cyan">$x^2 + y^2 = 1$</span> &mdash; a unit circle</p>
+                    <p><span class="text-yellow">$y = x^2$</span> &mdash; a parabola</p>
+                </div>
+                <p class="text-gray-400 leading-relaxed mb-10">
+                    Each equation describes a shape — a set of points in the plane that satisfy it. Plot them, and there they are: clean, familiar curves. These are <strong class="text-fg">algebraic curves</strong>: sets of points where a polynomial equation holds. Nothing mysterious so far.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+                <div class="reveal reveal-delay-1">
+                    <canvas id="graph-line" class="graph-canvas glow-lime"></canvas>
+                    <p class="graph-label mt-2 text-center">$x + y = 1$</p>
+                </div>
+                <div class="reveal reveal-delay-2">
+                    <canvas id="graph-circle" class="graph-canvas glow-cyan"></canvas>
+                    <p class="graph-label mt-2 text-center">$x^2 + y^2 = 1$</p>
+                </div>
+                <div class="reveal reveal-delay-3">
+                    <canvas id="graph-parabola" class="graph-canvas glow-yellow"></canvas>
+                    <p class="graph-label mt-2 text-center">$y = x^2$</p>
+                </div>
+            </div>
+
+            <div class="reveal">
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    There is a compact notation for all of this. Move everything to one side of the equation, and call the whole set of solutions $V(f)$ — the <strong class="text-fg">zero locus</strong> of $f$:
+                </p>
+                <div class="katex-display">$$V(f) \;=\; \{(x,y) : f(x,y) = 0\}$$</div>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    The line above is $V(x+y-1)$, the circle is $V(x^2+y^2-1)$, the parabola is $V(y-x^2)$. A <strong class="text-fg">hyperbola</strong> fits the same mould — $V(xy-1)$ — and so, more surprisingly, does a pair of crossing lines: $V(xy)$ splits as $V(x)\cup V(y)$, the two axes together, produced by one single equation.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="reveal reveal-delay-1">
+                    <canvas id="graph-hyperbola" class="graph-canvas glow-cyan"></canvas>
+                    <p class="graph-label mt-2 text-center">$xy = 1$ &nbsp;(hyperbola)</p>
+                </div>
+                <div class="reveal reveal-delay-2">
+                    <canvas id="graph-axes" class="graph-canvas glow-orange"></canvas>
+                    <p class="graph-label mt-2 text-center">$xy = 0$ &nbsp;(two lines at once)</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 2: SURFACES ==================== -->
+        <section id="surfaces" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-cyan tracking-widest uppercase mb-3">02 / Going Higher</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">From Curves to Surfaces</h2>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Now add a third variable $z$. The equation $x^2 + y^2 + z^2 = 1$ describes a sphere in three-dimensional space. The equation $x^2 + y^2 - z^2 = 1$ describes a <strong class="text-fg">hyperboloid</strong> — a surface that flares outward like a cooling tower.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    These are <strong class="text-fg">algebraic surfaces</strong>. The pattern is the same as before: a polynomial equation defines a geometric shape. But now we are in three dimensions, and the shapes become more interesting.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-10">
+                    Drag the wireframes below to rotate them.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+                <div class="reveal reveal-delay-1">
+                    <canvas id="graph-sphere" class="graph-3d glow-cyan"></canvas>
+                    <p class="graph-label mt-2 text-center">$x^2 + y^2 + z^2 = 1$</p>
+                </div>
+                <div class="reveal reveal-delay-2">
+                    <canvas id="graph-hyperboloid" class="graph-3d glow-yellow"></canvas>
+                    <p class="graph-label mt-2 text-center">$x^2 + y^2 - z^2 = 1$</p>
+                </div>
+            </div>
+
+            <div class="reveal">
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Each equation you write down "costs" one dimension: a single equation in 3-space $\mathbb{R}^3$ generically leaves a 2-dimensional surface, exactly as one equation in the plane left a 1-dimensional curve. A <strong class="text-fg">double cone</strong>, $x^2+y^2=z^2$, is another such surface — and one worth remembering, because slicing it with a plane is precisely where the words "conic section" come from.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Impose <em>two</em> surface equations at once, and the dimension drops again — down to a curve threading through space. The <strong class="text-cyan">twisted cubic</strong>, $V(y-x^2,\,z-x^3)$, is exactly this: the intersection of a parabolic cylinder and a cubic surface, traced out by $(t,t^2,t^3)$ as $t$ runs over the reals.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="reveal reveal-delay-1">
+                    <canvas id="graph-cone" class="graph-3d glow-orange"></canvas>
+                    <p class="graph-label mt-2 text-center">$x^2 + y^2 = z^2$ &nbsp;(double cone)</p>
+                </div>
+                <div class="reveal reveal-delay-2">
+                    <canvas id="graph-twisted" class="graph-3d glow-lime"></canvas>
+                    <p class="graph-label mt-2 text-center">$(t, t^2, t^3)$ &nbsp;(twisted cubic)</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 3: HIGHER DEGREE ==================== -->
+        <section id="turning" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-orange tracking-widest uppercase mb-3">03 / The Turning Point</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">What Happens When We Raise the Degree?</h2>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    All the examples above involve polynomials of degree 1 or 2. What happens with degree 3? Degree 4?
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Consider the <strong class="text-orange">elliptic curve</strong>:
+                </p>
+                <div class="katex-display">$$y^2 = x^3 - x$$</div>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Its shape is qualitatively different from circles and parabolas. It has a closed oval and a separate branch that extends to infinity. This curve encodes deep number-theoretic information — it played a central role in the proof of Fermat's Last Theorem.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Or consider the <strong class="text-lime">lemniscate</strong> — a figure-eight shape from a degree-4 equation:
+                </p>
+                <div class="katex-display">$$(x^2 + y^2)^2 = x^2 - y^2$$</div>
+                <p class="text-gray-400 leading-relaxed mb-10">
+                    Higher degree does not just mean "a more complicated version of the same thing." New phenomena emerge. Topology changes. The shapes become richer and stranger.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div class="reveal reveal-delay-1">
+                    <canvas id="graph-elliptic" class="graph-canvas glow-orange"></canvas>
+                    <p class="graph-label mt-2 text-center">$y^2 = x^3 - x$ &nbsp;(elliptic curve)</p>
+                </div>
+                <div class="reveal reveal-delay-2">
+                    <canvas id="graph-lemniscate" class="graph-canvas glow-lime"></canvas>
+                    <p class="graph-label mt-2 text-center">$(x^2+y^2)^2 = x^2 - y^2$ &nbsp;(lemniscate)</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 4: SYMMETRIC FUNCTIONS ==================== -->
+        <section id="symmetric" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-yellow tracking-widest uppercase mb-3">04 / A Detour Worth Taking</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">Why Coefficients Know So Much</h2>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Before pinning down what a variety is, it's worth seeing <em>where</em> the coefficients of a polynomial come from, because the same idea resurfaces everywhere in this subject. Let $\alpha,\beta$ be the two roots of $x^2+bx+c$. Vieta's formulas say $\alpha+\beta=-b$ and $\alpha\beta=c$ — the coefficients are built from the roots, but built in a very particular way: <strong class="text-fg">symmetrically</strong>. Swap $\alpha\leftrightarrow\beta$ and neither expression changes.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-6">
+                    That single fact decides which quantities you can compute from $b,c$ alone, and which you cannot:
+                </p>
+            </div>
+            <div class="overflow-x-auto reveal">
+                <table class="av-table">
+                    <tr><th>Expression in the roots</th><th>Effect of swapping $\alpha\leftrightarrow\beta$</th><th>In terms of $b,c$</th></tr>
+                    <tr><td class="mono">$\alpha+\beta$</td><td>unchanged</td><td class="mono">$-b$</td></tr>
+                    <tr><td class="mono">$\alpha\beta$</td><td>unchanged</td><td class="mono">$c$</td></tr>
+                    <tr><td class="mono">$\alpha^2+\beta^2$</td><td>unchanged</td><td class="mono">$b^2-2c$</td></tr>
+                    <tr><td class="mono">$\alpha^2\beta+\alpha\beta^2$</td><td>unchanged</td><td class="mono">$-bc$</td></tr>
+                    <tr><td class="mono">$\alpha-\beta$</td><td>flips sign</td><td>only $(\alpha-\beta)^2=b^2-4c$ survives — the discriminant</td></tr>
+                    <tr><td class="mono">$\alpha^2\beta$ alone</td><td>becomes $\beta^2\alpha$ — a different number</td><td>not expressible in $b,c$ at all</td></tr>
+                </table>
+            </div>
+            <div class="reveal">
+                <p class="text-gray-400 leading-relaxed mb-4 mt-2">
+                    $b$ and $c$ are built from the roots symmetrically, so they genuinely cannot tell $\alpha$ apart from $\beta$ — no formula in $b,c$ alone can single out "$\alpha^2\beta$" rather than "$\beta^2\alpha$." The same split shows up one root richer. Let $\alpha,\beta,\gamma$ be the roots of $x^3+bx^2+cx+d$, so that the <strong class="text-fg">elementary symmetric polynomials</strong> $e_1=\alpha+\beta+\gamma=-b$, $e_2=\alpha\beta+\beta\gamma+\gamma\alpha=c$, $e_3=\alpha\beta\gamma=-d$ are, up to sign, exactly the coefficients.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                <div class="dim-block reveal reveal-delay-1">
+                    <p class="text-lime font-mono text-xs mb-2">fully symmetric — expressible</p>
+                    <p class="text-sm text-gray-400 leading-relaxed">$\alpha^2+\beta^2+\gamma^2 = e_1^2-2e_2 = b^2-2c$.<br><br>Every one of the $6$ permutations of $\alpha,\beta,\gamma$ leaves this expression looking identical.</p>
+                </div>
+                <div class="dim-block reveal reveal-delay-2">
+                    <p class="text-orange font-mono text-xs mb-2">only cyclic — not directly expressible</p>
+                    <p class="text-sm text-gray-400 leading-relaxed">$\alpha^2\beta+\beta^2\gamma+\gamma^2\alpha$ survives the $3$ cyclic shifts, but swapping just $\alpha\leftrightarrow\beta$ turns it into a genuinely different quantity. It takes a resolvent — not a formula in $b,c,d$ — to pin down.</p>
+                </div>
+            </div>
+            <div class="reveal">
+                <div class="border border-yellow/30 rounded-xl p-6 sm:p-8 mb-8 bg-yellow/[0.02]">
+                    <p class="text-lg sm:text-xl font-semibold text-center text-yellow mb-2">Fundamental Theorem of Symmetric Polynomials</p>
+                    <p class="text-gray-400 text-center leading-relaxed">Every polynomial in $\alpha_1,\dots,\alpha_n$ that is unchanged by every permutation of the $\alpha_i$ can be written — uniquely — as a polynomial in $e_1,\dots,e_n$. Since each $e_k$ is, up to sign, a coefficient, <strong class="text-fg">every symmetric expression in the roots is automatically computable from the coefficients — without solving for a single root.</strong></p>
+                </div>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    This is why Cardano's cubic formula works at all, and why it looks so strange when it does. Take $x^3-15x-4=0$: its discriminant is positive, guaranteeing three real roots, yet feeding $p=-15,q=-4$ into the formula demands $\sqrt{-121}$ — an imaginary detour. Carried through, it lands exactly on the real roots $4$ and $-2\pm\sqrt3$. Lagrange's insight was to build a deliberately <em>almost</em>-symmetric combination of the roots — a <strong class="text-cyan">resolvent</strong> — whose cube <em>is</em> fully symmetric and hence computable, then unwind it. The same strategy resolves the quartic (Ferrari's resolvent cubic); applied to the quintic, the resolvent refuses to drop in degree at all — the first hint of Galois theory.
+                </p>
+            </div>
+            <div class="quiz-box reveal">
+                <p class="font-mono text-xs text-cyan uppercase tracking-widest mb-3">Quick check</p>
+                <p class="text-gray-300 mb-3">Let $\alpha,\beta,\gamma$ be the roots of $x^3+bx^2+cx+d$. Which one is <em>not</em> expressible directly in $b,c,d$?</p>
+                <div>
+                    <span class="quiz-opt" onclick="checkQuiz(this, false, 'This is already the elementary symmetric polynomial e2 itself — it equals c directly.')">αβ + βγ + γα</span>
+                    <span class="quiz-opt" onclick="checkQuiz(this, false, 'Fully symmetric under all 6 permutations, so it reduces to b, c, d — concretely, b² − 2c.')">α² + β² + γ²</span>
+                    <span class="quiz-opt" onclick="checkQuiz(this, true, 'Right — swapping just α and β sends this to a genuinely different expression. It survives only the 3 cyclic shifts, not all 6 permutations, so it cannot be written in b, c, d alone.')">α²β + β²γ + γ²α</span>
+                </div>
+                <p class="quiz-feedback"></p>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 5: DEFINITION ==================== -->
+        <section id="definition" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-cyan tracking-widest uppercase mb-3">05 / The Central Idea</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">What Is an Algebraic Variety?</h2>
+                <p class="text-gray-400 leading-relaxed mb-6">
+                    Now we can state the central idea. It is disarmingly simple:
+                </p>
+                <div class="border border-cyan/30 rounded-xl p-6 sm:p-8 mb-8 bg-cyan/[0.02]">
+                    <p class="text-xl sm:text-2xl font-semibold text-center text-cyan">
+                        An <span class="accent-underline cyan">algebraic variety</span> is the set of solutions to a system of polynomial equations.
+                    </p>
+                </div>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    That's it. A circle is an algebraic variety. A sphere is an algebraic variety. An elliptic curve is an algebraic variety. The set of points satisfying both
+                </p>
+                <div class="katex-display">
+                    $$x^2 + y^2 + z^2 = 1, \qquad x + y + z = 0$$                 </div>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    (a great circle on the sphere — the intersection of a sphere and a plane) is also an algebraic variety.
+                </p>
+                <p class="text-gray-400 leading-relaxed">
+                    The power of this definition is its <strong class="text-fg">generality</strong>. It works in any number of dimensions. It captures curves, surfaces, and objects with no easy geometric intuition — all under one roof.
+                </p>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 6: REDUCIBLE / IRREDUCIBLE ==================== -->
+        <section id="reducible" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-orange tracking-widest uppercase mb-3">06 / One Refinement</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">Not Every Zero Set Is One Shape</h2>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    We met $V(xy)$ back at the start — the two coordinate axes, produced by a single equation. It splits cleanly into $V(x)\cup V(y)$, two smaller solution sets glued together. Call a solution set <strong class="text-orange">reducible</strong> when it splits like that, and <strong class="text-lime">irreducible</strong> when it cannot be split any further. Strictly, an <em>algebraic variety</em> is reserved for the irreducible case — one indivisible algebraic "atom." $V(x^2-y^2)=V(x-y)\cup V(x+y)$ is reducible for the same reason: it factors.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-10">
+                    Irreducibility is not the same thing as smoothness. The curve below, $y^2=x^2(x+1)$, cannot be factored into lower-degree pieces — it is one irreducible variety — yet it crosses itself at the origin, a <strong class="text-fg">node</strong>.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                <div class="reveal reveal-delay-1">
+                    <canvas id="graph-crossx" class="graph-canvas glow-orange"></canvas>
+                    <p class="graph-label mt-2 text-center">$x^2-y^2=0$ &nbsp;(reducible)</p>
+                </div>
+                <div class="reveal reveal-delay-2">
+                    <canvas id="graph-threelines" class="graph-canvas glow-orange"></canvas>
+                    <p class="graph-label mt-2 text-center">$(x^2-1)y=0$ &nbsp;(3 components)</p>
+                </div>
+                <div class="reveal reveal-delay-3">
+                    <canvas id="graph-node" class="graph-canvas glow-lime"></canvas>
+                    <p class="graph-label mt-2 text-center">$y^2=x^2(x+1)$ &nbsp;(irreducible, singular)</p>
+                </div>
+            </div>
+            <div class="quiz-box reveal mt-10">
+                <p class="font-mono text-xs text-cyan uppercase tracking-widest mb-3">Quick check</p>
+                <p class="text-gray-300 mb-3">A circle and a line through it meet in exactly two points: $V(x^2+y^2-1,\,x-y)=\{(\tfrac{\sqrt2}{2},\tfrac{\sqrt2}{2}),\,(-\tfrac{\sqrt2}{2},-\tfrac{\sqrt2}{2})\}$. Is this two-point set irreducible?</p>
+                <div>
+                    <span class="quiz-opt" onclick="checkQuiz(this, true, 'Right — two distinct points is the union of two smaller closed pieces, each a single point on its own, so it splits and is reducible.')">No — it splits into two single-point pieces</span>
+                    <span class="quiz-opt" onclick="checkQuiz(this, false, 'Irreducible means it cannot be written as a union of two proper closed subsets — but each point here is itself closed, and the pair is their union.')">Yes — it is one connected set</span>
+                </div>
+                <p class="quiz-feedback"></p>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 7: AFFINE VS PROJECTIVE ==================== -->
+        <section id="projective" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-cyan tracking-widest uppercase mb-3">07 / Patching a Gap</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">Affine Space Has a Blind Spot</h2>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Everything so far lives in ordinary — <strong class="text-fg">affine</strong> — space. But affine space has an awkward habit: parallel lines never meet, and a circle and a line can intersect in fewer points than a degree-counting theorem (Bézout's theorem: a conic and a line should meet in $2$ points) promises. The missing intersections have run off to infinity.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    <strong class="text-yellow">Projective space</strong> $\mathbb{P}^n$ patches this by formally adding points at infinity, using homogeneous coordinates $(a_0:\cdots:a_n)$ where scaling every coordinate by the same nonzero $\lambda$ gives back the same point. A <strong class="text-yellow">projective variety</strong> is the zero locus of homogeneous polynomials inside $\mathbb{P}^n$.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-10">
+                    Take the parabola $V(y-x^2)$. Introduce a third coordinate $z$, homogenize ($x\to x/z,\,y\to y/z$, then clear denominators), and it becomes $V(yz-x^2)\subset\mathbb{P}^2$. Setting $z=1$ recovers the original parabola; setting $z=0$ reveals what got added — the single point $(0:1:0)$, where the parabola's two "arms," which look like they run apart forever in the affine picture, meet tangentially at infinity.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                <div class="dim-block reveal reveal-delay-1">
+                    <p class="text-cyan font-mono text-xs mb-1">Affine</p>
+                    <p class="text-sm text-gray-500">ordinary space $K^n$; parallel lines never meet</p>
+                </div>
+                <div class="dim-block reveal reveal-delay-2">
+                    <p class="text-yellow font-mono text-xs mb-1">Projective</p>
+                    <p class="text-sm text-gray-500">$\mathbb{P}^n$; points at infinity included, curves close up</p>
+                </div>
+                <div class="dim-block reveal reveal-delay-3">
+                    <p class="text-orange font-mono text-xs mb-1">Bridge</p>
+                    <p class="text-sm text-gray-500">$z=1$ recovers the affine chart; $z=0$ shows the horizon</p>
+                </div>
+            </div>
+            <div class="quiz-box reveal">
+                <p class="font-mono text-xs text-cyan uppercase tracking-widest mb-3">Quick check</p>
+                <p class="text-gray-300 mb-3">The circle $x^2+y^2=z^2$ and the line $x=2z$ never meet over $\mathbb{R}$ when $z=1$. What happens over $\mathbb{C}$, projectively?</p>
+                <div>
+                    <span class="quiz-opt" onclick="checkQuiz(this, false, 'Points at infinity have z=0, but x=2z forces x=0 there too — that intersection is not at infinity.')">They meet only at infinity</span>
+                    <span class="quiz-opt" onclick="checkQuiz(this, true, 'Substituting x=2z into the circle gives y²=−3z², solvable over ℂ as y=±i√3 z — two ordinary complex points. Bézout is restored once complex, projective points are allowed.')">They meet in two points, visible only over ℂ</span>
+                    <span class="quiz-opt" onclick="checkQuiz(this, false, 'A line and a conic meet in 1·2 = 2 points by Bézout, over an algebraically closed field, counted with multiplicity.')">They still never meet, even projectively</span>
+                </div>
+                <p class="quiz-feedback"></p>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 8: DIMENSION ==================== -->
+        <section id="dimension" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-yellow tracking-widest uppercase mb-3">08 / Structure</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">The Dimension Question</h2>
+                <p class="text-gray-400 leading-relaxed mb-6">
+                    A circle is 1-dimensional: you can move along it in one independent direction. A sphere is 2-dimensional: you can move in two independent directions on its surface. An algebraic variety has a well-defined dimension, and it relates to the number of variables and equations in a precise way:
+                </p>
+                <div class="katex-display">
+                    $$\dim(V) \;=\; n - k \qquad \text{(under good conditions)}$$                 </div>
+                <p class="text-gray-400 leading-relaxed mb-8">
+                    where $n$ is the number of variables and $k$ is the number of independent equations.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="dim-block reveal reveal-delay-1">
+                    <p class="text-yellow font-mono text-xs mb-1">n = 2, k = 1</p>
+                    <p class="text-lg font-semibold mb-1">Dimension 1</p>
+                    <p class="text-sm text-gray-500">A curve in the plane</p>
+                    <p class="text-xs text-gray-600 font-mono mt-2">e.g. $x^2+y^2=1$</p>
+                </div>
+                <div class="dim-block reveal reveal-delay-2">
+                    <p class="text-cyan font-mono text-xs mb-1">n = 3, k = 1</p>
+                    <p class="text-lg font-semibold mb-1">Dimension 2</p>
+                    <p class="text-sm text-gray-500">A surface in space</p>
+                    <p class="text-xs text-gray-600 font-mono mt-2">e.g. $x^2+y^2+z^2=1$</p>
+                </div>
+                <div class="dim-block reveal reveal-delay-3">
+                    <p class="text-orange font-mono text-xs mb-1">n = 3, k = 2</p>
+                    <p class="text-lg font-semibold mb-1">Dimension 1</p>
+                    <p class="text-sm text-gray-500">A curve in 3-space</p>
+                    <p class="text-xs text-gray-600 font-mono mt-2">e.g. sphere &cap; plane</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 6: SINGULARITIES ==================== -->
+        <section id="singularities" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-yellow tracking-widest uppercase mb-3">09 / Where Things Break</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">Singularities</h2>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Most of the varieties we have seen are <em>smooth</em> — no sharp corners or cusps. But not all varieties behave so nicely.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Consider the curve defined by:
+                </p>
+                <div class="katex-display">$$y^2 = x^3$$</div>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    At the origin, this curve comes to a sharp point — a <strong class="text-yellow">cusp</strong>. The curve is not smooth there; there is no well-defined tangent line.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-10">
+                    Singularities are where the geometry becomes complicated and interesting. Classifying and resolving them is a major theme in algebraic geometry — and the techniques developed for this purpose have turned out to be powerful far beyond their original context.
+                </p>
+            </div>
+            <div class="max-w-sm mx-auto reveal">
+                <canvas id="graph-cusp" class="graph-canvas glow-yellow"></canvas>
+                <p class="graph-label mt-2 text-center">$y^2 = x^3$ &nbsp;(cusp)</p>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 10: CHARACTERIZING LOW DIMENSIONS ==================== -->
+        <section id="characterize" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-cyan tracking-widest uppercase mb-3">10 / A Full Inventory</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">What Can a Variety Actually Look Like?</h2>
+                <p class="text-gray-400 leading-relaxed mb-10">
+                    We have been meeting varieties one example at a time. It's worth pausing to ask the sharper question directly: in the smallest ambient spaces, $\mathbb{R}$ and $\mathbb{R}^2$, can we list <em>every</em> possible algebraic set?
+                </p>
+            </div>
+
+            <h3 class="text-xl font-semibold text-lime mb-4 accent-underline lime reveal">On the line, $\mathbb{R}$</h3>
+            <div class="reveal">
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    The answer here is completely finite and completely clean:
+                </p>
+                <div class="border border-lime/30 rounded-xl p-6 sm:p-8 mb-6 bg-lime/[0.02]">
+                    <p class="text-lg sm:text-xl font-semibold text-center text-lime">
+                        $S\subseteq\mathbb{R}$ is algebraic &nbsp;$\iff$&nbsp; $S$ is finite, or $S=\mathbb{R}$.
+                    </p>
+                </div>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    If $S=V(f_1,\dots,f_m)\neq\mathbb{R}$, some $f_i$ is not the zero polynomial — and a nonzero one-variable polynomial has at most $\deg f_i$ roots, so $S\subseteq V(f_i)$ is finite. Conversely $\mathbb{R}=V(0)$ and any finite set $\{a_1,\dots,a_k\}=V\big((x-a_1)\cdots(x-a_k)\big)$. The <em>irreducible</em> varieties are exactly the single points (each ideal $\langle x-a\rangle$ is maximal) and $\mathbb{R}$ itself — every larger finite set splits into point-varieties. This is the cleanest possible instance of the Zariski topology from further down this page: on a line, closed sets are precisely the finite sets and the whole line.
+                </p>
+            </div>
+
+            <h3 class="text-xl font-semibold text-cyan mb-4 mt-14 accent-underline cyan reveal">In the plane, $\mathbb{R}^2$</h3>
+            <div class="reveal">
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Here there is no short finite list — but there is real structure. Because $\mathbb{R}$ is an <em>ordered</em> field, a sum of squares vanishes only when every term does:
+                </p>
+                <div class="katex-display">$$V(f_1,\dots,f_m) \;=\; V(f_1^2+\cdots+f_m^2).$$</div>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    So <strong class="text-fg">every real algebraic set is the zero locus of a single polynomial</strong>. (This trick fails completely over $\mathbb{C}$ — $i^2+1^2=0$ without $i=0$ — which is part of why algebraically closed fields behave so much more predictably, as the $x^2+y^2$ example already showed: a point over $\mathbb{R}$, two crossing lines over $\mathbb{C}$.) The question reduces to: what can $V(f)$ look like for one $f\in\mathbb{R}[x,y]$?
+                </p>
+            </div>
+            <div class="overflow-x-auto reveal mb-8">
+                <table class="av-table">
+                    <tr><th>Type</th><th>Example</th><th>Note</th></tr>
+                    <tr><td>whole plane</td><td class="mono">V(0)</td><td>dimension 2</td></tr>
+                    <tr><td>empty</td><td class="mono">V(x²+y²+1)</td><td>no real points at all</td></tr>
+                    <tr><td>isolated point</td><td class="mono">V(x²+y²)</td><td>the complex picture (two lines) collapses over ℝ</td></tr>
+                    <tr><td>genuine curve</td><td class="mono">V(y−x²), V(xy−1)</td><td>dimension 1, possibly several ovals</td></tr>
+                    <tr><td>singular curve</td><td class="mono">V(y²−x²(x+1))</td><td>irreducible, but not smooth (a node)</td></tr>
+                    <tr><td>curve + isolated point</td><td class="mono">V(y²−x²(x−1))</td><td>a branch for x≥1, and (0,0) sitting alone</td></tr>
+                    <tr><td>several pieces</td><td class="mono">V((x²+y²−1)(x²+y²−4))</td><td>two concentric circles</td></tr>
+                </table>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                <div class="reveal reveal-delay-1">
+                    <canvas id="graph-isolated" class="graph-canvas glow-orange"></canvas>
+                    <p class="graph-label mt-2 text-center">$y^2=x^2(x-1)$ &nbsp;(branch + isolated point)</p>
+                </div>
+                <div class="reveal reveal-delay-2">
+                    <canvas id="graph-concentric" class="graph-canvas glow-cyan"></canvas>
+                    <p class="graph-label mt-2 text-center">$(x^2{+}y^2{-}1)(x^2{+}y^2{-}4)=0$ &nbsp;(two circles)</p>
+                </div>
+            </div>
+            <div class="reveal">
+                <p class="text-gray-400 leading-relaxed mb-10">
+                    <strong class="text-fg">Harnack's Curve Theorem</strong> caps how rich this can get: a <em>smooth</em> real plane curve of degree $d$ has at most $\frac{(d-1)(d-2)}{2}+1$ connected ovals, and the bound is sharp. Every algebraic subset of $\mathbb{R}^2$ has finitely many components, each an isolated point or a finite union of smooth arcs meeting at finitely many singular points — always tame in that sense. But because the oval count grows without bound as $d\to\infty$, there is no finite catalogue of shapes the way there was on the line; classifying real plane curves degree by degree is itself a research question, tied to Hilbert's 16th problem.
+                </p>
+            </div>
+
+            <h3 class="text-xl font-semibold text-orange mb-4 accent-underline orange reveal">Is the open first quadrant a variety?</h3>
+            <div class="reveal">
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Take $Q=\{(x,y): x>0,\ y>0\}$ — no answer needs a single polynomial computation, just one topological fact. Every polynomial $f:\mathbb{R}^n\to\mathbb{R}$ is continuous, so $V(f)=f^{-1}(\{0\})$ is <strong class="text-fg">closed</strong>, since $\{0\}$ is closed and preimages of closed sets under continuous maps are closed. An intersection of closed sets is closed, so <em>every</em> algebraic set is closed in $\mathbb{R}^n$ — no exceptions.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    $Q$ is not closed: the sequence $(1/n,1/n)\in Q$ for every $n$, but its limit $(0,0)\notin Q$. So $Q$ cannot be an algebraic set.
+                </p>
+                <div class="border border-orange/30 rounded-xl p-6 sm:p-8 mb-6 bg-orange/[0.02]">
+                    <p class="text-lg sm:text-xl font-semibold text-center text-orange">
+                        $Q$ open, nonempty, proper &nbsp;$\Longrightarrow$&nbsp; $Q$ is not algebraic.
+                    </p>
+                </div>
+                <p class="text-gray-400 leading-relaxed">
+                    This argument is free of anything specific to quadrants: since $\mathbb{R}^n$ is connected, its only clopen subsets are $\varnothing$ and $\mathbb{R}^n$ itself, so <strong class="text-fg">no nonempty proper open subset of $\mathbb{R}^n$ is ever algebraic</strong>. The <em>closed</em> quadrant $\{x\ge0,\,y\ge0\}$ isn't algebraic either — but for a different reason: it's cut out by polynomial <em>inequalities</em>, and no single equation can pin down a region with nonempty interior that is still a proper subset of the plane, since a variety containing an open piece of $\mathbb{R}^2$ must (by the dimension count of Chapter 05) be all of $\mathbb{R}^2$.
+                </p>
+            </div>
+
+            <div class="quiz-box reveal mt-10">
+                <p class="font-mono text-xs text-cyan uppercase tracking-widest mb-3">Quick check</p>
+                <p class="text-gray-300 mb-3">Which of these subsets of $\mathbb{R}^2$ <em>is</em> an algebraic variety?</p>
+                <div>
+                    <span class="quiz-opt" onclick="checkQuiz(this, false, 'The closed unit disc x²+y²≤1 is closed, but has a 2-dimensional interior while still being a proper subset of the plane — no single equation can carve out an inequality region like this.')">The closed disc {x²+y² ≤ 1}</span>
+                    <span class="quiz-opt" onclick="checkQuiz(this, true, 'Right — this is V(x²+y²−1), the ordinary unit circle, dimension 1, exactly the boundary of the disc above.')">The unit circle {x²+y² = 1}</span>
+                    <span class="quiz-opt" onclick="checkQuiz(this, false, 'The open upper half-plane is open and proper, so by the closedness argument above it cannot be algebraic.')">The open half-plane {y > 0}</span>
+                </div>
+                <p class="quiz-feedback"></p>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 11: BEYOND VISIBLE ==================== -->
+        <section id="beyond" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-orange tracking-widest uppercase mb-3">11 / Expanding Horizons</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">Beyond What You Can See</h2>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Here is a crucial point: algebraic varieties exist in <strong class="text-fg">any number of dimensions</strong>. A variety in 5-dimensional space defined by 2 polynomial equations has dimension 3. You cannot draw it, but it is just as mathematically real as a circle.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Moreover, algebraic geometers often work over fields <em>other</em> than the real numbers:
+                </p>
+                <ul class="space-y-4 mb-6 text-gray-400">
+                    <li class="flex gap-3 items-start">
+                        <span class="text-cyan mt-1"><i class="fas fa-layer-group text-sm"></i></span>
+                        <span><strong class="text-fg">Over the complex numbers</strong>, a "curve" like $x^2 + y^2 = 1$ is actually a 2-dimensional surface (because $\mathbb{C}$ is 2-dimensional over $\mathbb{R}$). The geometry becomes richer.</span>
+                    </li>
+                    <li class="flex gap-3 items-start">
+                        <span class="text-yellow mt-1"><i class="fas fa-hashtag text-sm"></i></span>
+                        <span><strong class="text-fg">Over finite fields</strong>, a variety has only finitely many points — yet their structure still encodes deep arithmetic information, connecting algebraic geometry to number theory.</span>
+                    </li>
+                    <li class="flex gap-3 items-start">
+                        <span class="text-orange mt-1"><i class="fas fa-infinity text-sm"></i></span>
+                        <span><strong class="text-fg">Over the p-adic numbers</strong>, entirely new geometric landscapes appear, where "closeness" is measured not by distance but by divisibility.</span>
+                    </li>
+                </ul>
+                <p class="text-gray-400 leading-relaxed">
+                    This is where algebraic geometry stops being visual and starts being deeply algebraic — but the geometric intuition you have built from the low-dimensional examples continues to guide the way.
+                </p>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 11: IDEALS ==================== -->
+        <section id="ideals" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-lime tracking-widest uppercase mb-3">12 / Turning the Dictionary Around</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">Ideals: The Algebra Behind the Shape</h2>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Go in the opposite direction from $V$. Given a set of points $A$, collect <em>every</em> polynomial that vanishes on all of $A$:
+                </p>
+                <div class="katex-display">$$I(A) = \{\, f : f(P) = 0 \text{ for all } P \in A \,\}$$</div>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    This set is an <strong class="text-fg">ideal</strong>: closed under addition, and absorbing under multiplication by anything in the polynomial ring. $V$ and $I$ now face each other across a mirror — a shape gives an ideal, an ideal gives back a shape.
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+                <div class="dim-block reveal reveal-delay-1">
+                    <p class="text-cyan font-mono text-xs mb-2">$I(\{(1,2)\})$</p>
+                    <p class="text-sm text-gray-400 leading-relaxed">Exactly the polynomials in $\langle x-1,\,y-2\rangle$ — every multiple of $x-1$ or $y-2$ kills the point, and nothing else does. A <strong class="text-fg">maximal</strong> ideal, matching the smallest possible variety.</p>
+                </div>
+                <div class="dim-block reveal reveal-delay-2">
+                    <p class="text-yellow font-mono text-xs mb-2">$I(\text{parabola})$</p>
+                    <p class="text-sm text-gray-400 leading-relaxed">Every polynomial vanishing on $V(y-x^2)$ is a multiple of $y-x^2$, so $I(V)=\langle y-x^2\rangle$ — a <strong class="text-fg">prime</strong> ideal, because the parabola is irreducible. Apply $V$ back to it, and you land on the parabola again.</p>
+                </div>
+            </div>
+            <div class="reveal">
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Over an algebraically closed field, this correspondence is almost a perfect inverse — the content of Hilbert's <strong class="text-lime">Nullstellensatz</strong>:
+                </p>
+            </div>
+            <div class="overflow-x-auto reveal mb-8">
+                <table class="av-table">
+                    <tr><th>Geometric object</th><th>Algebraic object</th></tr>
+                    <tr><td>irreducible variety</td><td>prime ideal</td></tr>
+                    <tr><td>single point</td><td>maximal ideal</td></tr>
+                    <tr><td>union of two varieties</td><td>intersection of ideals</td></tr>
+                </table>
+            </div>
+            <div class="reveal">
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    Push this one step further: the <strong class="text-fg">coordinate ring</strong> of the parabola is $K[x,y]/\langle y-x^2\rangle$. Because $y$ is forced to equal $x^2$ inside this quotient, every polynomial collapses to one in $x$ alone — $K[x,y]/\langle y-x^2\rangle \cong K[x]$, the coordinate ring of a plain line. Algebraically, the curved parabola and a straight line are indistinguishable; the curve is an artifact of how it sits in the plane, not of its intrinsic algebra.
+                </p>
+            </div>
+            <div class="quiz-box reveal">
+                <p class="font-mono text-xs text-cyan uppercase tracking-widest mb-3">Quick check</p>
+                <p class="text-gray-300 mb-3">$\langle x^2,xy,y^2\rangle$ and $\langle x,y\rangle$ have the same zero locus, $\{(0,0)\}$. Are the two ideals equal?</p>
+                <div>
+                    <span class="quiz-opt" onclick="checkQuiz(this, false, 'x itself cannot be written as a combination of x², xy, y² — same zero locus does not force equal ideals.')">Yes — same zero locus forces the same ideal</span>
+                    <span class="quiz-opt" onclick="checkQuiz(this, true, 'Correct: x ∉ ⟨x²,xy,y²⟩, so the ideals differ even though V of both is the single point (0,0). It is the radical, ⟨x,y⟩, that the Nullstellensatz dictionary actually pairs with the point.')">No — ⟨x,y⟩ is strictly larger</span>
+                </div>
+                <p class="quiz-feedback"></p>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 12: WHY IT MATTERS ==================== -->
+        <section id="matters" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-lime tracking-widest uppercase mb-3">13 / Connections</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6">Why Does Any of This Matter?</h2>
+                <p class="text-gray-400 leading-relaxed mb-10">
+                    Algebraic geometry might seem abstract, but it connects to surprisingly concrete things:
+                </p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div class="app-card reveal reveal-delay-1">
+                    <div class="text-orange text-xl mb-3"><i class="fas fa-lock"></i></div>
+                    <h3 class="font-semibold text-lg mb-2">Cryptography</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">Elliptic curves over finite fields underpin modern cryptographic protocols — from TLS to blockchain signatures.</p>
+                </div>
+                <div class="app-card reveal reveal-delay-1">
+                    <div class="text-cyan text-xl mb-3"><i class="fas fa-atom"></i></div>
+                    <h3 class="font-semibold text-lg mb-2">Physics</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">String theory uses Calabi-Yau manifolds — special algebraic varieties — to model the extra dimensions of spacetime.</p>
+                </div>
+                <div class="app-card reveal reveal-delay-2">
+                    <div class="text-yellow text-xl mb-3"><i class="fas fa-robot"></i></div>
+                    <h3 class="font-semibold text-lg mb-2">Robotics</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">The set of configurations a robot arm can reach forms an algebraic variety. Understanding its shape tells you what the robot can and cannot do.</p>
+                </div>
+                <div class="app-card reveal reveal-delay-2">
+                    <div class="text-lime text-xl mb-3"><i class="fas fa-satellite-dish"></i></div>
+                    <h3 class="font-semibold text-lg mb-2">Coding Theory</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">Algebraic geometry codes are among the best error-correcting codes known, used in deep-space communication and data storage.</p>
+                </div>
+                <div class="app-card reveal reveal-delay-3">
+                    <div class="text-orange text-xl mb-3"><i class="fas fa-brain"></i></div>
+                    <h3 class="font-semibold text-lg mb-2">Machine Learning</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">Algebraic geometry helps analyse the structure of neural networks, parameter spaces, and optimisation landscapes.</p>
+                </div>
+                <div class="app-card reveal reveal-delay-3">
+                    <div class="text-cyan text-xl mb-3"><i class="fas fa-scroll"></i></div>
+                    <h3 class="font-semibold text-lg mb-2">Number Theory</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">Fermat's Last Theorem, the Birch–Swinnerton-Dyer conjecture, and the Langlands program all rely on algebraic geometry.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 9: DEEPER VIEW ==================== -->
+        <section id="deeper" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-cyan tracking-widest uppercase mb-3">14 / The Deeper View</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-8">Two Ideas That Changed Everything</h2>
+            </div>
+
+            <!-- Zariski Topology -->
+            <div class="mb-14 reveal">
+                <h3 class="text-xl font-semibold text-cyan mb-4 accent-underline cyan">The Zariski Topology</h3>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    In ordinary topology (the kind used in analysis), open sets are like open intervals — they contain all points "nearby." The Zariski topology turns this on its head: the <em>closed</em> sets are precisely the algebraic varieties.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    This means the open sets are the complements — "everything except where this polynomial vanishes." The Zariski topology is much <em>coarser</em> than the usual one. On a line, the Zariski closed sets are just finite sets of points and the whole line itself.
+                </p>
+                <p class="text-gray-400 leading-relaxed">
+                    It seems too coarse to be useful — but it captures <strong class="text-fg">exactly the algebraic information</strong>, and that is what makes it powerful. Every continuous map in the Zariski topology turns out to be a polynomial map.
+                </p>
+            </div>
+
+            <!-- Schemes -->
+            <div class="reveal">
+                <h3 class="text-xl font-semibold text-yellow mb-4 accent-underline yellow">Schemes</h3>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    If varieties are built from polynomial equations, <em>schemes</em> are built from rings. Every variety corresponds to a ring (its "coordinate ring"), and the scheme construction lets you reverse this: start with <em>any</em> commutative ring and get a geometric object.
+                </p>
+                <p class="text-gray-400 leading-relaxed mb-4">
+                    This allows algebraic geometers to study number-theoretic objects — like the integers $\mathbb{Z}$ — as if they were geometric spaces. A prime number $p$ becomes a <em>point</em> in this space. This idea, called <strong class="text-fg">arithmetic geometry</strong>, is one of the most powerful in modern mathematics.
+                </p>
+                <p class="text-gray-400 leading-relaxed">
+                    We will not go further into schemes here — that would require a full course. But the trajectory should be clear: from circles in the plane to geometric spaces built from abstract rings, the same fundamental idea — "polynomial equations define geometry" — keeps opening new doors.
+                </p>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== SECTION 14: SUMMARY ==================== -->
+        <section id="summary" class="max-w-5xl mx-auto px-6 py-24">
+            <div class="reveal">
+                <p class="font-mono text-xs text-muted tracking-widest uppercase mb-3">15 / The Whole Picture, At A Glance</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-8">Summary</h2>
+            </div>
+            <div class="overflow-x-auto reveal mb-10">
+                <table class="av-table">
+                    <tr><th>Object met</th><th>What it does</th><th>Where it appeared</th></tr>
+                    <tr><td>Discriminant</td><td>detects repeated roots without solving</td><td>quadratics, cubics, elliptic curves</td></tr>
+                    <tr><td>Lagrange resolvent</td><td>almost-symmetric combination, tamed by a power</td><td>Cardano's formula, Ferrari's resolvent cubic</td></tr>
+                    <tr><td>Zero locus $V(f_1,\dots,f_m)$</td><td>points satisfying every equation at once</td><td>lines, conics, twisted cubic, elliptic curve</td></tr>
+                    <tr><td>Reducible / irreducible</td><td>splits into smaller closed pieces, or doesn't</td><td>$V(xy)$ vs. the parabola</td></tr>
+                    <tr><td>Affine vs. projective</td><td>ordinary space vs. space with points at infinity</td><td>parallel lines, the completed parabola</td></tr>
+                    <tr><td>Ideal $I(V)$</td><td>every polynomial vanishing on $V$</td><td>$\langle y-x^2\rangle$ for the parabola</td></tr>
+                    <tr><td>Nullstellensatz</td><td>varieties ↔ prime ideals, points ↔ maximal ideals</td><td>ties every earlier example into one dictionary</td></tr>
+                </table>
+            </div>
+            <div class="quiz-box reveal mb-10">
+                <p class="font-mono text-xs text-cyan uppercase tracking-widest mb-3">Last one — put it together</p>
+                <p class="text-gray-300 mb-3">$V(y^2-x^2-x^3)$ is an irreducible nodal cubic. Which ideal does the Nullstellensatz dictionary pair it with?</p>
+                <div>
+                    <span class="quiz-opt" onclick="checkQuiz(this, false, 'Maximal ideals correspond to single points, not to a whole curve.')">A maximal ideal, since it is one curve</span>
+                    <span class="quiz-opt" onclick="checkQuiz(this, true, 'Exactly — irreducible variety pairs with prime ideal, regardless of whether the curve is smooth. A singular point just means the curve is not a manifold there; it says nothing about primality of the ideal.')">A prime ideal — irreducibility is what matters, not smoothness</span>
+                    <span class="quiz-opt" onclick="checkQuiz(this, false, 'The curve does not split into a union of proper closed pieces, so this description does not apply.')">A reducible ideal, since the curve has a self-crossing</span>
+                </div>
+                <p class="quiz-feedback"></p>
+            </div>
+            <div class="reveal border border-lime/30 rounded-xl p-6 sm:p-8 bg-lime/[0.02]">
+                <p class="text-gray-300 text-center leading-relaxed">
+                    Solve an equation, and you get points. Solve several, and you get a shape. Ask which shapes are indivisible, and you get varieties. Ask which polynomials a shape forces to vanish, and you get an ideal. The Nullstellensatz says these two questions have <em>exactly</em> the same answer — and everything from a school discriminant to a research-level moduli space is someone pushing that one correspondence further than the last person did.
+                </p>
+            </div>
+        </section>
+
+        <div class="section-divider max-w-5xl mx-auto"></div>
+
+        <!-- ==================== CLOSING ==================== -->
+        <section class="max-w-5xl mx-auto px-6 py-24 text-center">
+            <div class="reveal">
+                <p class="font-mono text-xs text-muted tracking-widest uppercase mb-6">Closing Thought</p>
+                <h2 class="text-3xl sm:text-4xl font-bold mb-6 gradient-text inline-block">From Circles to Schemes</h2>
+                <p class="text-gray-400 leading-relaxed max-w-2xl mx-auto mb-4">
+                    We started with a circle — the simplest non-trivial algebraic variety. We saw why coefficients can compute so much about roots without ever solving for them, moved to surfaces, then to curves of higher degree, then asked which shapes are truly indivisible and which live at infinity, then to singularities, ideals, higher dimensions and different number systems, and finally glimpsed the architecture of schemes.
+                </p>
+                <p class="text-gray-400 leading-relaxed max-w-2xl mx-auto mb-10">
+                    At each step, the same basic idea — <em>"solutions to polynomial equations"</em> — opened up new territory. This is the flavour of algebraic geometry. It begins somewhere familiar and leads somewhere surprising.
+                </p>
+                <p class="text-lime text-lg font-medium">
+                    If this glimpse has made you curious, that was the point.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="border-t border-border py-8 text-center text-xs text-muted font-mono">
+        <p>An informal discussion &mdash; not a lecture, not a course.</p>
+    </footer>
+
+    <!-- ==================== JAVASCRIPT ==================== -->
+    <script>
+    function checkQuiz(el, isCorrect, explanation) {
+        const box = el.closest('.quiz-box');
+        const opts = box.querySelectorAll('.quiz-opt');
+        opts.forEach(o => { o.style.pointerEvents = 'none'; });
+        el.classList.add(isCorrect ? 'correct' : 'wrong');
+        const fb = box.querySelector('.quiz-feedback');
+        fb.textContent = explanation;
+        fb.classList.add('shown');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ============================================
+           SCROLL REVEAL (IntersectionObserver)
+           ============================================ */
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                }
+            });
+        }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        /* ============================================
+           SIDE NAV ACTIVE STATE
+           ============================================ */
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.side-nav a');
+        const navObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    const active = document.querySelector(`.side-nav a[href="#${entry.target.id}"]`);
+                    if (active) active.classList.add('active');
+                }
+            });
+        }, { threshold: 0.3 });
+        sections.forEach(s => navObserver.observe(s));
+
+        /* ============================================
+           UTILITY: Plot implicit curve f(x,y) = 0
+           Uses sign-change detection between pixels
+           ============================================ */
+        function plotImplicitCurve(canvasId, f, xRange, yRange) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const dpr = window.devicePixelRatio || 1;
+            const displayW = canvas.clientWidth;
+            const displayH = canvas.clientHeight;
+            const w = Math.round(displayW * dpr);
+            const h = Math.round(displayH * dpr);
+            canvas.width = w;
+            canvas.height = h;
+
+            const [xMin, xMax] = xRange;
+            const [yMin, yMax] = yRange;
+            const dx = (xMax - xMin) / w;
+            const dy = (yMax - yMin) / h;
+
+            // Create image data and draw the curve
+            const imageData = new ImageData(w, h);
+            const data = imageData.data;
+
+            for (let py = 0; py < h; py++) {
+                const y = yMax - py * dy;  // flip y: canvas top = yMax
+                for (let px = 0; px < w; px++) {
+                    const x = xMin + px * dx;
+                    const val = f(x, y);
+                    // Check sign change with right and below neighbors
+                    const valR = f(x + dx, y);
+                    const valD = f(x, y - dy);
+                    if (val * valR < 0 || val * valD < 0) {
+                        const idx = (py * w + px) * 4;
+                        data[idx]     = 255;
+                        data[idx + 1] = 255;
+                        data[idx + 2] = 255;
+                        data[idx + 3] = 255;
+                    }
+                }
+            }
+
+            const ctx = canvas.getContext('2d');
+            ctx.putImageData(imageData, 0, 0);
+
+            // Draw grid and axes on top (in logical coordinates)
+            drawGrid(ctx, displayW, displayH, xRange, yRange, dpr);
+        }
+
+        /* ============================================
+           UTILITY: Mark a single data point on an
+           already-plotted 2D canvas (for isolated points
+           the sign-change plotter can't detect, since it
+           only touches zero without crossing it)
+           ============================================ */
+        function markPoint(canvasId, xVal, yVal, color, xRange, yRange) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const dpr = window.devicePixelRatio || 1;
+            const displayW = canvas.clientWidth;
+            const displayH = canvas.clientHeight;
+            const [xMin, xMax] = xRange;
+            const [yMin, yMax] = yRange;
+            const toX = x => (x - xMin) / (xMax - xMin) * displayW;
+            const toY = y => (1 - (y - yMin) / (yMax - yMin)) * displayH;
+
+            const ctx = canvas.getContext('2d');
+            ctx.save();
+            ctx.scale(dpr, dpr);
+            ctx.beginPath();
+            ctx.arc(toX(xVal), toY(yVal), 4, 0, 2 * Math.PI);
+            ctx.fillStyle = color;
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 8;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        /* ============================================
+           UTILITY: Draw grid + axes on a 2D canvas
+           ============================================ */
+        function drawGrid(ctx, displayW, displayH, xRange, yRange, dpr) {
+            ctx.save();
+            ctx.scale(dpr, dpr);
+
+            const [xMin, xMax] = xRange;
+            const [yMin, yMax] = yRange;
+            const toX = x => (x - xMin) / (xMax - xMin) * displayW;
+            const toY = y => (1 - (y - yMin) / (yMax - yMin)) * displayH;
+
+            // Faint grid at integers
+            ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+            ctx.lineWidth = 0.5;
+            for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+                ctx.beginPath();
+                ctx.moveTo(toX(x), 0);
+                ctx.lineTo(toX(x), displayH);
+                ctx.stroke();
+            }
+            for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+                ctx.beginPath();
+                ctx.moveTo(0, toY(y));
+                ctx.lineTo(displayW, toY(y));
+                ctx.stroke();
+            }
+
+            // Axes (brighter)
+            ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+            ctx.lineWidth = 1;
+            if (yMin <= 0 && yMax >= 0) {
+                ctx.beginPath();
+                ctx.moveTo(0, toY(0));
+                ctx.lineTo(displayW, toY(0));
+                ctx.stroke();
+            }
+            if (xMin <= 0 && xMax >= 0) {
+                ctx.beginPath();
+                ctx.moveTo(toX(0), 0);
+                ctx.lineTo(toX(0), displayH);
+                ctx.stroke();
+            }
+
+            // Tick labels
+            ctx.fillStyle = 'rgba(255,255,255,0.25)';
+            ctx.font = `${10 * (dpr > 1 ? 1 : 1)}px "JetBrains Mono", monospace`;
+            ctx.textBaseline = 'top';
+
+            const axisY = (yMin <= 0 && yMax >= 0) ? toY(0) + 4 : displayH - 14;
+            ctx.textAlign = 'center';
+            for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+                if (x === 0) continue;
+                ctx.fillText(x, toX(x), Math.min(axisY, displayH - 14));
+            }
+
+            const axisX = (xMin <= 0 && xMax >= 0) ? toX(0) - 4 : 4;
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+                if (y === 0) continue;
+                ctx.fillText(y, Math.max(axisX, 20), toY(y));
+            }
+
+            // Origin
+            if (xMin < 0 && xMax > 0 && yMin < 0 && yMax > 0) {
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'top';
+                ctx.fillText('0', toX(0) - 4, toY(0) + 4);
+            }
+
+            ctx.restore();
+        }
+
+        /* ============================================
+           2D GRAPH DEFINITIONS
+           ============================================ */
+
+        // 1. Line: x + y = 1
+        plotImplicitCurve('graph-line',
+            (x, y) => x + y - 1,
+            [-2, 3], [-2, 3]
+        );
+
+        // 2. Circle: x^2 + y^2 = 1
+        plotImplicitCurve('graph-circle',
+            (x, y) => x * x + y * y - 1,
+            [-2, 2], [-2, 2]
+        );
+
+        // 3. Parabola: y = x^2 → y - x^2 = 0
+        plotImplicitCurve('graph-parabola',
+            (x, y) => y - x * x,
+            [-2.5, 2.5], [-1, 6]
+        );
+
+        // 4. Elliptic curve: y^2 = x^3 - x → y^2 - x^3 + x = 0
+        plotImplicitCurve('graph-elliptic',
+            (x, y) => y * y - x * x * x + x,
+            [-2, 3], [-3, 3]
+        );
+
+        // 5. Lemniscate: (x^2+y^2)^2 = x^2 - y^2 → (x^2+y^2)^2 - x^2 + y^2 = 0
+        plotImplicitCurve('graph-lemniscate',
+            (x, y) => {
+                const r2 = x * x + y * y;
+                return r2 * r2 - x * x + y * y;
+            },
+            [-1.5, 1.5], [-0.8, 0.8]
+        );
+
+        // 6. Cusp: y^2 = x^3 → y^2 - x^3 = 0
+        plotImplicitCurve('graph-cusp',
+            (x, y) => y * y - x * x * x,
+            [-0.5, 3], [-3, 3]
+        );
+
+        // 7. Hyperbola: xy = 1 → xy - 1 = 0
+        plotImplicitCurve('graph-hyperbola',
+            (x, y) => x * y - 1,
+            [-3, 3], [-3, 3]
+        );
+
+        // 8. Two axes at once: xy = 0
+        plotImplicitCurve('graph-axes',
+            (x, y) => x * y,
+            [-2, 2], [-2, 2]
+        );
+
+        // 9. Reducible crossing lines: x^2 - y^2 = 0
+        plotImplicitCurve('graph-crossx',
+            (x, y) => x * x - y * y,
+            [-2, 2], [-2, 2]
+        );
+
+        // 10. Three components: (x^2-1)y = 0
+        plotImplicitCurve('graph-threelines',
+            (x, y) => (x * x - 1) * y,
+            [-2, 2], [-2, 2]
+        );
+
+        // 11. Irreducible but singular (node): y^2 = x^2(x+1)
+        plotImplicitCurve('graph-node',
+            (x, y) => y * y - x * x * (x + 1),
+            [-1.2, 2.5], [-4, 4]
+        );
+
+        // 12. Curve with a separate isolated point: y^2 = x^2(x-1)
+        plotImplicitCurve('graph-isolated',
+            (x, y) => y * y - x * x * (x - 1),
+            [-1.2, 2.5], [-2.5, 2.5]
+        );
+        // The sign-change plotter can miss the isolated point itself (f never
+        // goes negative there, it only touches zero) — mark it explicitly.
+        markPoint('graph-isolated', 0, 0, '#FF6B00', [-1.2, 2.5], [-2.5, 2.5]);
+
+        // 13. Two concentric circles: (x^2+y^2-1)(x^2+y^2-4) = 0
+        plotImplicitCurve('graph-concentric',
+            (x, y) => (x * x + y * y - 1) * (x * x + y * y - 4),
+            [-3, 3], [-3, 3]
+        );
+
+        /* ============================================
+           3D WIREFRAME RENDERER (reusable)
+           ============================================ */
+        function render3DWireframe(canvasId, getLines, color, initAngleX) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const dpr = window.devicePixelRatio || 1;
+            const displayW = canvas.clientWidth;
+            const displayH = canvas.clientHeight;
+            canvas.width = Math.round(displayW * dpr);
+            canvas.height = Math.round(displayH * dpr);
+
+            const ctx = canvas.getContext('2d');
+            const lines = getLines();
+            let angleY = 0;
+            let angleX = initAngleX || 0.35;
+            let dragging = false;
+            let lastMouse = { x: 0, y: 0 };
+            let autoRotate = !reducedMotion;
+
+            // Parse color for rgba usage
+            let cr = 0, cg = 255, cb = 255;
+            if (color === '#FFD700') { cr = 255; cg = 215; cb = 0; }
+            else if (color === '#00FF41') { cr = 0; cg = 255; cb = 65; }
+            else if (color === '#FF6B00') { cr = 255; cg = 107; cb = 0; }
+
+            const scale = Math.min(displayW, displayH) * 0.28;
+
+            function project(x, y, z) {
+                // Rotate around Y
+                const cy = Math.cos(angleY), sy = Math.sin(angleY);
+                const x1 = x * cy + z * sy;
+                const z1 = -x * sy + z * cy;
+                // Rotate around X
+                const cx = Math.cos(angleX), sx = Math.sin(angleX);
+                const y1 = y * cx - z1 * sx;
+                const z2 = y * sx + z1 * cx;
+                // Perspective
+                const d = 5;
+                const s = d / (d + z2);
+                return {
+                    sx: x1 * s * scale + displayW / 2,
+                    sy: -y1 * s * scale + displayH / 2,
+                    z: z2,
+                    s: s
+                };
+            }
+
+            function draw() {
+                ctx.save();
+                ctx.scale(dpr, dpr);
+                ctx.clearRect(0, 0, displayW, displayH);
+
+                // Project all lines
+                const projected = lines.map(line =>
+                    line.map(pt => project(pt.x, pt.y, pt.z))
+                );
+
+                // Sort by average depth (painter's algorithm)
+                projected.sort((a, b) => {
+                    const az = a.reduce((s, p) => s + p.z, 0) / a.length;
+                    const bz = b.reduce((s, p) => s + p.z, 0) / b.length;
+                    return az - bz; // draw far first
+                });
+
+                // Draw each polyline
+                projected.forEach(pts => {
+                    ctx.beginPath();
+                    pts.forEach((p, i) => {
+                        if (i === 0) ctx.moveTo(p.sx, p.sy);
+                        else ctx.lineTo(p.sx, p.sy);
+                    });
+                    // Depth-based alpha
+                    const avgZ = pts.reduce((s, p) => s + p.z, 0) / pts.length;
+                    const alpha = Math.max(0.15, Math.min(1, 0.55 - avgZ * 0.15));
+                    ctx.strokeStyle = `rgba(${cr},${cg},${cb},${alpha.toFixed(2)})`;
+                    ctx.lineWidth = 1.2;
+                    ctx.stroke();
+                });
+
+                ctx.restore();
+
+                if (autoRotate) angleY += 0.006;
+                requestAnimationFrame(draw);
+            }
+
+            // Mouse interaction
+            canvas.addEventListener('mousedown', e => {
+                dragging = true;
+                autoRotate = false;
+                lastMouse = { x: e.clientX, y: e.clientY };
+            });
+            window.addEventListener('mousemove', e => {
+                if (!dragging) return;
+                angleY += (e.clientX - lastMouse.x) * 0.008;
+                angleX += (e.clientY - lastMouse.y) * 0.008;
+                angleX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, angleX));
+                lastMouse = { x: e.clientX, y: e.clientY };
+            });
+            window.addEventListener('mouseup', () => { dragging = false; });
+            canvas.addEventListener('mouseleave', () => { if (!dragging) autoRotate = !reducedMotion; });
+
+            // Touch interaction
+            canvas.addEventListener('touchstart', e => {
+                dragging = true;
+                autoRotate = false;
+                lastMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            }, { passive: true });
+            canvas.addEventListener('touchmove', e => {
+                if (!dragging) return;
+                e.preventDefault();
+                angleY += (e.touches[0].clientX - lastMouse.x) * 0.008;
+                angleX += (e.touches[0].clientY - lastMouse.y) * 0.008;
+                angleX = Math.max(-Math.PI / 2, Math.min(Math.PI / 2, angleX));
+                lastMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+            }, { passive: false });
+            canvas.addEventListener('touchend', () => { dragging = false; autoRotate = !reducedMotion; });
+
+            draw();
+        }
+
+        /* ============================================
+           3D SURFACE DEFINITIONS
+           ============================================ */
+
+        // Sphere: x^2 + y^2 + z^2 = 1
+        function sphereLines(R) {
+            const lines = [];
+            const numPts = 64;
+            // Latitude circles
+            for (let i = 0; i <= 6; i++) {
+                const phi = (i / 6 - 0.5) * Math.PI;
+                const r = R * Math.cos(phi);
+                const y = R * Math.sin(phi);
+                const pts = [];
+                for (let j = 0; j <= numPts; j++) {
+                    const theta = (j / numPts) * 2 * Math.PI;
+                    pts.push({ x: r * Math.cos(theta), y: y, z: r * Math.sin(theta) });
+                }
+                lines.push(pts);
+            }
+            // Longitude half-circles
+            for (let i = 0; i < 12; i++) {
+                const theta = (i / 12) * Math.PI;
+                const pts = [];
+                for (let j = 0; j <= numPts; j++) {
+                    const phi = (j / numPts) * 2 * Math.PI;
+                    pts.push({
+                        x: R * Math.cos(phi) * Math.cos(theta),
+                        y: R * Math.sin(phi),
+                        z: R * Math.cos(phi) * Math.sin(theta)
+                    });
+                }
+                lines.push(pts);
+            }
+            return lines;
+        }
+
+        // Hyperboloid: x^2 + y^2 - z^2 = 1
+        function hyperboloidLines() {
+            const lines = [];
+            const numPts = 64;
+            const zMax = 1.8;
+            const numZ = 8;
+            // Circles at different z
+            for (let i = 0; i <= numZ; i++) {
+                const z = (i / numZ - 0.5) * 2 * zMax;
+                const r = Math.sqrt(1 + z * z);
+                const pts = [];
+                for (let j = 0; j <= numPts; j++) {
+                    const theta = (j / numPts) * 2 * Math.PI;
+                    pts.push({ x: r * Math.cos(theta), y: z, z: r * Math.sin(theta) });
+                }
+                lines.push(pts);
+            }
+            // Longitude lines
+            for (let i = 0; i < 12; i++) {
+                const theta = (i / 12) * Math.PI;
+                const pts = [];
+                for (let j = 0; j <= numPts; j++) {
+                    const z = (j / numPts - 0.5) * 2 * zMax;
+                    const r = Math.sqrt(1 + z * z);
+                    pts.push({ x: r * Math.cos(theta), y: z, z: r * Math.sin(theta) });
+                }
+                lines.push(pts);
+            }
+            return lines;
+        }
+
+        render3DWireframe('graph-sphere', () => sphereLines(1.3), '#00FFFF', 0.35);
+        render3DWireframe('graph-hyperboloid', hyperboloidLines, '#FFD700', 0.3);
+
+        // Double cone: x^2 + y^2 = z^2  (model-y plays the role of equation-z)
+        function coneLines() {
+            const lines = [];
+            const numPts = 48;
+            const zMax = 1.8;
+            const numZ = 7;
+            for (let i = 0; i <= numZ; i++) {
+                const z = (i / numZ - 0.5) * 2 * zMax;
+                const r = Math.abs(z);
+                if (r < 0.05) continue;
+                const pts = [];
+                for (let j = 0; j <= numPts; j++) {
+                    const theta = (j / numPts) * 2 * Math.PI;
+                    pts.push({ x: r * Math.cos(theta), y: z, z: r * Math.sin(theta) });
+                }
+                lines.push(pts);
+            }
+            for (let i = 0; i < 12; i++) {
+                const theta = (i / 12) * Math.PI;
+                // top nappe
+                lines.push([
+                    { x: 0, y: 0, z: 0 },
+                    { x: zMax * Math.cos(theta), y: zMax, z: zMax * Math.sin(theta) }
+                ]);
+                // bottom nappe
+                lines.push([
+                    { x: 0, y: 0, z: 0 },
+                    { x: zMax * Math.cos(theta), y: -zMax, z: zMax * Math.sin(theta) }
+                ]);
+            }
+            return lines;
+        }
+
+        // Twisted cubic: (t, t^2, t^3) for t in [-1.3, 1.3]
+        function twistedCubicLines() {
+            const numPts = 90;
+            const tMax = 1.3;
+            const pts = [];
+            for (let j = 0; j <= numPts; j++) {
+                const t = -tMax + (j / numPts) * 2 * tMax;
+                pts.push({ x: t, y: t * t * t, z: t * t });
+            }
+            return [pts];
+        }
+
+        render3DWireframe('graph-cone', coneLines, '#FF6B00', 0.35);
+        render3DWireframe('graph-twisted', twistedCubicLines, '#00FF41', 0.3);
+
+        /* ============================================
+           KaTeX RENDERING
+           ============================================ */
+        if (typeof renderMathInElement === 'function') {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    { left: '$$', right: '$$', display: true },
+                    { left: '$', right: '$', display: false },
+                ],
+                throwOnError: false
+            });
+        }
+
+        /* ============================================
+           HANDLE RESIZE for 2D graphs
+           ============================================ */
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(() => {
+                plotImplicitCurve('graph-line', (x, y) => x + y - 1, [-2, 3], [-2, 3]);
+                plotImplicitCurve('graph-circle', (x, y) => x * x + y * y - 1, [-2, 2], [-2, 2]);
+                plotImplicitCurve('graph-parabola', (x, y) => y - x * x, [-2.5, 2.5], [-1, 6]);
+                plotImplicitCurve('graph-elliptic', (x, y) => y * y - x * x * x + x, [-2, 3], [-3, 3]);
+                plotImplicitCurve('graph-lemniscate', (x, y) => { const r2 = x*x+y*y; return r2*r2 - x*x + y*y; }, [-1.5, 1.5], [-0.8, 0.8]);
+                plotImplicitCurve('graph-cusp', (x, y) => y * y - x * x * x, [-0.5, 3], [-3, 3]);
+                plotImplicitCurve('graph-hyperbola', (x, y) => x * y - 1, [-3, 3], [-3, 3]);
+                plotImplicitCurve('graph-axes', (x, y) => x * y, [-2, 2], [-2, 2]);
+                plotImplicitCurve('graph-crossx', (x, y) => x * x - y * y, [-2, 2], [-2, 2]);
+                plotImplicitCurve('graph-threelines', (x, y) => (x * x - 1) * y, [-2, 2], [-2, 2]);
+                plotImplicitCurve('graph-node', (x, y) => y * y - x * x * (x + 1), [-1.2, 2.5], [-4, 4]);
+                plotImplicitCurve('graph-isolated', (x, y) => y * y - x * x * (x - 1), [-1.2, 2.5], [-2.5, 2.5]);
+                markPoint('graph-isolated', 0, 0, '#FF6B00', [-1.2, 2.5], [-2.5, 2.5]);
+                plotImplicitCurve('graph-concentric', (x, y) => (x * x + y * y - 1) * (x * x + y * y - 4), [-3, 3], [-3, 3]);
+            }, 300);
+        });
+
+    });
+    </script>
+</body>
+</html>
