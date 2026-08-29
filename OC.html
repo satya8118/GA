@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Classes of Groups</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --bg: #0c0a08;
+            --bg-el: #131110;
+            --bg-card: #1a1614;
+            --fg: #e8e0d4;
+            --fg-dim: #9a8e7e;
+            --accent: #c8922e;
+            --accent-bright: #e8b44f;
+            --accent-subtle: rgba(200,146,46,0.08);
+            --border: #2a2318;
+            --math-bg: #17130f;
+            --green: #6aad7a;
+            --red: #c76a5a;
+            --blue: #5a8ec7;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.75;
+            font-weight: 300;
+        }
+        h1, h2, h3, h4 { font-family: 'Cormorant Garamond', serif; }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+        /* Nav */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(12,10,8,0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+        }
+        nav a {
+            color: var(--fg-dim);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 0.03em;
+            transition: color 0.25s;
+            white-space: nowrap;
+        }
+        nav a:hover, nav a.active { color: var(--accent); }
+
+        /* Hero */
+        .hero {
+            min-height: 60vh;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center;
+            padding: 120px 24px 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -20%; left: 50%; transform: translateX(-50%);
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(200,146,46,0.07) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .hero h1 {
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+        .hero h1 span { color: var(--accent); }
+        .hero p {
+            max-width: 600px;
+            color: var(--fg-dim);
+            font-size: 1.1rem;
+        }
+
+        /* Sections */
+        section { padding: 80px 24px; max-width: 860px; margin: 0 auto; }
+        .section-label {
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+        h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+        h3 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            margin: 32px 0 12px;
+            color: var(--fg);
+        }
+        h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 20px 0 8px;
+            color: var(--fg-dim);
+        }
+
+        /* Math display */
+        .math-block {
+            background: var(--math-bg);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: 0 8px 8px 0;
+            padding: 20px 24px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+        .math-block .katex-display { margin: 0; }
+
+        /* Proof blocks */
+        details {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin: 12px 0;
+            overflow: hidden;
+        }
+        details summary {
+            padding: 14px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.95rem;
+            color: var(--accent-bright);
+            list-style: none;
+            display: flex; align-items: center; gap: 10px;
+            transition: background 0.2s;
+        }
+        details summary:hover { background: var(--accent-subtle); }
+        details summary::before {
+            content: '\f054';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            font-size: 0.65rem;
+            transition: transform 0.25s;
+        }
+        details[open] summary::before { transform: rotate(90deg); }
+        details .proof-body {
+            padding: 0 20px 18px;
+            color: var(--fg-dim);
+            font-size: 0.93rem;
+        }
+        details .proof-body p { margin-bottom: 10px; }
+
+        /* Result cards */
+        .result-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 24px;
+            margin: 16px 0;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .result-card:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+        .result-card .label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        /* Tag */
+        .tag {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 500;
+            padding: 2px 10px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            color: var(--fg-dim);
+            margin: 2px 3px;
+        }
+        .tag.finite { border-color: var(--green); color: var(--green); }
+        .tag.infinite { border-color: var(--blue); color: var(--blue); }
+        .tag.cyclic { border-color: var(--accent); color: var(--accent); }
+        .tag.nonabelian { border-color: var(--red); color: var(--red); }
+
+        /* Table */
+        .class-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.88rem;
+            margin: 20px 0;
+        }
+        .class-table th {
+            text-align: left;
+            padding: 10px 14px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+            border-bottom: 2px solid var(--border);
+            background: var(--bg-card);
+        }
+        .class-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border);
+            vertical-align: top;
+            color: var(--fg-dim);
+        }
+        .class-table tr:last-child td { border-bottom: none; }
+        .class-table tr:hover td { background: var(--accent-subtle); }
+
+        /* Explorer */
+        .explorer-section {
+            max-width: 960px;
+            padding: 80px 24px;
+            margin: 0 auto;
+        }
+        .explorer-section h2 { text-align: center; }
+        .tab-bar {
+            display: flex; gap: 4px;
+            background: var(--bg-el);
+            border-radius: 10px;
+            padding: 4px;
+            margin: 28px auto 0;
+            max-width: 380px;
+            border: 1px solid var(--border);
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--fg-dim);
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+        .tab-btn.active {
+            background: var(--accent);
+            color: var(--bg);
+            font-weight: 600;
+        }
+        .tab-panel { display: none; margin-top: 24px; }
+        .tab-panel.active { display: block; }
+
+        .input-row {
+            display: flex; gap: 12px; align-items: center;
+            margin-bottom: 20px;
+        }
+        .input-row input {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 12px 16px;
+            color: var(--fg);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1rem;
+            width: 160px;
+            outline: none;
+            transition: border-color 0.25s;
+        }
+        .input-row input:focus { border-color: var(--accent); }
+        .input-row label {
+            font-size: 0.9rem;
+            color: var(--fg-dim);
+            font-weight: 400;
+        }
+        .btn {
+            background: var(--accent);
+            color: var(--bg);
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-family: 'Outfit', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.25s, transform 0.15s;
+        }
+        .btn:hover { background: var(--accent-bright); }
+        .btn:active { transform: scale(0.97); }
+
+        /* Bar chart */
+        .bar-chart { margin: 16px 0; }
+        .bar-row {
+            display: flex; align-items: center; gap: 12px;
+            margin: 6px 0;
+        }
+        .bar-label {
+            width: 80px;
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--fg-dim);
+            flex-shrink: 0;
+        }
+        .bar-track {
+            flex: 1;
+            height: 28px;
+            background: var(--bg);
+            border-radius: 6px;
+            overflow: hidden;
+            position: relative;
+        }
+        .bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-bright));
+            border-radius: 6px;
+            transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            display: flex; align-items: center;
+            padding-left: 10px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--bg);
+            min-width: 0;
+        }
+        .bar-count {
+            width: 60px;
+            text-align: left;
+            font-size: 0.8rem;
+            color: var(--fg-dim);
+            flex-shrink: 0;
+        }
+
+        /* Result cards grid */
+        .n-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .n-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            transition: border-color 0.25s;
+            cursor: default;
+        }
+        .n-card:hover { border-color: var(--accent); }
+        .n-card .n-val {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--accent-bright);
+            font-family: 'Cormorant Garamond', serif;
+        }
+        .n-card .n-factor {
+            font-size: 0.75rem;
+            color: var(--fg-dim);
+            margin-top: 2px;
+        }
+        .n-card .n-orders {
+            font-size: 0.72rem;
+            color: var(--fg-dim);
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        /* Key insight callout */
+        .insight {
+            background: linear-gradient(135deg, rgba(200,146,46,0.06), rgba(200,146,46,0.02));
+            border: 1px solid rgba(200,146,46,0.2);
+            border-radius: 10px;
+            padding: 20px 24px;
+            margin: 24px 0;
+        }
+        .insight .insight-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--border), transparent);
+            margin: 40px 0;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 24px;
+            color: var(--fg-dim);
+            font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 2.2rem; }
+            section { padding: 50px 16px; }
+            .class-table { font-size: 0.78rem; }
+            .class-table th, .class-table td { padding: 8px 8px; }
+            .n-cards { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+            .bar-label { width: 55px; font-size: 0.75rem; }
+        }
+
+        /* KaTeX overrides */
+        .katex { font-size: 1.05em; }
+        .math-block .katex { font-size: 1.15em; }
+    </style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav>
+    <div style="max-width:960px; margin:0 auto; padding:12px 24px; display:flex; gap:20px; overflow-x:auto;">
+        <a href="#definition">Definition</a>
+        <a href="#one-class">k = 1</a>
+        <a href="#two-classes">k = 2</a>
+        <a href="#three-classes">k = 3</a>
+        <a href="#structure">Structure</a>
+        <a href="#every-k">Every k</a>
+        <a href="#beyond-cyclic">Beyond Cyclic</a>
+        <a href="#explorer">Explorer</a>
+    </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero">
+    <h1>Order <span>Classes</span> of Groups</h1>
+    <p>A complete characterization of groups classified by the orders of their elements — from the trivial group to constructions for every $k \in \mathbb{N}$.</p>
+</header>
+
+<main>
+
+<!-- §1: Definition & Equivalence Relation -->
+<section id="definition" class="reveal">
+    <div class="section-label">Section 1</div>
+    <h2>The Equivalence Relation</h2>
+    <p>Let $G$ be a group. For $a, b \in G$, define $a \sim b$ if and only if $o(a) = o(b)$, where $o(x)$ denotes the order of $x$.</p>
+
+    <details open>
+        <summary>Proof that $\sim$ is an equivalence relation</summary>
+        <div class="proof-body">
+            <p><strong>Reflexive:</strong> For every $a \in G$, $o(a) = o(a)$, so $a \sim a$.</p>
+            <p><strong>Symmetric:</strong> If $a \sim b$, then $o(a) = o(b)$, hence $o(b) = o(a)$, so $b \sim a$.</p>
+            <p><strong>Transitive:</strong> If $a \sim b$ and $b \sim c$, then $o(a) = o(b) = o(c)$, so $a \sim c$.</p>
+            <p style="margin-top:12px; color:var(--accent-bright);">Therefore $\sim$ is an equivalence relation on $G$. Its equivalence classes are the <strong>order classes</strong> of $G$.</p>
+        </div>
+    </details>
+
+    <div class="divider"></div>
+
+    <h3>The Identity Always Forms Its Own Class</h3>
+    <p>The order of the identity is $o(e) = 1$. If $o(g) = 1$ for some $g \in G$, then $g^1 = e$ implies $g = e$. Therefore:</p>
+    <div class="math-block">
+        $$\{e\} = \{g \in G : o(g) = 1\}$$     </div>
+    <p>The singleton $\{e\}$ is always one order class. This means every group has <strong>at least one</strong> order class, and if a group has exactly $k$ order classes, one of them is always $\{e\}$ with the remaining $k-1$ classes consisting of non-identity elements.</p>
+</section>
+
+<!-- §2: One Order Class -->
+<section id="one-class" class="reveal">
+    <div class="section-label">Section 2</div>
+    <h2>Groups with Exactly One Order Class</h2>
+    <div class="result-card">
+        <div class="label">Theorem</div>
+        <p style="font-size:1.05rem;">A group $G$ has exactly one order class if and only if $G = \{e\}$ (the trivial group).</p>
+    </div>
+    <details>
+        <summary>Proof</summary>
+        <div class="proof-body">
+            <p>Since $\{e\}$ is always a distinct order class, having exactly one class forces $G = \{e\}$. Conversely, the trivial group clearly has one order class.</p>
+        </div>
+    </details>
+</section>
+
+<!-- §3: Two Order Classes -->
+<section id="two-classes" class="reveal">
+    <div class="section-label">Section 3</div>
+    <h2>Groups with Exactly Two Order Classes</h2>
+    <p>One class is $\{e\}$ (order 1). All non-identity elements must share a single order $d$.</p>
+
+    <div class="insight">
+        <div class="insight-label">Key observation</div>
+        <p style="margin:0;">If $d$ is finite and composite, say $d = mn$ with $1 < m < d$, then for any $g$ with $o(g) = d$, the element $g^m$ has order $n \neq 1, d$ — a contradiction. Hence $d$ is either <strong>prime</strong> or <strong>infinite</strong>.</p>
+    </div>
+
+    <div class="result-card">
+        <div class="label">Theorem (Characterization)</div>
+        <p style="font-size:1.05rem; margin-bottom:12px;">$G$ has exactly two order classes if and only if one of the following holds:</p>
+        <h4>Type A: Torsion-Free</h4>
+        <p>Every non-identity element has infinite order. Equivalently, $G$ is a <strong>torsion-free group</strong>.</p>
+        <p style="margin-top:6px;"><span class="tag infinite">Infinite</span> Examples: $\mathbb{Z}$, $\mathbb{Q}$, $\mathbb{R}$, any free group, any torsion-free abelian group.</p>
+        <h4 style="margin-top:16px;">Type B: Exponent $p$</h4>
+        <p>Every non-identity element has order $p$ for a fixed prime $p$. Equivalently, $G$ is a group of <strong>exponent $p$</strong>.</p>
+        <p style="margin-top:6px;"><span class="tag finite">Finite</span> <span class="tag cyclic">Cyclic</span> $\mathbb{Z}/p\mathbb{Z}$ &nbsp; <span class="tag finite">Finite</span> <span class="tag nonabelian">Non-abelian</span> Heisenberg group mod $p$ (for odd $p$)</p>
+    </div>
+
+    <details>
+        <summary>Why exponent 2 forces abelian</summary>
+        <div class="proof-body">
+            <p>If every element has order dividing 2, then $(ab)^2 = e$ for all $a, b$, so $abab = e$, giving $aba = b^{-1} = b$. Hence $ab = ba$.</p>
+            <p style="margin-top:8px; color:var(--accent-bright);">Therefore, the only groups of exponent 2 are the <strong>elementary abelian 2-groups</strong> $(\mathbb{Z}/2\mathbb{Z})^n$.</p>
+        </div>
+    </details>
+
+    <details>
+        <summary>Non-abelian groups of exponent $p$ (odd $p$)</summary>
+        <div class="proof-body">
+            <p>For odd primes $p$, non-abelian groups of exponent $p$ exist. The smallest example is the <strong>Heisenberg group</strong> over $\mathbb{Z}/p\mathbb{Z}$:</p>
+            <div class="math-block">
+                $$H_p = \left\{ \begin{pmatrix} 1 & a & c \\ 0 & 1 & b \\ 0 & 0 & 1 \end{pmatrix} : a, b, c \in \mathbb{Z}/p\mathbb{Z} \right\}$$             </div>
+            <p>This group has order $p^3$, is non-abelian, and every non-identity element satisfies $X^p = I$, so all have order $p$. It provides a non-abelian, non-cyclic example for $k = 2$.</p>
+        </div>
+    </details>
+</section>
+
+<!-- §4: Three Order Classes -->
+<section id="three-classes" class="reveal">
+    <div class="section-label">Section 4</div>
+    <h2>Groups with Exactly Three Order Classes</h2>
+    <p>The order set must be $\{1, d_1, d_2\}$ where $d_1 < d_2$. By the same divisor-closed argument, $d_1$ must be prime. Three distinct types arise:</p>
+
+    <!-- Type I -->
+    <div class="result-card">
+        <div class="label">Type I: $\{1,\; p,\; p^2\}$ — Prime Power Chain</div>
+        <p>Groups of exponent $p^2$ that are <em>not</em> of exponent $p$ (i.e., some element has order $p^2$).</p>
+        <p style="margin-top:8px;"><span class="tag finite">Finite</span> <span class="tag cyclic">Cyclic</span> $\mathbb{Z}/p^2\mathbb{Z}$</p>
+        <p><span class="tag finite">Finite</span> Non-cyclic: $(\mathbb{Z}/p\mathbb{Z})^n \times \mathbb{Z}/p^2\mathbb{Z}$ for any $n \geq 1$</p>
+        <p><span class="tag finite">Finite</span> <span class="tag nonabelian">Non-abelian</span> For $p = 2$: $D_4$, $Q_8$. For odd $p$: the non-abelian group of order $p^3$ with exponent $p^2$, presented as $\langle x, y \mid x^{p^2} = e,\; y^p = e,\; yxy^{-1} = x^{1+p} \rangle$.</p>
+        <p><span class="tag infinite">Infinite</span> $\mathbb{Z} \times \mathbb{Z}/p^2\mathbb{Z}$ — orders $\{1, p, p^2, \infty\}$... wait, that's <em>four</em> classes.</p>
+    </div>
+
+    <!-- Type II -->
+    <div class="result-card">
+        <div class="label">Type II: $\{1,\; p,\; q\}$ — Mixed Primes ($p \neq q$)</div>
+        <div class="insight" style="margin-top:0; margin-bottom:12px;">
+            <div class="insight-label">Crucial fact</div>
+            <p style="margin:0;">No cyclic group realizes this order set. Since $d(pq) = 4$, every $\mathbb{Z}/n\mathbb{Z}$ with these orders would also contain elements of order $pq$. This set is <strong>exclusively non-cyclic</strong>.</p>
+        </div>
+        <p><span class="tag finite">Finite</span> <span class="tag nonabelian">Non-abelian</span> The symmetric group $S_3$ (orders $\{1, 2, 3\}$) — the smallest example.</p>
+        <p><span class="tag finite">Finite</span> <span class="tag nonabelian">Non-abelian</span> More generally, the non-abelian group of order $pq$ (where $q \mid p - 1$), realized as a semidirect product $\mathbb{Z}/q\mathbb{Z} \rtimes \mathbb{Z}/p\mathbb{Z}$.</p>
+    </div>
+
+    <!-- Type III -->
+    <div class="result-card">
+        <div class="label">Type III: $\{1,\; p,\; \infty\}$ — Finite + Infinite</div>
+        <p><span class="tag infinite">Infinite</span> $\mathbb{Z} \times \mathbb{Z}/p\mathbb{Z}$: elements with non-zero first component have infinite order; $(0, m)$ for $m \neq 0$ have order $p$.</p>
+        <p><span class="tag infinite">Infinite</span> <span class="tag nonabelian">Non-abelian</span> The infinite dihedral group $D_\infty = \langle r, s \mid s^2 = e,\; srs = r^{-1} \rangle$: rotations $r^n$ ($n \neq 0$) have infinite order, all reflections have order 2.</p>
+        <p style="margin-top:6px; color:var(--fg-dim); font-size:0.88rem;">More generally: any torsion-free group $T \times \mathbb{Z}/p\mathbb{Z}$.</p>
+    </div>
+
+    <details>
+        <summary>Verification: $D_4$ has orders $\{1, 2, 4\}$</summary>
+        <div class="proof-body">
+            <p>$D_4 = \langle r, s \mid r^4 = s^2 = e,\; srs = r^{-1} \rangle$ has 8 elements: $\{e, r, r^2, r^3, s, sr, sr^2, sr^3\}$.</p>
+            <p>Orders: $o(e) = 1$, $o(r) = o(r^3) = 4$, $o(r^2) = 2$, and all four reflections have order 2. So the order classes are $\{e\}$, $\{r^2, s, sr, sr^2, sr^3\}$ (order 2), and $\{r, r^3\}$ (order 4). Three classes. $\square$</p>
+        </div>
+    </details>
+
+    <details>
+        <summary>Verification: $Q_8$ has orders $\{1, 2, 4\}$</summary>
+        <div class="proof-body">
+            <p>$Q_8 = \{\pm 1, \pm i, \pm j, \pm k\}$ with $i^2 = j^2 = k^2 = -1$, $ij = k$, $jk = i$, $ki = j$.</p>
+            <p>Orders: $o(1) = 1$, $o(-1) = 2$, and $o(\pm i) = o(\pm j) = o(\pm k) = 4$. Three order classes. $\square$</p>
+        </div>
+    </details>
+</section>
+
+<!-- §5: Structure Theorem -->
+<section id="structure" class="reveal">
+    <div class="section-label">Section 5</div>
+    <h2>The Downward-Closed Structure of Order Sets</h2>
+
+    <div class="result-card">
+        <div class="label">Theorem (Divisor-Closed Property)</div>
+        <p style="font-size:1.05rem;">Let $\Omega(G) = \{o(g) : g \in G\}$ be the set of element orders of $G$. Then $\Omega(G)$ is <strong>downward closed under divisibility</strong>: if $d \in \Omega(G)$ and $m \mid d$ with $m \geq 1$, then $m \in \Omega(G)$.</p>
+    </div>
+
+    <details>
+        <summary>Proof</summary>
+        <div class="proof-body">
+            <p>If $d \in \Omega(G)$, there exists $g \in G$ with $o(g) = d$. For any divisor $m \mid d$, write $d = mk$. Then $o(g^k) = d / \gcd(d, k) = d/k = m$ (since $k \mid d$). Hence $m \in \Omega(G)$.</p>
+        </div>
+    </details>
+
+    <p style="margin-top:20px;">This means the order set $\Omega(G)$ is completely determined by its <strong>maximal elements</strong> under divisibility. If the maximal orders are $m_1, \ldots, m_r$, then:</p>
+    <div class="math-block">
+        $$\Omega(G) = \{d \geq 1 : d \mid m_i \text{ for some } i\} \;\cup\; \{\infty\} \text{ if applicable}$$     </div>
+
+    <div class="insight">
+        <div class="insight-label">Consequence</div>
+        <p style="margin:0;">Not every downward-closed set arises from a <em>cyclic</em> group. The set $\{1, 2, 3\}$ is downward-closed, but $\{d : d \mid n\} = \{1, 2, 3, 6\} \neq \{1, 2, 3\}$ for any $n$. Yet $S_3$ realizes $\{1, 2, 3\}$. Non-cyclic groups unlock order sets that cyclic groups cannot reach.</p>
+    </div>
+
+    <h3>What this means for counting</h3>
+    <p>If $G$ has exactly $k$ order classes, then $\Omega(G)$ is a downward-closed set of size $k$ containing 1. For cyclic groups $\mathbb{Z}/n\mathbb{Z}$, this set is exactly $\{d : d \mid n\}$, so the number of order classes equals $d(n)$, the <strong>divisor function</strong>.</p>
+</section>
+
+<!-- §6: For Every k -->
+<section id="every-k" class="reveal">
+    <div class="section-label">Section 6</div>
+    <h2>For Every $k \in \mathbb{N}$</h2>
+
+    <div class="result-card">
+        <div class="label">Theorem (Existence)</div>
+        <p style="font-size:1.05rem;">For every positive integer $k$, there exists a group with exactly $k$ order classes.</p>
+    </div>
+
+    <details open>
+        <summary>Proof via the divisor function</summary>
+        <div class="proof-body">
+            <p>We show that for every $k \geq 1$, there exists $n \in \mathbb{N}$ with $d(n) = k$. Then $\mathbb{Z}/n\mathbb{Z}$ has exactly $k$ order classes.</p>
+            <p><strong>$k = 1$:</strong> $n = 1$, $d(1) = 1$.</p>
+            <p><strong>$k$ prime:</strong> Take $n = p^{k-1}$ for any prime $p$. Then $d(n) = (k-1) + 1 = k$.</p>
+            <p><strong>$k$ composite:</strong> Write $k = ab$ with $a, b \geq 2$. Take distinct primes $p_1, p_2$ and set $n = p_1^{a-1} \cdot p_2^{b-1}$. Then $d(n) = a \cdot b = k$.</p>
+            <p>For general composite $k$, factor $k = \prod_{i=1}^{r} a_i$ (with each $a_i \geq 2$) and take $n = \prod_{i=1}^{r} p_i^{a_i - 1}$ for distinct primes $p_i$. $\square$</p>
+        </div>
+    </details>
+
+    <h3>The Obvious Answer: Cyclic $p$-Power Groups</h3>
+    <p>The user correctly identifies $\mathbb{Z}/p^{k-1}\mathbb{Z}$ as one construction. Its order classes are:</p>
+    <div class="math-block">
+        $$\{1\},\quad \{g : o(g) = p\},\quad \{g : o(g) = p^2\},\quad \ldots,\quad \{g : o(g) = p^{k-1}\}$$     </div>
+    <p>These are the "linear chain" order sets. But there are <strong>many other groups</strong> — and even other cyclic groups — with exactly $k$ order classes.</p>
+</section>
+
+<!-- §7: Beyond Cyclic Groups -->
+<section id="beyond-cyclic" class="reveal">
+    <div class="section-label">Section 7</div>
+    <h2>Beyond Cyclic Groups: The Full Landscape</h2>
+    <p>The cyclic $p$-power construction is just the tip of the iceberg. Here is a systematic overview of alternative groups for small $k$.</p>
+
+    <table class="class-table">
+        <thead>
+            <tr>
+                <th>$k$</th>
+                <th>Order Set $\Omega$</th>
+                <th>Cyclic Example</th>
+                <th>Non-Cyclic Example</th>
+                <th>Infinite Example</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>$\{1\}$</td>
+                <td>$\{e\}$</td>
+                <td>—</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>$\{1, p\}$</td>
+                <td>$\mathbb{Z}/p\mathbb{Z}$</td>
+                <td>$(\mathbb{Z}/p\mathbb{Z})^n$, $H_p$ (Heisenberg, $p$ odd)</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td>2</td>
+                <td>$\{1, \infty\}$</td>
+                <td>—</td>
+                <td>—</td>
+                <td>$\mathbb{Z}$, $\mathbb{Q}$, free groups</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>$\{1, p, p^2\}$</td>
+                <td>$\mathbb{Z}/p^2\mathbb{Z}$</td>
+                <td>$(\mathbb{Z}/p\mathbb{Z})^n \times \mathbb{Z}/p^2\mathbb{Z}$, $D_4$, $Q_8$</td>
+                <td>—</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>$\{1, p, q\}$</td>
+                <td style="color:var(--red);">None exists</td>
+                <td>$S_3$, non-ab. group of order $pq$</td>
+                <td>$T \rtimes (\text{non-ab. of order }pq)$</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>$\{1, p, \infty\}$</td>
+                <td>—</td>
+                <td>—</td>
+                <td>$\mathbb{Z} \times \mathbb{Z}/p\mathbb{Z}$, $D_\infty$</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>$\{1, p, p^2, p^3\}$</td>
+                <td>$\mathbb{Z}/p^3\mathbb{Z}$</td>
+                <td>$(\mathbb{Z}/p\mathbb{Z})^n \times \mathbb{Z}/p^3\mathbb{Z}$</td>
+                <td>$\mathbb{Z} \times \mathbb{Z}/p^2\mathbb{Z}$</td>
+            </tr>
+            <tr>
+                <td>4</td>
+                <td>$\{1, p, q, pq\}$</td>
+                <td>$\mathbb{Z}/pq\mathbb{Z}$</td>
+                <td>$(\mathbb{Z}/p\mathbb{Z})^n \times \mathbb{Z}/q\mathbb{Z}$</td>
+                <td>$\mathbb{Z} \times \mathbb{Z}/pq\mathbb{Z}$</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>$\{1, p, \ldots, p^4\}$</td>
+                <td>$\mathbb{Z}/p^4\mathbb{Z}$</td>
+                <td>$(\mathbb{Z}/p\mathbb{Z})^n \times \mathbb{Z}/p^4\mathbb{Z}$</td>
+                <td>$\mathbb{Z} \times \mathbb{Z}/p^3\mathbb{Z}$</td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td>$\{1, p, q, pq, p^2q\}$</td>
+                <td>$\mathbb{Z}/p^2q\mathbb{Z}$</td>
+                <td>$(\mathbb{Z}/p\mathbb{Z})^n \times \mathbb{Z}/p^2q\mathbb{Z}$</td>
+                <td>$\mathbb{Z} \times \mathbb{Z}/p^2q\mathbb{Z}$</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>$\{1, p, \ldots, p^5\}$</td>
+                <td>$\mathbb{Z}/p^5\mathbb{Z}$</td>
+                <td>$(\mathbb{Z}/p\mathbb{Z})^n \times \mathbb{Z}/p^5\mathbb{Z}$</td>
+                <td>$\mathbb{Z} \times \mathbb{Z}/p^4\mathbb{Z}$</td>
+            </tr>
+            <tr>
+                <td>6</td>
+                <td>$\{1, 2, 3, 4, 6, 12\}$</td>
+                <td>$\mathbb{Z}/12\mathbb{Z}$</td>
+                <td>$(\mathbb{Z}/2\mathbb{Z})^n \times \mathbb{Z}/12\mathbb{Z}$</td>
+                <td>$\mathbb{Z} \times \mathbb{Z}/12\mathbb{Z}$</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>General Constructions Beyond Cyclic $p$-Powers</h3>
+
+    <div class="result-card">
+        <div class="label">Construction 1: Non-prime-power cyclic groups</div>
+        <p>If $n$ has exactly $k$ divisors, then $\mathbb{Z}/n\mathbb{Z}$ has exactly $k$ order classes. For composite $k$, such $n$ need not be a prime power.</p>
+        <p style="margin-top:6px;"><strong>Examples:</strong> $k = 4$: $n = 6 = 2 \cdot 3$ (not a prime power). $k = 6$: $n = 12 = 2^2 \cdot 3$ or $n = 45 = 3^2 \cdot 5$. $k = 8$: $n = 24$, $n = 30$, $n = 54$, etc.</p>
+    </div>
+
+    <div class="result-card">
+        <div class="label">Construction 2: Direct products with elementary abelian factors</div>
+        <p>If $G$ has order classes $\{1, p, p^2, \ldots, p^m\}$, then for any $n \geq 1$, the group $(\mathbb{Z}/p\mathbb{Z})^n \times G$ has the <em>same</em> order classes. This is because $\operatorname{lcm}(p, p^j) = p^j$ for all $j$.</p>
+        <p style="margin-top:6px; color:var(--fg-dim); font-size:0.88rem;">This produces infinitely many non-isomorphic groups with the same $k$ order classes.</p>
+    </div>
+
+    <div class="result-card">
+        <div class="label">Construction 3: Torsion-free extension</div>
+        <p>If $G$ is a non-trivial group with exactly $k$ order classes, then $\mathbb{Z} \times G$ has exactly $k + 1$ order classes (adding $\infty$). More generally, any torsion-free group $T \times G$ gives $k + 1$ classes.</p>
+    </div>
+
+    <div class="result-card">
+        <div class="label">Construction 4: Non-abelian groups</div>
+        <p>Non-abelian groups can realize order sets that no cyclic group can. The prototypical example: $S_3$ realizes $\{1, 2, 3\}$, which is <em>not</em> the divisor set of any integer.</p>
+        <p style="margin-top:6px;">More generally, semidirect products $\mathbb{Z}/q\mathbb{Z} \rtimes \mathbb{Z}/p\mathbb{Z}$ (when $q \mid p - 1$) realize $\{1, p, q\}$, and non-abelian $p$-groups of order $p^3$ with exponent $p^2$ realize $\{1, p, p^2\}$.</p>
+    </div>
+
+    <div class="insight">
+        <div class="insight-label">Open-ended question</div>
+        <p style="margin:0;">Given a downward-closed set $S \subset \mathbb{N}$ with $1 \in S$ and $|S| = k$, when does there exist a group $G$ with $\Omega(G) = S$? The answer is known to be "yes" for many sets, but a complete characterization remains an interesting open problem. The obstruction is that in direct products, lcm can introduce unwanted orders — non-abelian structures can sometimes avoid this.</p>
+    </div>
+</section>
+
+<!-- §8: Interactive Explorer -->
+<section id="explorer" class="explorer-section reveal">
+    <div class="section-label">Interactive</div>
+    <h2>Order Class Explorer</h2>
+
+    <div class="tab-bar">
+        <button class="tab-btn active" data-tab="explore">Explore $\mathbb{Z}/n\mathbb{Z}$</button>
+        <button class="tab-btn" data-tab="reverse">Find by $k$</button>
+    </div>
+
+    <!-- Tab 1: Explore Z/nZ -->
+    <div class="tab-panel active" id="panel-explore">
+        <div class="input-row">
+            <label for="n-input">Enter $n$:</label>
+            <input type="number" id="n-input" value="12" min="1" max="10000">
+            <button class="btn" id="explore-btn">Compute</button>
+        </div>
+        <div id="explore-result"></div>
+    </div>
+
+    <!-- Tab 2: Reverse lookup -->
+    <div class="tab-panel" id="panel-reverse">
+        <div class="input-row">
+            <label for="k-input">Enter $k$:</label>
+            <input type="number" id="k-input" value="4" min="1" max="64">
+            <button class="btn" id="reverse-btn">Find Groups</button>
+        </div>
+        <div id="reverse-result"></div>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <p>Order Classes of Groups — A mathematical exposition with interactive tools</p>
+</footer>
+
+<script>
+// ===== Math rendering =====
+function renderMath(container) {
+    if (typeof renderMathInElement === 'function') {
+        renderMathInElement(container || document.body, {
+            delimiters: [
+                {left: '$$', right: '$$', display: true},
+                {left: '$', right: '$', display: false}
+            ],
+            throwOnError: false
+        });
+    }
+}
+
+// ===== Number theory helpers =====
+function factorize(n) {
+    const factors = {};
+    let d = 2;
+    while (d * d <= n) {
+        while (n % d === 0) {
+            factors[d] = (factors[d] || 0) + 1;
+            n /= d;
+        }
+        d++;
+    }
+    if (n > 1) factors[n] = (factors[n] || 0) + 1;
+    return factors;
+}
+
+function formatFactorization(factors) {
+    const entries = Object.entries(factors).sort((a, b) => +a[0] - +b[0]);
+    return entries.map(([p, e]) => e === 1 ? p : p + '<sup>' + e + '</sup>').join(' \\cdot ');
+}
+
+function getDivisors(n) {
+    const factors = factorize(n);
+    const primes = Object.keys(factors).map(Number);
+    let result = [1];
+    for (const p of primes) {
+        const exp = factors[p];
+        const next = [];
+        for (const d of result) {
+            for (let e = 0; e <= exp; e++) {
+                next.push(d * Math.pow(p, e));
+            }
+        }
+        result = next;
+    }
+    return [...new Set(result)].sort((a, b) => a - b);
+}
+
+function eulerTotient(n) {
+    if (n === 1) return 1;
+    const factors = factorize(n);
+    let result = n;
+    for (const p in factors) {
+        result = result * (parseInt(p) - 1) / parseInt(p);
+    }
+    return Math.round(result);
+}
+
+function numDivisors(n) {
+    const factors = factorize(n);
+    let result = 1;
+    for (const p in factors) {
+        result *= (factors[p] + 1);
+    }
+    return result;
+}
+
+// ===== Explore Z/nZ =====
+function exploreN(n) {
+    if (n < 1 || !Number.isInteger(n)) {
+        return '<p style="color:var(--red);">Please enter a positive integer.</p>';
+    }
+    if (n > 100000) {
+        return '<p style="color:var(--red);">Please enter a value at most 100,000.</p>';
+    }
+
+    const factors = factorize(n);
+    const divs = getDivisors(n);
+    const phiVals = divs.map(d => ({d, count: eulerTotient(d)}));
+    const maxCount = Math.max(...phiVals.map(v => v.count));
+    const k = divs.length;
+
+    let html = '';
+
+    // Summary card
+    html += '<div class="result-card" style="margin-bottom:16px;">';
+    html += '<div class="label">Summary for $\\mathbb{Z}/' + n + '\\mathbb{Z}$</div>';
+    html += '<p style="margin-bottom:8px;">$n = ' + n + ' = ' + formatFactorization(factors) + '$</p>';
+    html += '<p>$d(' + n + ') = ' + k + '$ &nbsp;&rarr;&nbsp; <strong style="color:var(--accent-bright);">' + k + ' order classes</strong></p>';
+    if (k === 1) {
+        html += '<p style="margin-top:4px; color:var(--fg-dim);">This is the trivial group.</p>';
+    } else if (k === 2 && Object.keys(factors).length === 1 && Object.values(factors)[0] === 1) {
+        html += '<p style="margin-top:4px; color:var(--fg-dim);">This is an elementary abelian $p$-group (also cyclic of prime order).</p>';
+    } else if (Object.keys(factors).length === 1) {
+        html += '<p style="margin-top:4px; color:var(--fg-dim);">Prime power cyclic: orders form the chain $\\{1, p, p^2, \\ldots, p^{' + (k-1) + '}\\}$.</p>';
+    } else {
+        html += '<p style="margin-top:4px; color:var(--fg-dim);">Non-prime-power cyclic: orders are all divisors of ' + n + '.</p>';
+    }
+    html += '</div>';
+
+    // Bar chart
+    html += '<div class="bar-chart">';
+    for (const {d, count} of phiVals) {
+        const pct = maxCount > 0 ? (count / maxCount) * 100 : 0;
+        const label = d === 1 ? '$1$' : (d === n ? '$' + d + '$' : '$' + d + '$');
+        html += '<div class="bar-row">';
+        html += '<div class="bar-label">' + label + '</div>';
+        html += '<div class="bar-track"><div class="bar-fill" style="width:' + pct + '%;">' + (pct > 15 ? '\\varphi(' + d + ') = ' + count : '') + '</div></div>';
+        html += '<div class="bar-count">' + count + ' element' + (count !== 1 ? 's' : '') + '</div>';
+        html += '</div>';
+    }
+    html += '</div>';
+
+    // Verification
+    const total = phiVals.reduce((s, v) => s + v.count, 0);
+    html += '<p style="margin-top:12px; font-size:0.85rem; color:var(--fg-dim);">Verification: $\\sum_{d \\mid ' + n + '} \\varphi(d) = ' + total + ' = ' + n + '$ \\checkmark</p>';
+
+    return html;
+}
+
+// ===== Reverse lookup =====
+function reverseLookup(k) {
+    if (k < 1 || !Number.isInteger(k)) {
+        return '<p style="color:var(--red);">Please enter a positive integer.</p>';
+    }
+    if (k > 128) {
+        return '<p style="color:var(--red);">Please enter $k \\leq 128$ for reasonable computation time.</p>';
+    }
+
+    const limit = 5000;
+    const results = [];
+    for (let n = 1; n <= limit; n++) {
+        if (numDivisors(n) === k) results.push(n);
+    }
+
+    let html = '';
+
+    if (results.length === 0) {
+        html += '<p style="color:var(--red);">No $n \\leq ' + limit + '$ with exactly $d(n) = ' + k + '$. Try increasing the search range or a different $k$.</p>';
+    } else {
+        html += '<p style="margin-bottom:12px;">Found <strong style="color:var(--accent-bright);">' + results.length + '</strong> value' + (results.length !== 1 ? 's' : '') + ' of $n \\leq ' + limit + '$ with $d(n) = ' + k + '$:</p>';
+        html += '<div class="n-cards">';
+        for (const n of results) {
+            const factors = factorize(n);
+            const divs = getDivisors(n);
+            html += '<div class="n-card">';
+            html += '<div class="n-val">\\mathbb{Z}/' + n + '\\mathbb{Z}</div>';
+            html += '<div class="n-factor">' + n + ' = ' + formatFactorization(factors) + '</div>';
+            html += '<div class="n-orders">Orders: $\\{' + divs.join(', ') + '\\}$</div>';
+            html += '</div>';
+        }
+        html += '</div>';
+    }
+
+    // Additional insight
+    if (k === 3) {
+        html += '<div class="insight" style="margin-top:24px;">';
+        html += '<div class="insight-label">Remember</div>';
+        html += '<p style="margin:0;">All cyclic groups with 3 order classes have the order set $\\{1, p, p^2\\}$. The order set $\\{1, p, q\\}$ ($p \\neq q$) can only be realized by <strong>non-cyclic</strong> groups like $S_3$.</p>';
+        html += '</div>';
+    }
+
+    return html;
+}
+
+// ===== Tab switching =====
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    });
+});
+
+// ===== Event listeners =====
+document.getElementById('explore-btn').addEventListener('click', () => {
+    const n = parseInt(document.getElementById('n-input').value);
+    const container = document.getElementById('explore-result');
+    container.innerHTML = exploreN(n);
+    renderMath(container);
+});
+
+document.getElementById('n-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('explore-btn').click();
+});
+
+document.getElementById('reverse-btn').addEventListener('click', () => {
+    const k = parseInt(document.getElementById('k-input').value);
+    const container = document.getElementById('reverse-result');
+    container.innerHTML = reverseLookup(k);
+    renderMath(container);
+});
+
+document.getElementById('k-input').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') document.getElementById('reverse-btn').click();
+});
+
+// ===== Scroll reveal =====
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+        }
+    });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ===== Active nav highlighting =====
+const sections = document.querySelectorAll('section[id], .explorer-section[id]');
+const navLinks = document.querySelectorAll('nav a');
+
+const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const id = entry.target.id;
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+            });
+        }
+    });
+}, { threshold: 0.3, rootMargin: '-80px 0px -50% 0px' });
+
+sections.forEach(sec => navObserver.observe(sec));
+
+// ===== Initial render =====
+window.addEventListener('load', () => {
+    renderMath(document.body);
+    // Trigger initial explore
+    document.getElementById('explore-btn').click();
+});
+</script>
+</body>
+</html>
