@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discrete Valuation Rings & Field Theory Examples</title>
+  <style>
+    /* Global Styles */
+    body {
+      background-color: #000000;
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 30px;
+      line-height: 1.6;
+    }
+
+    h1 {
+      color: #ffff00; /* Yellow */
+      border-bottom: 2px solid #ffaa00;
+      padding-bottom: 10px;
+      margin-bottom: 25px;
+    }
+
+    h2 {
+      color: #ffaa00; /* Orange */
+      margin-top: 30px;
+      border-left: 4px solid #ffff00;
+      padding-left: 10px;
+    }
+
+    h3 {
+      color: #00ffff; /* Cyan */
+      margin-top: 20px;
+    }
+
+    p, li {
+      color: #ffffff; /* White */
+      font-size: 1.05rem;
+    }
+
+    ul, ol {
+      margin-left: 20px;
+    }
+
+    /* Highlight & Accent Styles */
+    .highlight-lime {
+      color: #00ff00; /* Lime */
+      font-weight: bold;
+    }
+
+    .highlight-cyan {
+      color: #00ffff; /* Cyan */
+      font-weight: bold;
+    }
+
+    .highlight-yellow {
+      color: #ffff00; /* Yellow */
+    }
+
+    .highlight-orange {
+      color: #ffaa00; /* Orange */
+    }
+
+    /* Math Formula Block */
+    .math-block {
+      background-color: #111111;
+      border: 1px solid #333333;
+      border-left: 4px solid #00ff00; /* Lime accent */
+      padding: 15px;
+      margin: 15px 0;
+      font-family: 'Courier New', Courier, monospace;
+      color: #00ff00; /* Lime */
+      border-radius: 4px;
+    }
+
+    /* Results and Examples Cards */
+    .card {
+      background-color: #0a0a0a;
+      border: 1px solid #222222;
+      border-radius: 6px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      color: #00ffff; /* Cyan */
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+    }
+
+    /* Table Styles */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      margin-bottom: 20px;
+      background-color: #050505;
+    }
+
+    th, td {
+      border: 1px solid #333333;
+      padding: 12px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #1a1a1a;
+      color: #ffff00; /* Yellow */
+    }
+
+    td {
+      color: #ffffff; /* White */
+    }
+
+    tr:nth-child(even) {
+      background-color: #0f0f0f;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Discrete Valuation Rings (DVR) & Valuation Theory</h1>
+  <p>A comprehensive guide to discrete valuations on fields, discrete valuation rings, fundamental properties, detailed proofs, extended examples, and structural results.</p>
+
+  <!-- Section 1: Fundamental Definitions -->
+  <h2>1. Fundamental Definitions</h2>
+  <div class="card">
+    <div class="card-title">Discrete Valuation</div>
+    <p>Let <span class="highlight-cyan">K</span> be a field, and <span class="highlight-cyan">K* = K \ {0}</span>. A discrete valuation on <span class="highlight-cyan">K</span> is a function <span class="highlight-lime">v: K* → ℤ</span> satisfying the following three axioms for all <span class="highlight-cyan">a, b, x, y ∈ K*</span>:</p>
+    <ul>
+      <li><span class="highlight-yellow">Surjectivity:</span> The mapping <span class="highlight-lime">v</span> is surjective onto <span class="highlight-lime">ℤ</span>.</li>
+      <li><span class="highlight-yellow">Group Homomorphism:</span> <span class="highlight-lime">v(ab) = v(a) + v(b)</span> (a group homomorphism from <span class="highlight-cyan">(K*, ·)</span> to <span class="highlight-lime">(ℤ, +)</span>).</li>
+      <li><span class="highlight-yellow">Ultrametric Inequality:</span> <span class="highlight-lime">v(x + y) ≥ min{v(x), v(y)}</span> for all <span class="highlight-cyan">x, y ∈ K*</span> with <span class="highlight-cyan">x + y ≠ 0</span>.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Valuation Ring & Uniformizer</div>
+    <p>The <span class="highlight-orange">Valuation Ring</span> of <span class="highlight-cyan">K</span> with respect to <span class="highlight-cyan">v</span> is defined as:</p>
+    <div class="math-block">
+      R = S_{v≥0} = { a ∈ K* | v(a) ≥ 0 } ∪ {0}
+    </div>
+    <p>An integral domain <span class="highlight-cyan">R</span> is called a <span class="highlight-orange">Discrete Valuation Ring (DVR)</span> if it is the valuation ring of a discrete valuation on its field of fractions <span class="highlight-cyan">K</span>.</p>
+    <p>An element <span class="highlight-lime">t ∈ R</span> is called a <span class="highlight-orange">uniformizer</span> (or uniformizing parameter) if <span class="highlight-lime">v(t) = 1</span>.</p>
+  </div>
+
+  <!-- Section 2: Core Concrete Examples -->
+  <h2>2. Concrete Examples</h2>
+
+  <h3>Example A: The p-adic Valuation on Rational Numbers (ℚ)</h3>
+  <p>Let <span class="highlight-cyan">K = ℚ</span> and <span class="highlight-cyan">p</span> be a fixed prime number. Any non-zero rational <span class="highlight-cyan">x</span> can be written uniquely as <span class="highlight-lime">x = p<sup>α</sup> · (a / b)</span>, where <span class="highlight-cyan">a, b ∈ ℤ</span>, <span class="highlight-cyan">p ∤ a</span>, and <span class="highlight-cyan">p ∤ b</span>.</p>
+  <ul>
+    <li><span class="highlight-yellow">Valuation:</span> <span class="highlight-lime">v<sub>p</sub>(x) = α</span>. By convention, <span class="highlight-lime">v<sub>p</sub>(0) = ∞</span>.</li>
+    <li><span class="highlight-yellow">Valuation Ring:</span> The local ring <span class="highlight-lime">ℤ<sub>(p)</sub> = { a/b ∈ ℚ | p ∤ b }</span>.</li>
+    <li><span class="highlight-yellow">Uniformizer:</span> The prime element <span class="highlight-lime">t = p</span>, since <span class="highlight-lime">v<sub>p</sub>(p) = 1</span>.</li>
+  </ul>
+
+  <h3>Example B: Formal Laurent Series F((x))</h3>
+  <p>Let <span class="highlight-cyan">F((x))</span> be the field of formal Laurent series over a field <span class="highlight-cyan">F</span>:</p>
+  <div class="math-block">
+    F((x)) = { ∑_{n≥N} a<sub>n</sub>x<sup>n</sup> | a<sub>n</sub> ∈ F, N ∈ ℤ }
+  </div>
+  <ul>
+    <li><span class="highlight-yellow">Valuation:</span> <span class="highlight-lime">v(∑<sub>n≥N</sub> a<sub>n</sub>x<sup>n</sup>) = N</span> where <span class="highlight-cyan">a<sub>N</sub> ≠ 0</span>.</li>
+    <li><span class="highlight-yellow">Valuation Ring:</span> The ring of formal power series <span class="highlight-lime">F[[x]]</span>.</li>
+    <li><span class="highlight-yellow">Uniformizer:</span> The indeterminate <span class="highlight-lime">t = x</span>.</li>
+  </ul>
+
+  <h3>Example C: Rational Function Localizations K(x)<sub>(x - a)</sub></h3>
+  <p>Let <span class="highlight-cyan">K(x)</span> be the field of rational functions over a field <span class="highlight-cyan">K</span>, and let <span class="highlight-cyan">a ∈ K</span>.</p>
+  <ul>
+    <li><span class="highlight-yellow">Valuation:</span> For <span class="highlight-lime">f(x) / g(x)</span>, define <span class="highlight-lime">v<sub>a</sub>(f/g) = k</span> where <span class="highlight-cyan">(x - a)<sup>k</sup></span> is the exact power of <span class="highlight-cyan">(x - a)</span> dividing <span class="highlight-cyan">f(x)/g(x)</span>.</li>
+    <li><span class="highlight-yellow">Valuation Ring:</span> <span class="highlight-lime">O<sub>a</sub> = { f/g ∈ K(x) | g(a) ≠ 0 }</span>.</li>
+    <li><span class="highlight-yellow">Uniformizer:</span> <span class="highlight-lime">t = x - a</span>.</li>
+  </ul>
+
+  <!-- Section 3: Detailed Observations and Core Results -->
+  <h2>3. Complete Structural Results & Theorems</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Result / Theorem</th>
+        <th>Mathematical Statement & Proof Outline</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>1</td>
+        <td><span class="highlight-orange">Valuation of Identity</span></td>
+        <td><span class="highlight-lime">v(1) = 0</span>. Proof: <span class="highlight-cyan">v(a) = v(a · 1) = v(a) + v(1) ⇒ v(1) = 0</span>.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td><span class="highlight-orange">Valuation of Inverses</span></td>
+        <td><span class="highlight-lime">v(a<sup>-1</sup>) = -v(a)</span>. Proof: <span class="highlight-cyan">0 = v(1) = v(a · a<sup>-1</sup>) = v(a) + v(a<sup>-1</sup>)</span>.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td><span class="highlight-orange">Subring Property</span></td>
+        <td><span class="highlight-lime">R = S<sub>v≥0</sub></span> is a subring of <span class="highlight-cyan">K</span>. Closed under addition (<span class="highlight-cyan">v(a+b) ≥ min{v(a),v(b)} ≥ 0</span>) and multiplication (<span class="highlight-cyan">v(ab) = v(a)+v(b) ≥ 0</span>).</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td><span class="highlight-orange">Unit Characterization</span></td>
+        <td><span class="highlight-lime">a ∈ R</span> is a unit in <span class="highlight-cyan">R</span> ⇔ <span class="highlight-lime">v(a) = 0</span>. If <span class="highlight-cyan">ab = 1</span>, <span class="highlight-cyan">v(a) + v(b) = 0</span> with both <span class="highlight-cyan">≥ 0 ⇒ v(a) = 0</span>. Also <span class="highlight-lime">v(-1) = 0</span> and <span class="highlight-lime">v(-x) = v(x)</span>.</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td><span class="highlight-orange">Dichotomy Property</span></td>
+        <td>For any <span class="highlight-cyan">a ∈ K*</span>, either <span class="highlight-lime">a ∈ R</span> or <span class="highlight-lime">a<sup>-1</sup> ∈ R</span>. Since <span class="highlight-cyan">v(a) + v(a<sup>-1</sup>) = 0</span>, at least one valuation must be non-negative.</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td><span class="highlight-orange">Associates & Valuations</span></td>
+        <td><span class="highlight-lime">v(a) = v(b)</span> ⇔ <span class="highlight-lime">ab<sup>-1</sup></span> is a unit in <span class="highlight-cyan">R</span>. Proof: <span class="highlight-cyan">v(a) = v(b) ⇔ v(ab<sup>-1</sup>) = v(a) - v(b) = 0</span>.</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td><span class="highlight-orange">Equality in Ultrametric</span></td>
+        <td><span class="highlight-lime">v(x - y) = min{v(x), v(y)}</span> whenever <span class="highlight-lime">v(x) ≠ v(y)</span>. Equal valuations are the only case where strict inequality can occur.</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td><span class="highlight-orange">Ideal Classification</span></td>
+        <td>Every non-zero ideal of <span class="highlight-cyan">R</span> is of the form <span class="highlight-lime">I<sub>k</sub> = { x ∈ R | v(x) ≥ k }</span> for some integer <span class="highlight-lime">k ≥ 0</span>.</td>
+      </tr>
+      <tr>
+        <td>9</td>
+        <td><span class="highlight-orange">Principal Ideal Domain</span></td>
+        <td>Every non-zero ideal is principal: <span class="highlight-lime">I<sub>k</sub> = (t<sup>k</sup>)</span> where <span class="highlight-cyan">t</span> is a uniformizer (<span class="highlight-cyan">v(t) = 1</span>).</td>
+      </tr>
+      <tr>
+        <td>10</td>
+        <td><span class="highlight-orange">Unique Maximal Ideal</span></td>
+        <td><span class="highlight-lime">I<sub>1</sub> = (t) = { x ∈ R | v(x) ≥ 1 }</span> is the unique maximal ideal in <span class="highlight-cyan">R</span>.</td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td><span class="highlight-orange">Canonical Representation</span></td>
+        <td>Every non-zero <span class="highlight-cyan">a ∈ K</span> can be uniquely expressed as <span class="highlight-lime">a = u · t<sup>n</sup></span>, where <span class="highlight-cyan">u</span> is a unit in <span class="highlight-cyan">R</span> and <span class="highlight-cyan">n = v(a) ∈ ℤ</span>.</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td><span class="highlight-orange">Irreducible Elements</span></td>
+        <td>The uniformizer <span class="highlight-lime">t</span> is the unique irreducible element of <span class="highlight-cyan">R</span> (up to associates).</td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <td><span class="highlight-orange">Local Ring Structure</span></td>
+        <td><span class="highlight-cyan">R</span> is a local ring because the set of non-units <span class="highlight-lime">M = { x ∈ R | v(x) ≥ 1 }</span> forms a unique maximal ideal.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Section 4: Proofs & Simple Theoretical Results -->
+  <h2>4. Mathematical Proofs & Simple Results</h2>
+
+  <div class="card">
+    <div class="card-title">Theorem: Ideals of a DVR Form a Totally Ordered Set under Inclusion</div>
+    <p><strong>Statement:</strong> Let <span class="highlight-cyan">R</span> be a DVR. The set of all ideals of <span class="highlight-cyan">R</span> is totally ordered by inclusion:</p>
+    <div class="math-block">
+      (0) ⊂ ... ⊂ (t<sup>n+1</sup>) ⊂ (t<sup>n</sup>) ⊂ ... ⊂ (t<sup>2</sup>) ⊂ (t) ⊂ R
+    </div>
+    <p><strong>Proof:</strong> Any non-zero ideal of <span class="highlight-cyan">R</span> is of the form <span class="highlight-lime">I<sub>k</sub> = (t<sup>k</sup>) = { x ∈ R | v(x) ≥ k }</span> for some <span class="highlight-cyan">k ≥ 0</span>. Let <span class="highlight-cyan">I = (t<sup>m</sup>)</span> and <span class="highlight-cyan">J = (t<sup>n</sup>)</span> be two arbitrary non-zero ideals in <span class="highlight-cyan">R</span>. Since <span class="highlight-cyan">m, n ∈ ℕ ∪ {0}</span>, either <span class="highlight-lime">m ≤ n</span> or <span class="highlight-lime">n ≤ m</span>.</p>
+    <ul>
+      <li>If <span class="highlight-cyan">m ≤ n</span>, then <span class="highlight-lime">v(x) ≥ n ⇒ v(x) ≥ m</span>, so <span class="highlight-lime">(t<sup>n</sup>) ⊆ (t<sup>m</sup>)</span> (i.e., <span class="highlight-lime">J ⊆ I</span>).</li>
+      <li>If <span class="highlight-cyan">n ≤ m</span>, then symmetrically <span class="highlight-lime">(t<sup>m</sup>) ⊆ (t<sup>n</sup>)</span> (i.e., <span class="highlight-lime">I ⊆ J</span>).</li>
+    </ul>
+    <p>Including the zero ideal <span class="highlight-lime">(0) ⊆ I</span> for all ideals <span class="highlight-cyan">I</span>, any two ideals are comparable under inclusion. Hence, the set of ideals forms a totally ordered set. Q.E.D.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Theorem: The Set of Integers ℤ is a Subring of ℤ<sub>(p)</sub></div>
+    <p><strong>Statement:</strong> The set of integers <span class="highlight-cyan">ℤ</span> is a subring of the p-adic valuation ring <span class="highlight-lime">ℤ<sub>(p)</sub> = { a/b ∈ ℚ | p ∤ b }</span>.</p>
+    <p><strong>Proof:</strong></p>
+    <ul>
+      <li><span class="highlight-yellow">Inclusion:</span> Every integer <span class="highlight-cyan">n ∈ ℤ</span> can be written as <span class="highlight-cyan">n / 1</span>. Since <span class="highlight-cyan">p ∤ 1</span>, <span class="highlight-lime">v<sub>p</sub>(n) ≥ 0</span>. Thus <span class="highlight-lime">ℤ ⊆ ℤ<sub>(p)</sub></span>.</li>
+      <li><span class="highlight-yellow">Identity:</span> <span class="highlight-lime">1 = 1/1 ∈ ℤ<sub>(p)</sub></span> since <span class="highlight-cyan">p ∤ 1</span>.</li>
+      <li><span class="highlight-yellow">Closure under Subtraction:</span> For <span class="highlight-cyan">a, b ∈ ℤ</span>, <span class="highlight-lime">a - b ∈ ℤ ⊆ ℤ<sub>(p)</sub></span>.</li>
+      <li><span class="highlight-yellow">Closure under Multiplication:</span> For <span class="highlight-cyan">a, b ∈ ℤ</span>, <span class="highlight-lime">a · b ∈ ℤ ⊆ ℤ<sub>(p)</sub></span>.</li>
+    </ul>
+    <p>Therefore, <span class="highlight-cyan">ℤ</span> is a subring of <span class="highlight-cyan">ℤ<sub>(p)</sub></span>. Q.E.D.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Simple Result: Integral Closure of DVRs</div>
+    <p><strong>Result:</strong> Every Discrete Valuation Ring <span class="highlight-cyan">R</span> is integrally closed in its field of fractions <span class="highlight-cyan">K</span>.</p>
+    <p><strong>Proof Outline:</strong> Suppose <span class="highlight-cyan">x ∈ K</span> is integral over <span class="highlight-cyan">R</span>, so <span class="highlight-lime">x<sup>n</sup> + a<sub>n-1</sub>x<sup>n-1</sup> + ... + a<sub>0</sub> = 0</span> with <span class="highlight-cyan">a<sub>i</sub> ∈ R</span> (so <span class="highlight-cyan">v(a<sub>i</sub>) ≥ 0</span>). If <span class="highlight-cyan">v(x) < 0</span>, dividing by <span class="highlight-cyan">x<sup>n</sup></span> yields <span class="highlight-cyan">1 = -a<sub>n-1</sub>x<sup>-1</sup> - ... - a<sub>0</sub>x<sup>-n</sup></span>. Taking valuations gives <span class="highlight-lime">0 = v(1) ≥ min{ v(a<sub>i</sub>) + (n-i)(-v(x)) } > 0</span>, a contradiction. Thus <span class="highlight-lime">v(x) ≥ 0 ⇒ x ∈ R</span>.</p>
+  </div>
+
+  <!-- Section 5: Euclidean Properties & DVR Analysis -->
+  <h2>5. Euclidean Ring Status of DVRs</h2>
+
+  <div class="card">
+    <div class="card-title">Are p-adic DVRs Euclidean Rings?</div>
+    <p><strong>Answer:</strong> <span class="highlight-lime">YES</span>. Every Discrete Valuation Ring <span class="highlight-cyan">R</span> is a Euclidean Domain.</p>
+    <p><strong>Euclidean Degree Function:</strong> Define <span class="highlight-lime">d: R \ {0} → ℤ<sub>≥0</sub></span> by <span class="highlight-lime">d(x) = v(x)</span>.</p>
+    <p><strong>Proof of Division Algorithm:</strong> Let <span class="highlight-cyan">a, b ∈ R</span> with <span class="highlight-cyan">b ≠ 0</span>.</p>
+    <ul>
+      <li><span class="highlight-yellow">Case 1: v(a) < v(b)</span>. Set <span class="highlight-lime">q = 0</span> and <span class="highlight-lime">r = a</span>. Then <span class="highlight-cyan">a = 0 · b + a</span>, where either <span class="highlight-cyan">r = 0</span> or <span class="highlight-lime">d(r) = v(a) < v(b) = d(b)</span>.</li>
+      <li><span class="highlight-yellow">Case 2: v(a) ≥ v(b)</span>. Then <span class="highlight-cyan">v(a b<sup>-1</sup>) = v(a) - v(b) ≥ 0</span>, so <span class="highlight-lime">q = a b<sup>-1</sup> ∈ R</span>. Set <span class="highlight-lime">r = 0</span>. Then <span class="highlight-cyan">a = q · b + 0</span>.</li>
+    </ul>
+    <p>Thus, <span class="highlight-cyan">ℤ<sub>(p)</sub></span> and all other DVRs are Euclidean domains with Euclidean function <span class="highlight-lime">d(x) = v(x)</span>.</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Is there a DVR that is NOT a Euclidean Ring?</div>
+    <p><strong>Answer:</strong> <span class="highlight-lime">NO</span>. By definition, every DVR has a discrete valuation <span class="highlight-cyan">v: K* → ℤ</span>. The restriction of <span class="highlight-cyan">v</span> to <span class="highlight-cyan">R \ {0}</span> always provides a valid Euclidean degree function, making <strong>every DVR a Euclidean domain</strong>.</p>
+  </div>
+
+  <!-- Section 6: Analysis in ℝ[[x]] -->
+  <h2>6. Analysis in Real Formal Power Series ℝ[[x]]</h2>
+
+  <div class="card">
+    <div class="card-title">Theorem: Units and Ideal Structure in ℝ[[x]]</div>
+    <p>Let <span class="highlight-cyan">ℝ[[x]]</span> be the DVR of formal power series over the real numbers <span class="highlight-cyan">ℝ</span>.</p>
+
+    <h3>Part A: Proof that e<sup>x</sup> is a Unit in ℝ[[x]]</h3>
+    <p>The power series expansion of <span class="highlight-cyan">e<sup>x</sup></span> is given by:</p>
+    <div class="math-block">
+      e<sup>x</sup> = 1 + x + (x<sup>2</sup>/2!) + (x<sup>3</sup>/3!) + ...
+    </div>
+    <p>The constant term is <span class="highlight-lime">a<sub>0</sub> = 1 ≠ 0</span>. By the Unit Theorem for Formal Power Series, any series <span class="highlight-cyan">f(x) = ∑ a<sub>n</sub>x<sup>n</sup></span> is a unit in <span class="highlight-cyan">ℝ[[x]]</span> if and only if its constant term <span class="highlight-lime">a<sub>0</sub> ≠ 0</span>. Since <span class="highlight-lime">a<sub>0</sub> = 1</span>, <span class="highlight-lime">e<sup>x</sup> is a unit in ℝ[[x]]</span>. Its explicit inverse is <span class="highlight-lime">e<sup>-x</sup> = 1 - x + (x<sup>2</sup>/2!) - (x<sup>3</sup>/3!) + ...</span></p>
+
+    <h3>Part B: Proof that cos x is a Unit in ℝ[[x]]</h3>
+    <p>The power series expansion of <span class="highlight-cyan">cos x</span> is given by:</p>
+    <div class="math-block">
+      cos x = 1 - (x<sup>2</sup>/2!) + (x<sup>4</sup>/4!) - ...
+    </div>
+    <p>The constant term is <span class="highlight-lime">a<sub>0</sub> = 1 ≠ 0</span>. Therefore, <span class="highlight-lime">cos x is a unit in ℝ[[x]]</span>. Its inverse power series can be computed via secant series coefficients <span class="highlight-lime">sec x = 1 + (x<sup>2</sup>/2) + (5x<sup>4</sup>/24) + ...</span></p>
+
+    <h3>Part C: Proof that the Ideal Generated by sin x is Maximal</h3>
+    <p>The power series expansion of <span class="highlight-cyan">sin x</span> is given by:</p>
+    <div class="math-block">
+      sin x = x - (x<sup>3</sup>/3!) + (x<sup>5</sup>/5!) - ... = x · (1 - x<sup>2</sup>/6 + x<sup>4</sup>/120 - ...)
+    </div>
+    <p>Let <span class="highlight-cyan">u(x) = 1 - x<sup>2</sup>/6 + x<sup>4</sup>/120 - ...</span>. The constant term of <span class="highlight-cyan">u(x)</span> is <span class="highlight-lime">1 ≠ 0</span>, so <span class="highlight-lime">u(x) is a unit</span> in <span class="highlight-cyan">ℝ[[x]]</span>.</p>
+    <p>Thus, <span class="highlight-lime">sin x = x · u(x)</span> where <span class="highlight-cyan">u(x)</span> is a unit. This implies that <span class="highlight-lime">sin x</span> and <span class="highlight-lime">x</span> are associates in <span class="highlight-cyan">ℝ[[x]]</span>.</p>
+    <p>Therefore, the ideal generated by <span class="highlight-cyan">sin x</span> is equal to the ideal generated by <span class="highlight-cyan">x</span>:</p>
+    <div class="math-block">
+      (sin x) = (x) = { f(x) ∈ ℝ[[x]] | v(f) ≥ 1 }
+    </div>
+    <p>Since <span class="highlight-lime">(x)</span> is the unique maximal ideal of non-units in the local ring <span class="highlight-cyan">ℝ[[x]]</span>, <span class="highlight-lime">(sin x) is a maximal ideal in ℝ[[x]]</span>. Q.E.D.</p>
+  </div>
+
+</body>
+</html>
