@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lecture 4 — Simple Extensions, Separability, Splitting Fields, Automorphisms</title>
+<script>
+window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+<style>
+:root{--cy:#22e5ff;--li:#b6ff3b;--gr:#2bd96b;--ye:#ffe94d;--or:#ff9a2e;--pk:#ff5cc8;--card:#0e0e12;--bd:#26262e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:#000;color:#f2f2f2;font:17px/1.65 Georgia,'Times New Roman',serif}
+.wrap{max-width:860px;margin:0 auto;padding:18px 16px 70px}
+nav{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font:14px system-ui,sans-serif;margin-bottom:14px}
+nav a{color:var(--cy);text-decoration:none;border:1px solid var(--bd);padding:5px 12px;border-radius:20px}
+nav a:hover{border-color:var(--cy)}
+header{text-align:center;padding:22px 8px 10px}
+.tag{font:13px system-ui,sans-serif;letter-spacing:3px;color:var(--or);text-transform:uppercase}
+h1{font-size:2.05rem;margin:.2em 0;background:linear-gradient(90deg,var(--cy),var(--pk),var(--ye),var(--li));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2}
+.sub{color:#aaa;font-style:italic}
+h2{color:var(--ye);border-bottom:1px dashed var(--bd);padding-bottom:6px;margin-top:2.2em;font-size:1.45rem}
+h2 span{color:var(--pk)}
+.card{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--cy);border-radius:10px;padding:12px 16px;margin:14px 0}
+.card.def{border-left-color:var(--li)}.card.thm{border-left-color:var(--or)}.card.q{border-left-color:var(--pk)}.card.ex{border-left-color:var(--ye)}
+.lbl{font:700 12px system-ui,sans-serif;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--cy)}
+.def .lbl{color:var(--li)}.thm .lbl{color:var(--or)}.q .lbl{color:var(--pk)}.ex .lbl{color:var(--ye)}
+b{color:var(--li)}.c{color:var(--cy)}.y{color:var(--ye)}.o{color:var(--or)}.p{color:var(--pk)}.g{color:var(--gr)}
+button{font:600 14px system-ui,sans-serif;cursor:pointer;border-radius:8px;border:1px solid var(--gr);background:transparent;color:var(--gr);padding:6px 14px;margin:6px 6px 0 0}
+button:hover{background:var(--gr);color:#000}
+.sol{display:none;margin-top:10px;padding:10px 14px;border:1px solid var(--gr);border-radius:8px;background:#04140a;color:#d8ffe6}
+.sol.on{display:block;animation:f .35s}
+@keyframes f{from{opacity:0;transform:translateY(-4px)}to{opacity:1}}
+.hint{border-color:var(--ye);color:var(--ye)}.hint:hover{background:var(--ye)}
+.hintb{display:none;margin-top:8px;color:var(--ye);font-style:italic}.hintb.on{display:block}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opt{text-align:left;border-color:var(--bd);color:#f2f2f2;font-weight:400;font-family:Georgia,serif;font-size:16px;margin:0}
+.opt:hover{background:#15151c;border-color:var(--cy);color:#f2f2f2}
+.opt.right{border-color:var(--gr);background:#06210f}.opt.wrong{border-color:#ff4d4d;background:#260808}
+.fb{margin-top:8px;font:14px system-ui,sans-serif;min-height:1em;word-break:break-word}
+.score{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;text-align:right;font:13px system-ui,sans-serif;color:var(--ye);background:#000c;padding:4px 0}
+.bar{height:6px;background:#1a1a20;border-radius:4px;overflow:hidden;margin:2px 0 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--li));transition:width .4s}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+td,th{border:1px solid var(--bd);padding:5px 9px;text-align:left}th{color:var(--cy)}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+input[type=number],input[type=text],select{background:#000;color:var(--ye);border:1px solid var(--ye);border-radius:6px;padding:4px;font-size:16px}
+input[type=number]{width:70px}input[type=text]{width:130px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a href="L3.html">← Lecture 3</a><a href="FE.html">☰ Index</a><a href="L5.html">Lecture 5 →</a></nav>
+<div class="score">Questions opened: <span id="cnt">0</span> · Quiz: <span id="qs">0</span>/4<div class="bar"><i id="pb"></i></div></div>
+
+<header>
+<div class="tag">Seven Lectures on Field Extensions</div>
+<h1>Lecture 4<br>Simple Extensions, Separability,<br>Splitting Fields &amp; Automorphisms</h1>
+<div class="sub">Five ideas that turn field extensions into Galois theory — each with many examples.</div>
+</header>
+
+<div class="card"><span class="lbl">Roadmap</span>
+<b>§1</b> Simple vs non-simple extensions &nbsp;·&nbsp; <b>§2</b> Separable extensions &nbsp;·&nbsp; <b>§3</b> Splitting fields &nbsp;·&nbsp; <b>§4</b> The primitive element theorem &nbsp;·&nbsp; <b>§5</b> Automorphisms fixing the ground field, and "roots go to roots".</div>
+
+<h2><span>§1</span> Simple and non-simple extensions</h2>
+<div class="card def"><span class="lbl">Definition</span>
+An extension $\mathbb{K}/\mathbb{F}$ is <b>simple</b> if $\mathbb{K}=\mathbb{F}(\gamma)$ for a single element $\gamma$ (a <b>primitive element</b>). Otherwise it is <b>non-simple</b>. Recall (Lecture 2): if $\gamma$ is algebraic with minimal polynomial $q$ of degree $n$ then
+$$\mathbb{F}(\gamma)=\mathbb{F}[\gamma]\cong\mathbb{F}[x]/\langle q\rangle,\qquad \text{basis }1,\gamma,\dots,\gamma^{n-1};$$
+if $\gamma$ is transcendental, $\mathbb{F}(\gamma)\cong\mathbb{F}(x)$, the field of rational functions.</div>
+
+<div class="card ex"><span class="lbl">Examples of simple extensions</span>
+<ol style="padding-left:1.2em;margin:.3em 0">
+<li>$\mathbb{C}=\mathbb{R}(i)$, degree 2, basis $\{1,i\}$.</li>
+<li>$\mathbb{Q}(\sqrt2)=\{a+b\sqrt2\}$, minimal polynomial $x^2-2$.</li>
+<li>$\mathbb{Q}(\sqrt[3]2)=\{a+b\sqrt[3]2+c\sqrt[3]4\}$, degree 3 (Eisenstein).</li>
+<li>$\mathbb{Q}(\zeta_p)$, degree $p-1$, minimal polynomial $1+x+\dots+x^{p-1}$.</li>
+<li>$\mathbb{Q}(\pi)\cong\mathbb{Q}(x)$: a simple <i>transcendental</i> extension (infinite degree).</li>
+<li>$\mathbb{F}_9=\mathbb{F}_3(i)=\mathbb{F}_3[x]/\langle x^2+1\rangle$: here $1+i$ generates the cyclic group $\mathbb{F}_9^\times$ (order 8).</li>
+<li>$\mathbb{Q}(\sqrt2,\sqrt3)=\mathbb{Q}(\sqrt2+\sqrt3)$: <i>looks</i> like two generators, but is simple (§4).</li>
+</ol></div>
+
+<div class="card q"><span class="lbl">Question 1</span>
+Show $\mathbb{F}_9^\times$ is generated by $1+i$, so $\mathbb{F}_9=\mathbb{F}_3(1+i)$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$(1+i)^2=2i$, $(1+i)^4=(2i)^2=4i^2=-4\equiv2=-1$, so $(1+i)^8=1$ and the order is $8$ (it does not divide $4$). A group of order 8 with an element of order 8 is cyclic, generated by it.</div></div>
+
+<div class="card q"><span class="lbl">Try it — $\mathbb{Q}(\sqrt a,\sqrt b)$</span>
+$a=$ <input type="number" id="sa" value="2"> $b=$ <input type="number" id="sb" value="3"> <button onclick="sab()">Minimal polynomial of $\sqrt a+\sqrt b$</button>
+<div class="fb" id="sfb"></div></div>
+
+<div class="card thm"><span class="lbl">Non-simple extensions — three flavours</span>
+<ol style="padding-left:1.2em;margin:.3em 0">
+<li><b>Infinite algebraic:</b> $\mathbb{Q}(\sqrt2,\sqrt3,\sqrt5,\sqrt7,\dots)$ is not simple. A simple algebraic extension $\mathbb{F}(\gamma)$ has finite degree $\deg q$, whereas this one has infinite degree.</li>
+<li><b>Too many transcendentals:</b> $\mathbb{Q}(x,y)/\mathbb{Q}$ is not simple: any $\mathbb{Q}(\gamma)$ has transcendence degree $\le1$.</li>
+<li><b>Finite but inseparable:</b> $\mathbb{K}=\mathbb{F}_p(x,y)$ over $\mathbb{F}=\mathbb{F}_p(x^p,y^p)$ (the classical example).</li>
+</ol></div>
+
+<div class="card q"><span class="lbl">Question 2 — the classical non-simple extension</span>
+Let $\mathbb{F}=\mathbb{F}_p(x^p,y^p)\subset\mathbb{K}=\mathbb{F}_p(x,y)$. Show $[\mathbb{K}:\mathbb{F}]=p^2$ but every $z\in\mathbb{K}$ has $[\mathbb{F}(z):\mathbb{F}]\le p$. So $\mathbb{K}/\mathbb{F}$ is not simple.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">The Frobenius map $z\mapsto z^p$ is a ring homomorphism in characteristic $p$. Where does it send $\mathbb{K}$?</div>
+<div class="sol"><b>Degree.</b> $x$ is a root of $T^p-x^p\in\mathbb{F}[T]$, irreducible, so $[\mathbb{F}(x):\mathbb{F}]=p$; then $y$ is a root of $T^p-y^p$ over $\mathbb{F}(x)$, still of degree $p$. Tower Law: $p\cdot p=p^2$; basis $x^iy^j$ ($0\le i,j<p$).<br>
+<b>Every element has degree $\le p$.</b> In characteristic $p$, $(\sum c_{ij}x^iy^j)^p=\sum c_{ij}^p x^{ip}y^{jp}\in\mathbb{F}_p(x^p,y^p)=\mathbb{F}$ and, for rational functions, the same holds (quotients). So $z^p\in\mathbb{F}$, and $z$ is a root of $T^p-z^p\in\mathbb{F}[T]$: $[\mathbb{F}(z):\mathbb{F}]\le p<p^2$. Hence $\mathbb{F}(z)\ne\mathbb{K}$ for every $z$. ∎</div></div>
+
+<div class="card thm"><span class="lbl">A criterion (Steinitz)</span>
+A finite extension $\mathbb{K}/\mathbb{F}$ is simple <b>iff</b> it has only finitely many intermediate fields. <b>Example:</b> $\mathbb{Q}(\sqrt2,\sqrt3)$ has exactly 5 (including $\mathbb{Q}$ and itself): $\mathbb{Q},\mathbb{Q}(\sqrt2),\mathbb{Q}(\sqrt3),\mathbb{Q}(\sqrt6),\mathbb{Q}(\sqrt2,\sqrt3)$. The extension above has infinitely many, consistent with it being non-simple.</div>
+
+<div class="card q"><span class="lbl">Question 3</span>
+A finite simple extension $\mathbb{F}(\gamma)$: why are there only finitely many intermediate fields?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">Let $q$ be the minimal polynomial of $\gamma$ over $\mathbb{F}$. For an intermediate field $\mathbb{M}$, let $r$ be the minimal polynomial of $\gamma$ over $\mathbb{M}$; then $r\mid q$ in $\mathbb{M}[x]$ and $\mathbb{M}$ is generated over $\mathbb{F}$ by the coefficients of $r$ (a field $\mathbb{M}_0$ generated by those coefficients satisfies $[\mathbb{F}(\gamma):\mathbb{M}_0]=\deg r=[\mathbb{F}(\gamma):\mathbb{M}]$, so $\mathbb{M}_0=\mathbb{M}$). Since $q$ has finitely many monic divisors in a splitting field, there are finitely many possible $r$, hence finitely many $\mathbb{M}$.</div></div>
+
+<h2><span>§2</span> Separable extensions</h2>
+<div class="card def"><span class="lbl">Definitions</span>
+A non-zero $f\in\mathbb{F}[x]$ is <b>separable</b> if it has no repeated roots in a splitting field. An algebraic $\alpha\in\mathbb{K}$ is <b>separable over $\mathbb{F}$</b> if its minimal polynomial is separable. $\mathbb{K}/\mathbb{F}$ is <b>separable</b> if every element of $\mathbb{K}$ is separable over $\mathbb{F}$ (otherwise <b>inseparable</b>).</div>
+<div class="card thm"><span class="lbl">Derivative test</span>
+$f$ has a repeated root $\iff\gcd(f,f')\ne1$. Consequently an <b>irreducible</b> $f$ is inseparable iff $f'=0$, i.e. only in characteristic $p$ with $f(x)=g(x^p)$.</div>
+<div class="card q"><span class="lbl">Question 4</span>
+Prove the derivative test.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol">If $f=(x-a)^2h$ in a splitting field, then $f'=2(x-a)h+(x-a)^2h'$ vanishes at $a$, so $(x-a)\mid\gcd(f,f')$. Conversely if $\gcd(f,f')\ne1$ over $\mathbb{F}$ (and the gcd is unchanged by field extension), it has a root $a$ in the splitting field; $f(a)=f'(a)=0$ gives $f=(x-a)h$, $f'=h+(x-a)h'$, so $h(a)=0$ and $a$ is a double root. For irreducible $f$: $\gcd(f,f')$ divides $f$, so it is $1$ or $f$ (associate); it is $f$ iff $f\mid f'$, which for $\deg f'<\deg f$ means $f'=0$. ∎</div></div>
+
+<div class="card ex"><span class="lbl">Examples</span>
+<ol style="padding-left:1.2em;margin:.3em 0">
+<li><b>Separable:</b> $x^2-2$ over $\mathbb{Q}$: $f'=2x$ and $\gcd=1$; roots $\pm\sqrt2$. $x^n-1$ over $\mathbb{Q}$: $\gcd(x^n-1,nx^{n-1})=1$, roots $\zeta_n^k$ all distinct.</li>
+<li><b>Characteristic 0:</b> every irreducible $f$ has $f'\ne0$, so <b>every algebraic extension of a field of characteristic 0 is separable</b>. So $\mathbb{Q}(\sqrt[3]2)$, $\mathbb{Q}(\zeta_n)$ and $\mathbb{Q}(\sqrt2,\sqrt3,\sqrt5,\dots)$ are all separable over $\mathbb{Q}$.</li>
+<li><b>Finite fields</b> (and any field with $\mathbb{F}^p=\mathbb{F}$, called <i>perfect</i>) have only separable extensions: $x^p-a=(x-a^{1/p})^p$ is never irreducible with $\mathbb{F}$ perfect.</li>
+<li><b>Reducible but not separable:</b> $x^2+1=(x+1)^2$ over $\mathbb{F}_2$; $x^p-1=(x-1)^p$ over $\mathbb{F}_p$. (Their irreducible factors $x+1$, $x-1$ are separable.)</li>
+<li><b>Irreducible but inseparable:</b> $x^p-t$ over $\mathbb{F}_p(t)$ (irreducible since $t$ is not a $p$-th power; derivative $px^{p-1}=0$). Over its splitting field, $x^p-t=(x-t^{1/p})^p$.</li>
+<li>$\mathbb{F}_p(t)/\mathbb{F}_p(t^p)$ is <b>purely inseparable</b> of degree $p$: it is simple (generated by $t$) <i>and</i> inseparable.</li>
+</ol></div>
+
+<div class="card q"><span class="lbl">Try it — repeated roots mod $p$</span>
+prime $p=$ <input type="number" id="gp" value="3"> coefficients (highest first): <input type="text" id="gc" value="1,0,0,-1"> <button onclick="gcdchk()">Compute $\gcd(f,f')$</button>
+<div class="fb" id="gfb"></div>
+<button onclick="sol(this)">Examples to try</button>
+<div class="sol"><code>p=3, 1,0,0,-1</code> is $x^3-1=(x-1)^3$: not separable. <code>p=2, 1,1,1</code>: $x^2+x+1$, separable. <code>p=5, 1,0,0,0,0,-1</code> is $x^5-1=(x-1)^5$. <code>p=5, 1,0,-1</code>: $x^2-1$ separable. Over $\mathbb{Q}$ use a large prime $p$ as a heuristic.</div></div>
+
+<div class="card thm"><span class="lbl">Good behaviour of separability</span>
+(1) Tower: $\mathbb{L}/\mathbb{F}$ separable $\iff$ $\mathbb{L}/\mathbb{K}$ and $\mathbb{K}/\mathbb{F}$ separable. (2) The compositum of separable extensions is separable. (3) If $\mathbb{K}=\mathbb{F}(\alpha_1,\dots,\alpha_n)$ with each $\alpha_i$ separable, then $\mathbb{K}/\mathbb{F}$ is separable. (4) Finite $+$ separable $\Rightarrow$ simple (§4).</div>
+<div class="card q"><span class="lbl">Question 5</span>
+Is $\mathbb{F}_p(t)/\mathbb{F}_p(t^p)$ separable? Is $\mathbb{F}_p(t)/\mathbb{F}_p$ separable?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">The first is not: $t$ has minimal polynomial $x^p-t^p=(x-t)^p$, a repeated root. The second is also not algebraic ($t$ is transcendental), so the question of separability does not even arise; $\mathbb{F}_p(t)/\mathbb{F}_p$ is "separably generated" in a broader sense.</div></div>
+
+<h2><span>§3</span> Splitting fields</h2>
+<div class="card def"><span class="lbl">Definition</span>
+Let $f\in\mathbb{F}[x]$ of degree $n\ge1$. A <b>splitting field</b> of $f$ over $\mathbb{F}$ is an extension $\mathbb{K}$ such that (i) $f=c(x-\alpha_1)\cdots(x-\alpha_n)$ in $\mathbb{K}[x]$, and (ii) $\mathbb{K}=\mathbb{F}(\alpha_1,\dots,\alpha_n)$ — the <b>smallest</b> field where $f$ splits.</div>
+<div class="card thm"><span class="lbl">Theorem (existence, bound, uniqueness)</span>
+Every $f$ has a splitting field $\mathbb{K}$ over $\mathbb{F}$ with $[\mathbb{K}:\mathbb{F}]\le n!$, and any two splitting fields of $f$ over $\mathbb{F}$ are isomorphic over $\mathbb{F}$.</div>
+<div class="card q"><span class="lbl">Question 6</span>
+Prove existence and the bound $n!$.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol">Induct on $n$. Take an irreducible factor $g$ of $f$ and $\mathbb{F}_1=\mathbb{F}[x]/\langle g\rangle$ (Lecture 2); $f$ has a root $\alpha_1\in\mathbb{F}_1$, $[\mathbb{F}_1:\mathbb{F}]\le n$, and $f=(x-\alpha_1)f_1$ with $\deg f_1=n-1$. By induction $f_1$ has a splitting field $\mathbb{K}$ over $\mathbb{F}_1$ of degree $\le(n-1)!$; then $\mathbb{K}=\mathbb{F}_1(\alpha_2,\dots,\alpha_n)=\mathbb{F}(\alpha_1,\dots,\alpha_n)$ splits $f$ and $[\mathbb{K}:\mathbb{F}]\le n\cdot(n-1)!=n!$. ∎ (Uniqueness uses the extension theorem of §5.)</div></div>
+
+<div class="card ex"><span class="lbl">Examples — a gallery</span>
+<div class="tbl"><table>
+<tr><th>$f$ over $\mathbb{F}$</th><th>Splitting field</th><th>Degree</th></tr>
+<tr><td>$x^2-2$ over $\mathbb{Q}$</td><td>$\mathbb{Q}(\sqrt2)$</td><td>2</td></tr>
+<tr><td>$x^2+1$ over $\mathbb{R}$</td><td>$\mathbb{C}$</td><td>2</td></tr>
+<tr><td>$(x^2-2)(x^2-3)$ over $\mathbb{Q}$</td><td>$\mathbb{Q}(\sqrt2,\sqrt3)=\mathbb{Q}(\sqrt2+\sqrt3)$</td><td>4</td></tr>
+<tr><td>$x^4+1$ over $\mathbb{Q}$</td><td>$\mathbb{Q}(\zeta_8)=\mathbb{Q}(i,\sqrt2)$</td><td>4</td></tr>
+<tr><td>$x^p-1$ over $\mathbb{Q}$</td><td>$\mathbb{Q}(\zeta_p)$</td><td>$p-1$</td></tr>
+<tr><td><b>$x^3-2$ over $\mathbb{Q}$</b></td><td>$\mathbb{Q}(\sqrt[3]2,\omega)$</td><td><b>6</b> $=3!$</td></tr>
+<tr><td>$x^4-2$ over $\mathbb{Q}$</td><td>$\mathbb{Q}(\sqrt[4]2,i)$</td><td>8</td></tr>
+<tr><td><b>$x^3-3x+1$ over $\mathbb{Q}$</b></td><td>$\mathbb{Q}(2\cos\frac{2\pi}9)$</td><td><b>3</b> $<3!$</td></tr>
+<tr><td>$x^2+x+1$ over $\mathbb{F}_2$</td><td>$\mathbb{F}_4$</td><td>2</td></tr>
+<tr><td>$x^3-x+1$ over $\mathbb{F}_3$</td><td>$\mathbb{F}_{27}$</td><td>3</td></tr>
+<tr><td>$x^{p^n}-x$ over $\mathbb{F}_p$</td><td>$\mathbb{F}_{p^n}$</td><td>$n$</td></tr>
+</table></div></div>
+
+<div class="card q"><span class="lbl">Question 7 — the splitting field of $x^3-2$</span>
+Show the splitting field $\mathbb{L}$ of $x^3-2$ over $\mathbb{Q}$ is $\mathbb{Q}(\sqrt[3]2,\omega)$ ($\omega=e^{2\pi i/3}$) with $[\mathbb{L}:\mathbb{Q}]=6$.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">The roots are $\sqrt[3]2,\ \omega\sqrt[3]2,\ \omega^2\sqrt[3]2$. Use the Tower Law with $\mathbb{Q}\subset\mathbb{Q}(\sqrt[3]2)\subset\mathbb{L}$.</div>
+<div class="sol">Roots: $\alpha,\omega\alpha,\omega^2\alpha$ with $\alpha=\sqrt[3]2$; so $\mathbb{L}=\mathbb{Q}(\alpha,\omega\alpha,\omega^2\alpha)=\mathbb{Q}(\alpha,\omega)$ (as $\omega=\omega\alpha/\alpha$). $[\mathbb{Q}(\alpha):\mathbb{Q}]=3$. Since $\mathbb{Q}(\alpha)\subset\mathbb{R}$ and $\omega\notin\mathbb{R}$, $\omega\notin\mathbb{Q}(\alpha)$; $\omega$ is a root of $x^2+x+1$, so $[\mathbb{L}:\mathbb{Q}(\alpha)]=2$. Tower Law: $3\cdot2=6$. ∎</div></div>
+
+<div class="card"><span class="lbl">Lattice of the splitting field of $x^3-2$</span>
+<svg viewBox="0 0 700 330" width="100%" role="img" aria-label="Lattice of subfields of Q(cuberoot2, omega)">
+<g stroke="#ffe94d" stroke-width="2" fill="none">
+<line x1="350" y1="62" x2="110" y2="140"/><line x1="350" y1="62" x2="260" y2="140"/><line x1="350" y1="62" x2="440" y2="140"/><line x1="350" y1="62" x2="590" y2="140"/>
+<line x1="110" y1="190" x2="350" y2="268"/><line x1="260" y1="190" x2="350" y2="268"/><line x1="440" y1="190" x2="350" y2="268"/><line x1="590" y1="190" x2="350" y2="268"/></g>
+<g font-family="system-ui" text-anchor="middle">
+<rect x="230" y="12" width="240" height="50" rx="12" fill="#06161a" stroke="#22e5ff" stroke-width="2"/><text x="350" y="35" fill="#22e5ff" font-size="16">L = Q(∛2, ω)</text><text x="350" y="53" fill="#aaa" font-size="12">degree 6 · group S₃</text>
+<rect x="30" y="140" width="160" height="50" rx="12" fill="#0b1a06" stroke="#b6ff3b" stroke-width="2"/><text x="110" y="163" fill="#b6ff3b" font-size="15">Q(∛2)</text><text x="110" y="181" fill="#aaa" font-size="12">fixed by a transposition</text>
+<rect x="180" y="140" width="160" height="50" rx="12" fill="#1a0f04" stroke="#ff9a2e" stroke-width="2"/><text x="260" y="163" fill="#ff9a2e" font-size="15">Q(ω∛2)</text><text x="260" y="181" fill="#aaa" font-size="12">fixed by a transposition</text>
+<rect x="360" y="140" width="160" height="50" rx="12" fill="#1a0410" stroke="#ff5cc8" stroke-width="2"/><text x="440" y="163" fill="#ff5cc8" font-size="15">Q(ω²∛2)</text><text x="440" y="181" fill="#aaa" font-size="12">fixed by a transposition</text>
+<rect x="520" y="140" width="140" height="50" rx="12" fill="#04140a" stroke="#2bd96b" stroke-width="2"/><text x="590" y="163" fill="#2bd96b" font-size="15">Q(ω)</text><text x="590" y="181" fill="#aaa" font-size="12">fixed by A₃ = Z₃</text>
+<rect x="260" y="268" width="180" height="50" rx="12" fill="#14120a" stroke="#ffe94d" stroke-width="2"/><text x="350" y="292" fill="#ffe94d" font-size="16">Q</text><text x="350" y="310" fill="#aaa" font-size="12">whole group S₃</text></g>
+<g font-family="system-ui" font-size="13" fill="#ffe94d" text-anchor="middle"><text x="205" y="94">2</text><text x="300" y="100">2</text><text x="400" y="100">2</text><text x="500" y="94">3</text>
+<text x="205" y="238">3</text><text x="285" y="236">3</text><text x="415" y="236">3</text><text x="500" y="238">2</text></g></svg></div>
+
+<div class="card q"><span class="lbl">Question 8 — splitting field degree can be less than $n!$</span>
+Show the splitting field of $x^3-3x+1$ over $\mathbb{Q}$ has degree $3$, not $6$.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">With $y=2\cos\theta$ one has $y^3-3y=2\cos3\theta$. Show the other roots are polynomials in one root.</div>
+<div class="sol">Let $y=2\cos\frac{2\pi}9$: $y^3-3y=2\cos\frac{2\pi}3=-1$, so $y$ is a root. The polynomial has no rational root ($\pm1$ fail), so it is irreducible of degree 3 and $[\mathbb{Q}(y):\mathbb{Q}]=3$. Also $2\cos\frac{4\pi}9=y^2-2$ and $2\cos\frac{8\pi}9=-y^2-y+2$ lie in $\mathbb{Q}(y)$ (check: the three roots sum to $0$). So $\mathbb{Q}(y)$ already contains all roots: the splitting field has degree $3$. (Its discriminant $81=9^2$ is a square, the Galois group is $A_3=\mathbb{Z}_3$.)</div></div>
+
+<div class="card q"><span class="lbl">Question 9 — $\mathbb{Q}(\sqrt[3]2)$ is not a splitting field</span>
+Why is $\mathbb{Q}(\sqrt[3]2)$ not the splitting field of any polynomial, although it contains a root of the irreducible $x^3-2$?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">A splitting field containing one root of an irreducible polynomial contains all of its roots (<i>normality</i>). But $\mathbb{Q}(\sqrt[3]2)\subset\mathbb{R}$ misses the non-real roots $\omega\sqrt[3]2,\omega^2\sqrt[3]2$ of $x^3-2$. So $\mathbb{Q}(\sqrt[3]2)/\mathbb{Q}$ is <b>not normal</b>.</div></div>
+
+<div class="card q"><span class="lbl">Question 10</span>
+Find the splitting field and degree of $x^4-2$ over $\mathbb{Q}$, and of $x^4+1$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$x^4-2$: roots $i^k\sqrt[4]2$, so the splitting field is $\mathbb{Q}(\sqrt[4]2,i)$. $[\mathbb{Q}(\sqrt[4]2):\mathbb{Q}]=4$ (Eisenstein) and $i\notin\mathbb{R}$, so the degree is $8$ (group $D_4$). $x^4+1$: roots $\zeta_8^{1,3,5,7}$, all powers of $\zeta_8$, so the splitting field is $\mathbb{Q}(\zeta_8)$, of degree $\varphi(8)=4$.</div></div>
+
+<h2><span>§4</span> The primitive element theorem</h2>
+<div class="card thm"><span class="lbl">Theorem</span>
+Let $\mathbb{K}/\mathbb{F}$ be a <b>finite separable</b> extension. Then $\mathbb{K}=\mathbb{F}(\gamma)$ for some $\gamma\in\mathbb{K}$. In particular every finite extension of a field of characteristic $0$, and every finite extension of a finite field, is simple.</div>
+<div class="card"><span class="lbl">Proof idea (full proof in Lecture 3)</span>
+<b>Finite $\mathbb{F}$:</b> $\mathbb{K}^\times$ is cyclic; a generator is primitive. <b>Infinite $\mathbb{F}$:</b> reduce to $\mathbb{K}=\mathbb{F}(\alpha,\beta)$. Take $\gamma=\alpha+c\beta$ where $c\in\mathbb{F}$ avoids the finitely many values with $\alpha_i+c\beta_j=\alpha+c\beta$ ($j\ne1$). Then $\gcd(f(\gamma-cx),g(x))=x-\beta$ forces $\beta\in\mathbb{F}(\gamma)$, hence $\alpha\in\mathbb{F}(\gamma)$.</div>
+
+<div class="card ex"><span class="lbl">Worked examples</span>
+<ol style="padding-left:1.2em;margin:.3em 0">
+<li><b>$\mathbb{Q}(\sqrt2,\sqrt3)$:</b> $\gamma=\sqrt2+\sqrt3$, $\gamma^2=5+2\sqrt6$, $(\gamma^2-5)^2=24$, so $\gamma^4-10\gamma^2+1=0$ (degree 4). Recover $\sqrt6=(\gamma^2-5)/2$, $\sqrt2=(2+\sqrt6)/\gamma$, $\sqrt3=\gamma-\sqrt2$.</li>
+<li><b>$\mathbb{Q}(\sqrt2,i)$:</b> $\gamma=\sqrt2+i$, $\gamma^2=1+2\sqrt2 i$, $(\gamma^2-1)^2=-8$, so $\gamma^4-2\gamma^2+9=0$. This is the field $\mathbb{Q}(\zeta_8)$: also $\zeta_8=\frac{\sqrt2}2(1+i)$ is a primitive element.</li>
+<li><b>$\mathbb{Q}(\sqrt[3]2,\omega)$:</b> $\gamma=\sqrt[3]2+\omega$ works, degree $6$. (The bad $c$'s for $\alpha+c\beta$ are $c=0$ and non-rational values, so $c=1$ is fine.)</li>
+<li><b>$\mathbb{Q}(\sqrt2,\sqrt3,\sqrt5)=\mathbb{Q}(\sqrt2+\sqrt3+\sqrt5)$</b>, degree 8, minimal polynomial of degree 8.</li>
+<li><b>$\mathbb{F}_{p^n}$ over $\mathbb{F}_p$:</b> a generator $g$ of $\mathbb{F}_{p^n}^\times$; e.g. $\mathbb{F}_9=\mathbb{F}_3(1+i)$ (Question 1).</li>
+<li><b>$\mathbb{Q}(\sqrt[4]2,i)$ (degree 8):</b> $\gamma=\sqrt[4]2+i$ works as well; generically $\alpha+c\beta$ with $c\in\mathbb{Q}$ almost always does.</li>
+</ol></div>
+
+<div class="card q"><span class="lbl">Question 11</span>
+Find the minimal polynomial of $\gamma=\sqrt2+\sqrt3+\sqrt5$ <i>not</i> by expanding fully, but by finding its conjugates.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">The conjugates are $\pm\sqrt2\pm\sqrt3\pm\sqrt5$ (8 numbers, all distinct), so the minimal polynomial is $\prod(x\pm\sqrt2\pm\sqrt3\pm\sqrt5)$, of degree 8 with rational coefficients: $x^8-40x^6+352x^4-960x^2+576$. (Degree 8 confirms $[\mathbb{Q}(\gamma):\mathbb{Q}]=8=[\mathbb{Q}(\sqrt2,\sqrt3,\sqrt5):\mathbb{Q}]$, so $\gamma$ is primitive.)</div></div>
+
+<div class="card q"><span class="lbl">Question 12 — the theorem fails without separability</span>
+Explain why the primitive element theorem cannot hold for $\mathbb{F}_p(x,y)/\mathbb{F}_p(x^p,y^p)$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">The extension is finite (degree $p^2$) but not separable: $x$ has minimal polynomial $T^p-x^p=(T-x)^p$. By Question 2 it is not simple. The theorem needs separability exactly to ensure that $g$ has distinct roots $\beta_j$ in the gcd argument.</div></div>
+
+<div class="card thm"><span class="lbl">Summary table</span>
+<div class="tbl"><table>
+<tr><th>Extension</th><th>finite?</th><th>separable?</th><th>simple?</th></tr>
+<tr><td>$\mathbb{Q}(\sqrt2,\sqrt3)/\mathbb{Q}$</td><td>yes</td><td>yes</td><td>yes</td></tr>
+<tr><td>$\mathbb{Q}(\sqrt2,\sqrt3,\sqrt5,\dots)/\mathbb{Q}$</td><td>no</td><td>yes</td><td>no</td></tr>
+<tr><td>$\mathbb{F}_p(t)/\mathbb{F}_p(t^p)$</td><td>yes</td><td>no</td><td>yes</td></tr>
+<tr><td>$\mathbb{F}_p(x,y)/\mathbb{F}_p(x^p,y^p)$</td><td>yes</td><td>no</td><td>no</td></tr>
+<tr><td>$\mathbb{Q}(x,y)/\mathbb{Q}$</td><td>no</td><td>—</td><td>no</td></tr>
+</table></div></div>
+
+<h2><span>§5</span> Automorphisms fixing the ground field; roots go to roots</h2>
+<div class="card def"><span class="lbl">Definition</span>
+Let $\mathbb{K}/\mathbb{F}$ be an extension. $\mathrm{Aut}(\mathbb{K}/\mathbb{F})=\{\sigma:\mathbb{K}\to\mathbb{K}\ \text{field automorphism with}\ \sigma(a)=a\ \ \forall a\in\mathbb{F}\}$. It is a group under composition; for a Galois extension it is the Galois group.</div>
+<div class="card thm"><span class="lbl">Theorem 1 (roots go to roots)</span>
+Let $\sigma\in\mathrm{Aut}(\mathbb{K}/\mathbb{F})$, $f\in\mathbb{F}[x]$ and $\alpha\in\mathbb{K}$ with $f(\alpha)=0$. Then $f(\sigma(\alpha))=0$. So $\sigma$ <b>permutes</b> the roots of $f$ lying in $\mathbb{K}$.</div>
+<div class="card q"><span class="lbl">Question 13</span>
+Prove Theorem 1 and the permutation statement.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol">If $f=\sum c_ix^i$ with $c_i\in\mathbb{F}$ and $f(\alpha)=0$, apply $\sigma$: $0=\sigma(\sum c_i\alpha^i)=\sum\sigma(c_i)\sigma(\alpha)^i=\sum c_i\sigma(\alpha)^i=f(\sigma(\alpha))$. Hence $\sigma$ maps the finite set $R$ of roots of $f$ in $\mathbb{K}$ into itself; it is injective, so it is a bijection of $R$. ∎ <br><b>Consequence:</b> an automorphism of a simple extension $\mathbb{F}(\alpha)$ is determined by $\sigma(\alpha)$, which must be a root of the minimal polynomial: $|\mathrm{Aut}(\mathbb{F}(\alpha)/\mathbb{F})|\le[\mathbb{F}(\alpha):\mathbb{F}]$. In general $|\mathrm{Aut}(\mathbb{K}/\mathbb{F})|\le[\mathbb{K}:\mathbb{F}]$.</div></div>
+
+<div class="card thm"><span class="lbl">Theorem 2 (extension theorem)</span>
+If $\alpha,\beta$ are roots of the same irreducible $p\in\mathbb{F}[x]$ (in some extensions), there is a unique isomorphism $\tau:\mathbb{F}(\alpha)\to\mathbb{F}(\beta)$ fixing $\mathbb{F}$ with $\tau(\alpha)=\beta$. Consequently, in a splitting field $\mathbb{K}$ of $f$, $\mathrm{Aut}(\mathbb{K}/\mathbb{F})$ acts <b>transitively</b> on the roots of each irreducible factor of $f$, and $|\mathrm{Aut}(\mathbb{K}/\mathbb{F})|=[\mathbb{K}:\mathbb{F}]$ when $f$ is separable.</div>
+<div class="card q"><span class="lbl">Question 14</span>
+Prove the first part of Theorem 2.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol">$\mathbb{F}(\alpha)\cong\mathbb{F}[x]/\langle p\rangle\cong\mathbb{F}(\beta)$ (Lecture 2, minimal polynomial of both is $p$ up to scaling), via $\alpha\mapsto x+\langle p\rangle\mapsto\beta$. Uniqueness: an isomorphism fixing $\mathbb{F}$ is determined by the image of $\alpha$. ∎ <b>Example:</b> $\mathbb{Q}(\sqrt[3]2)\cong\mathbb{Q}(\omega\sqrt[3]2)$, two different subfields of $\mathbb{C}$ that are isomorphic but not equal.</div></div>
+
+<div class="card ex"><span class="lbl">Example gallery of automorphism groups</span>
+<div class="tbl"><table>
+<tr><th>$\mathbb{K}/\mathbb{F}$</th><th>$\mathrm{Aut}(\mathbb{K}/\mathbb{F})$</th><th>Why</th></tr>
+<tr><td>$\mathbb{C}/\mathbb{R}$</td><td>$\{\mathrm{id},\bar{\ }\}\cong\mathbb{Z}_2$</td><td>$\sigma(i)=\pm i$</td></tr>
+<tr><td>$\mathbb{Q}(\sqrt2)/\mathbb{Q}$</td><td>$\mathbb{Z}_2$</td><td>$\sqrt2\mapsto\pm\sqrt2$</td></tr>
+<tr><td>$\mathbb{Q}(\sqrt[3]2)/\mathbb{Q}$</td><td><b>trivial</b></td><td>other roots of $x^3-2$ are non-real</td></tr>
+<tr><td>$\mathbb{Q}(\sqrt[3]2,\omega)/\mathbb{Q}$</td><td>$S_3$ (order 6)</td><td>permutes the 3 roots</td></tr>
+<tr><td>$\mathbb{Q}(\sqrt2,\sqrt3)/\mathbb{Q}$</td><td>$\mathbb{Z}_2\times\mathbb{Z}_2$</td><td>$\sqrt2\mapsto\pm\sqrt2$, $\sqrt3\mapsto\pm\sqrt3$</td></tr>
+<tr><td>$\mathbb{Q}(\zeta_p)/\mathbb{Q}$</td><td>$(\mathbb{Z}/p)^*\cong\mathbb{Z}_{p-1}$</td><td>$\zeta\mapsto\zeta^k$</td></tr>
+<tr><td>$\mathbb{F}_9/\mathbb{F}_3$</td><td>$\{\mathrm{id},\ z\mapsto z^3\}$</td><td>Frobenius; $i\mapsto i^3=-i$</td></tr>
+<tr><td>$\mathbb{F}_{p^n}/\mathbb{F}_p$</td><td>cyclic of order $n$, generated by $z\mapsto z^p$</td><td>Frobenius</td></tr>
+<tr><td>$\mathbb{R}/\mathbb{Q}$</td><td><b>trivial</b></td><td>see Question 16</td></tr>
+<tr><td>$\mathbb{Q}(\sqrt2,\sqrt3)/\mathbb{Q}(\sqrt6)$</td><td>$\mathbb{Z}_2$ (fixes $\sqrt6$)</td><td>$\sqrt2\mapsto-\sqrt2$, $\sqrt3\mapsto-\sqrt3$</td></tr>
+</table></div></div>
+
+<div class="card q"><span class="lbl">Explorer — the four automorphisms of $\mathbb{Q}(\sqrt2,\sqrt3)$</span>
+$\sigma(\sqrt2)=$ <select id="s2"><option value="1">+√2</option><option value="-1">−√2</option></select>
+$\sigma(\sqrt3)=$ <select id="s3"><option value="1">+√3</option><option value="-1">−√3</option></select>
+<button onclick="aut()">Compute $\sigma$</button>
+<div class="fb" id="afb"></div></div>
+
+<div class="card q"><span class="lbl">Question 15 — roots go to roots, in action</span>
+The conjugates of $\gamma=\sqrt2+\sqrt3$ are the roots of $x^4-10x^2+1$. Which automorphism sends $\gamma$ to $-\sqrt2+\sqrt3$?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">The roots are $\pm\sqrt2\pm\sqrt3$. The automorphism with $\sqrt2\mapsto-\sqrt2$, $\sqrt3\mapsto\sqrt3$ gives $\gamma\mapsto-\sqrt2+\sqrt3$. Four automorphisms, four roots: since $\gamma$ is primitive, $\sigma\mapsto\sigma(\gamma)$ is a bijection from the group to the roots of the minimal polynomial.</div></div>
+
+<div class="card q"><span class="lbl">Question 16</span>
+Show $\mathrm{Aut}(\mathbb{R}/\mathbb{Q})$ is trivial.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">An automorphism preserves squares, hence positivity, hence order.</div>
+<div class="sol">Let $\sigma\in\mathrm{Aut}(\mathbb{R})$. It fixes $\mathbb{Q}$. If $a>0$ then $a=b^2$ and $\sigma(a)=\sigma(b)^2>0$, so $\sigma$ preserves order: $a<b\Rightarrow\sigma(a)<\sigma(b)$. If $\sigma(x)\ne x$, say $\sigma(x)<x$, choose rational $r$ with $\sigma(x)<r<x$; then $\sigma(r)=r<\sigma(x)$, contradiction (similarly if $\sigma(x)>x$). So $\sigma=\mathrm{id}$. Contrast: $\mathrm{Aut}(\mathbb{C}/\mathbb{Q})$ is enormous (uncountable) though only conjugation is continuous.</div></div>
+
+<div class="card q"><span class="lbl">Question 17</span>
+The fixed field of a subgroup $H\le\mathrm{Aut}(\mathbb{K}/\mathbb{F})$ is $\mathbb{K}^H=\{a:\sigma(a)=a\ \forall\sigma\in H\}$. Compute $\mathbb{K}^H$ for $\mathbb{K}=\mathbb{Q}(\sqrt[3]2,\omega)$ and $H=\langle\sigma\rangle$ with $\sigma(\sqrt[3]2)=\omega\sqrt[3]2$, $\sigma(\omega)=\omega$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$\sigma$ has order 3 ($\sigma^3(\sqrt[3]2)=\omega^3\sqrt[3]2=\sqrt[3]2$), so $|H|=3$ and $[\mathbb{K}:\mathbb{K}^H]=3$ (Artin). $\sigma$ fixes $\omega$, hence $\mathbb{Q}(\omega)\subseteq\mathbb{K}^H$, and $[\mathbb{K}:\mathbb{Q}(\omega)]=3$, so $\mathbb{K}^H=\mathbb{Q}(\omega)$ — the "$\mathbb{Q}(\omega)$" box in the lattice above, fixed by $A_3$.</div></div>
+
+<h2><span>§6</span> Quick quiz</h2>
+<div class="card q"><span class="lbl">Quiz 1</span>Which extension is <i>not</i> simple?
+<div class="opts"><button class="opt" onclick="pick(this,0)">$\mathbb{Q}(\sqrt2,\sqrt3)/\mathbb{Q}$</button><button class="opt" onclick="pick(this,1)">$\mathbb{F}_p(x,y)/\mathbb{F}_p(x^p,y^p)$</button><button class="opt" onclick="pick(this,0)">$\mathbb{F}_9/\mathbb{F}_3$</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 2</span>The splitting field of $x^3-2$ over $\mathbb{Q}$ has degree
+<div class="opts"><button class="opt" onclick="pick(this,0)">3</button><button class="opt" onclick="pick(this,1)">6</button><button class="opt" onclick="pick(this,0)">9</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 3</span>$|\mathrm{Aut}(\mathbb{Q}(\sqrt[3]2)/\mathbb{Q})|=$
+<div class="opts"><button class="opt" onclick="pick(this,1)">1</button><button class="opt" onclick="pick(this,0)">3</button><button class="opt" onclick="pick(this,0)">6</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 4</span>If $\sigma\in\mathrm{Aut}(\mathbb{K}/\mathbb{F})$ and $\alpha$ is a root of $f\in\mathbb{F}[x]$, then $\sigma(\alpha)$ is
+<div class="opts"><button class="opt" onclick="pick(this,0)">always $\alpha$</button><button class="opt" onclick="pick(this,1)">another root of $f$ (possibly $\alpha$)</button><button class="opt" onclick="pick(this,0)">a root of $f'$</button></div><div class="fb"></div></div>
+
+<h2><span>§7</span> SAQ — Short Answer Questions</h2>
+<p class="sub">Answer on paper first, then reveal.</p>
+<div class="card q"><span class="lbl">SAQ 1</span>Define a simple extension and a primitive element.<br><button onclick="sol(this)">Answer</button><div class="sol">$\mathbb{K}/\mathbb{F}$ is simple if $\mathbb{K}=\mathbb{F}(\gamma)$; $\gamma$ is a primitive element.</div></div>
+<div class="card q"><span class="lbl">SAQ 2</span>Give an infinite algebraic non-simple extension of $\mathbb{Q}$.<br><button onclick="sol(this)">Answer</button><div class="sol">$\mathbb{Q}(\sqrt2,\sqrt3,\sqrt5,\dots)$ (or $\overline{\mathbb{Q}}$).</div></div>
+<div class="card q"><span class="lbl">SAQ 3</span>State the derivative test for separability.<br><button onclick="sol(this)">Answer</button><div class="sol">$f$ has a repeated root iff $\gcd(f,f')\ne1$.</div></div>
+<div class="card q"><span class="lbl">SAQ 4</span>Define a splitting field and give the bound on its degree.<br><button onclick="sol(this)">Answer</button><div class="sol">The smallest extension in which $f$ factors into linear factors; $[\mathbb{K}:\mathbb{F}]\le n!$.</div></div>
+<div class="card q"><span class="lbl">SAQ 5</span>State the primitive element theorem.<br><button onclick="sol(this)">Answer</button><div class="sol">A finite separable extension is simple.</div></div>
+<div class="card q"><span class="lbl">SAQ 6</span>Why must an automorphism fixing $\mathbb{F}$ map roots of $f\in\mathbb{F}[x]$ to roots?<br><button onclick="sol(this)">Answer</button><div class="sol">It fixes the coefficients of $f$, so $f(\sigma\alpha)=\sigma(f(\alpha))=0$.</div></div>
+<div class="card q"><span class="lbl">SAQ 7</span>What is $\mathrm{Aut}(\mathbb{F}_{p^n}/\mathbb{F}_p)$?<br><button onclick="sol(this)">Answer</button><div class="sol">Cyclic of order $n$, generated by the Frobenius $z\mapsto z^p$.</div></div>
+
+<nav style="margin-top:34px"><a href="L3.html">← Lecture 3</a><a href="FE.html">☰ Index</a><a href="L5.html">Lecture 5 →</a></nav>
+</div>
+<script>
+var opened=new Set(),done=0;
+function sol(b){var s=b.parentNode.querySelector('.sol');if(!b.dataset.t)b.dataset.t=b.textContent;var on=s.classList.toggle('on');b.textContent=on?'Hide':b.dataset.t;opened.add(s);document.getElementById('cnt').textContent=opened.size;if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([s]);}
+function hint(b){b.parentNode.querySelector('.hintb').classList.toggle('on');}
+function pick(b,ok){var c=b.closest('.card');if(c.dataset.done)return;c.dataset.done=1;b.classList.add(ok?'right':'wrong');var fb=c.querySelector('.fb');fb.innerHTML=ok?'<span class="g">Correct!</span>':'<span class="o">Not quite — revisit the section.</span>';if(ok){done++;document.getElementById('qs').textContent=done;document.getElementById('pb').style.width=(done*25)+'%';}}
+function sab(){var a=parseInt(document.getElementById('sa').value),b=parseInt(document.getElementById('sb').value),f=document.getElementById('sfb');if(isNaN(a)||isNaN(b)||a===b){f.textContent='Enter two different integers.';return;}
+ var c1=-2*(a+b),c0=(a-b)*(a-b);f.innerHTML='γ = √'+a+' + √'+b+' satisfies <span class="y">x⁴ '+(c1<0?'− ':'+ ')+Math.abs(c1)+'x² + '+c0+' = 0</span> (check: γ² = '+(a+b)+' + 2√'+(a*b)+', so (γ² − '+(a+b)+')² = '+(4*a*b)+'). For positive non-squares a, b, ab it is irreducible, so degree 4 and Q(√a,√b) = Q(γ).';}
+function trim(a){while(a.length&&a[a.length-1]===0)a.pop();return a;}
+function inv(x,p){for(var i=1;i<p;i++)if((x*i)%p===1)return i;return 0;}
+function pmod(a,b,p){a=a.slice();var ib=inv(b[b.length-1],p);while(a.length>=b.length&&a.length){var c=(a[a.length-1]*ib)%p,s=a.length-b.length;for(var i=0;i<b.length;i++)a[s+i]=(((a[s+i]-c*b[i])%p)+p)%p;a=trim(a);}return a;}
+function pgcd(a,b,p){while(b.length){var r=pmod(a,b,p);a=b;b=r;}return a;}
+function pfmt(a){var s=[];for(var i=a.length-1;i>=0;i--){if(!a[i])continue;var t=i===0?String(a[i]):((a[i]===1?'':a[i])+(i===1?'x':'x^'+i));s.push(t);}return s.length?s.join(' + '):'0';}
+function gcdchk(){var p=parseInt(document.getElementById('gp').value),f=document.getElementById('gfb'),ok=p>=2;for(var d=2;d*d<=p;d++)if(p%d===0)ok=false;if(!ok||p>101){f.textContent='Enter a prime p ≤ 101.';return;}
+ var c=document.getElementById('gc').value.split(',').map(function(s){return parseInt(s.trim());});if(c.some(isNaN)||c.length<2){f.textContent='Enter coefficients like 1,0,0,-1.';return;}
+ var a=trim(c.map(function(x){return((x%p)+p)%p;}).reverse());if(a.length<2){f.textContent='Need degree ≥ 1 mod p.';return;}
+ var d=[];for(var i=1;i<a.length;i++)d.push((i*a[i])%p);d=trim(d);
+ var g=d.length?pgcd(a,d,p):a;var m=inv(g[g.length-1],p);g=g.map(function(x){return(x*m)%p;});
+ f.innerHTML='f = '+pfmt(a)+'<br>f′ = '+pfmt(d)+'<br>gcd(f, f′) = <span class="y">'+pfmt(g)+'</span> → '+(g.length===1?'<span class="g">gcd = 1: SEPARABLE (distinct roots).</span>':'<span class="o">gcd has degree '+(g.length-1)+': f has a repeated root.</span>');}
+function aut(){var s2=+document.getElementById('s2').value,s3=+document.getElementById('s3').value,f=document.getElementById('afb');
+ var sg=s2*s3,sn=function(s){return s>0?'+':'−';};
+ var fixed=(s2===1&&s3===1)?'Q(√2,√3) — the identity fixes everything':(s2===1)?'Q(√2)':(s3===1)?'Q(√3)':'Q(√6)';
+ var name=(s2===1&&s3===1)?'e':(s2===1)?'τ':(s3===1)?'σ':'στ';
+ f.innerHTML='σ = <b>'+name+'</b>: √2 ↦ '+sn(s2)+'√2, √3 ↦ '+sn(s3)+'√3, <span class="y">√6 ↦ '+sn(sg)+'√6</span>, γ = √2+√3 ↦ '+sn(s2)+'√2 '+sn(s3)+' √3 (another root of x⁴ − 10x² + 1). Fixed field: <span class="g">'+fixed+'</span>.';}
+</script>
+</body>
+</html>

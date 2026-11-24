@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lecture 3 — Algebraic Elements: Worked Problems</title>
+<script>
+window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+<style>
+:root{--cy:#22e5ff;--li:#b6ff3b;--gr:#2bd96b;--ye:#ffe94d;--or:#ff9a2e;--pk:#ff5cc8;--card:#0e0e12;--bd:#26262e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:#000;color:#f2f2f2;font:17px/1.65 Georgia,'Times New Roman',serif}
+.wrap{max-width:860px;margin:0 auto;padding:18px 16px 70px}
+nav{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font:14px system-ui,sans-serif;margin-bottom:14px}
+nav a{color:var(--cy);text-decoration:none;border:1px solid var(--bd);padding:5px 12px;border-radius:20px}
+nav a:hover{border-color:var(--cy)}
+header{text-align:center;padding:22px 8px 10px}
+.tag{font:13px system-ui,sans-serif;letter-spacing:3px;color:var(--or);text-transform:uppercase}
+h1{font-size:2.1rem;margin:.2em 0;background:linear-gradient(90deg,var(--pk),var(--ye),var(--li),var(--cy));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2}
+.sub{color:#aaa;font-style:italic}
+h2{color:var(--ye);border-bottom:1px dashed var(--bd);padding-bottom:6px;margin-top:2.2em;font-size:1.45rem}
+h2 span{color:var(--pk)}
+.card{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--cy);border-radius:10px;padding:12px 16px;margin:14px 0}
+.card.def{border-left-color:var(--li)}.card.thm{border-left-color:var(--or)}.card.q{border-left-color:var(--pk)}
+.lbl{font:700 12px system-ui,sans-serif;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--cy)}
+.def .lbl{color:var(--li)}.thm .lbl{color:var(--or)}.q .lbl{color:var(--pk)}
+b{color:var(--li)}.c{color:var(--cy)}.y{color:var(--ye)}.o{color:var(--or)}.p{color:var(--pk)}.g{color:var(--gr)}
+button{font:600 14px system-ui,sans-serif;cursor:pointer;border-radius:8px;border:1px solid var(--gr);background:transparent;color:var(--gr);padding:6px 14px;margin:6px 6px 0 0}
+button:hover{background:var(--gr);color:#000}
+.sol{display:none;margin-top:10px;padding:10px 14px;border:1px solid var(--gr);border-radius:8px;background:#04140a;color:#d8ffe6}
+.sol.on{display:block;animation:f .35s}
+@keyframes f{from{opacity:0;transform:translateY(-4px)}to{opacity:1}}
+.hint{border-color:var(--ye);color:var(--ye)}.hint:hover{background:var(--ye)}
+.hintb{display:none;margin-top:8px;color:var(--ye);font-style:italic}.hintb.on{display:block}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opt{text-align:left;border-color:var(--bd);color:#f2f2f2;font-weight:400;font-family:Georgia,serif;font-size:16px;margin:0}
+.opt:hover{background:#15151c;border-color:var(--cy);color:#f2f2f2}
+.opt.right{border-color:var(--gr);background:#06210f}.opt.wrong{border-color:#ff4d4d;background:#260808}
+.fb{margin-top:8px;font:14px system-ui,sans-serif;min-height:1em}
+.score{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;text-align:right;font:13px system-ui,sans-serif;color:var(--ye);background:#000c;padding:4px 0}
+.bar{height:6px;background:#1a1a20;border-radius:4px;overflow:hidden;margin:2px 0 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--li));transition:width .4s}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a href="L2.html">← Lecture 2</a><a href="FE.html">☰ Index</a><a href="L4.html">Lecture 4 →</a></nav>
+<div class="score">Questions opened: <span id="cnt">0</span> · Quiz: <span id="qs">0</span>/4<div class="bar"><i id="pb"></i></div></div>
+
+<header>
+<div class="tag">Seven Lectures on Field Extensions</div>
+<h1>Lecture 3<br>Algebraic Elements: Worked Problems</h1>
+<div class="sub">Seven problems, each with a solution box — fields of algebraic elements, isomorphism, generators, separability.</div>
+</header>
+
+<h2><span>§1</span> Algebraic elements form a field</h2>
+
+<div class="card q"><span class="lbl">Question 1 — algebraic elements form a field</span>
+Let $\mathbb{F}$ be a field and $\mathbb{K}\supseteq\mathbb{F}$. Show that the set of elements of $\mathbb{K}$ algebraic over $\mathbb{F}$ is a field. <i>(The matrix argument from your notebook page.)</i>
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Write down the $m\cdot n$ numbers $a^ib^j$. Multiplying any of them by $a$ gives an $\mathbb{F}$-combination of them. Read this as a matrix equation $DC=aC$.</div>
+<div class="sol"><b>Setup.</b> Let $a,b$ satisfy $a_na^n+\dots+a_0=0$ and $b_mb^m+\dots+b_0=0$ with coefficients in $\mathbb{F}$, $a_n,b_m\ne0$.<br>
+<b>Reduction.</b> $-b$ is algebraic: it is a root of $(-1)^mb_mx^m+(-1)^{m-1}b_{m-1}x^{m-1}+\dots+b_0$. If $b\ne0$, then $1/b$ is a root of $b_m+b_{m-1}x+\dots+b_0x^m$ (divide the equation for $b$ by $b^m$). Hence it suffices to show $a+b$ and $ab$ are algebraic, since $a-b=a+(-b)$ and $a/b=a\cdot(1/b)$.<br>
+<b>The table.</b> From the equations, $a^n=-(a_{n-1}a^{n-1}+\dots+a_0)/a_n$ and $b^m=-(b_{m-1}b^{m-1}+\dots+b_0)/b_m$. Consider the $mn$ numbers
+$$\begin{array}{cccc}1&a&\cdots&a^{n-1}\\ b&ab&\cdots&a^{n-1}b\\ \vdots&\vdots&&\vdots\\ b^{m-1}&ab^{m-1}&\cdots&a^{n-1}b^{m-1}\end{array}$$
+listed in any order as $c_1,\dots,c_R$, $R=mn$ (take $c_1=1$). For each $i$, $a\,c_i$ is an $\mathbb{F}$-linear combination of the $c_j$: if $c_i$ is not in the last column, $ac_i$ is the entry to its right; if it is in the last column, $a\cdot a^{n-1}b^k=a^nb^k$ and $a^n$ is replaced by lower powers of $a$. So $ac_i=\sum_jd_{ij}c_j$ with $d_{ij}\in\mathbb{F}$.<br>
+<b>Matrices.</b> With $C=(c_1,\dots,c_R)^T\ne0$ and $D=(d_{ij})$, we get $DC=aC$, i.e. $(D-aI)C=0$ with $C\ne0$, so $\det(D-aI)=0$: $a$ is a root of the characteristic polynomial $\det(D-\lambda I)\in\mathbb{F}[\lambda]$, which is non-zero. Similarly there is $E$ over $\mathbb{F}$ with $bC=EC$.<br>
+<b>Sum.</b> $(D+E)C=aC+bC=(a+b)C$, so $a+b$ is a root of $\det(D+E-\lambda I)\in\mathbb{F}[\lambda]$.<br>
+<b>Product.</b> $(ED)C=E(DC)=E(aC)=a(EC)=a(bC)=abC$ (scalars $a$ commute with matrices over $\mathbb{F}$ acting on $C$ entrywise), so $ab$ is a root of $\det(ED-\lambda I)\in\mathbb{F}[\lambda]$. Both polynomials are monic up to sign, hence non-zero. ∎<br>
+<span class="y">Compare:</span> the proof in Lecture 2 §5 uses finiteness of $\mathbb{F}(a,b)$ instead; this one gives an explicit polynomial.</div></div>
+
+<h2><span>§2</span> Isomorphism, degree and generators</h2>
+<div class="card q"><span class="lbl">Question 2</span>
+Show that $\mathbb{Q}[\sqrt2]$ and $\mathbb{Q}[\sqrt3]$ are not isomorphic.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">An isomorphism must fix $\mathbb{Q}$. Where can $\sqrt2$ go?</div>
+<div class="sol">Suppose $\phi:\mathbb{Q}[\sqrt2]\to\mathbb{Q}[\sqrt3]$ is a ring isomorphism. Then $\phi(1)=1$, $\phi(2)=\phi(1+1)=2$, and similarly $\phi(n)=n$, $\phi(1/n)=1/n$, so $\phi$ fixes $\mathbb{Q}$. Write $\phi(\sqrt2)=a+b\sqrt3$ ($a,b\in\mathbb{Q}$). Then $2=\phi(2)=\phi(\sqrt2)^2=a^2+3b^2+2ab\sqrt3$, so $ab=0$ and $a^2+3b^2=2$. If $b=0$: $a^2=2$, impossible for rational $a$. If $a=0$: $3b^2=2$, so $(3b)^2=6$, impossible. Contradiction. ∎<br>(Equivalent view: $x^2-2$ has a root in $\mathbb{Q}[\sqrt2]$ but none in $\mathbb{Q}[\sqrt3]$.)</div></div>
+
+<div class="card q"><span class="lbl">Question 3</span>
+Let $\mathbb{E}$ be an extension of $\mathbb{F}$. Show $[\mathbb{E}:\mathbb{F}]=1$ if and only if $\mathbb{E}=\mathbb{F}$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">(⇐) $\mathbb{F}$ over itself has basis $\{1\}$: degree 1. (⇒) The element $1\ne0$ is linearly independent, and the dimension is $1$, so $\{1\}$ is a basis of $\mathbb{E}$ over $\mathbb{F}$. Hence every $e\in\mathbb{E}$ is $e=\lambda\cdot1=\lambda\in\mathbb{F}$, i.e. $\mathbb{E}\subseteq\mathbb{F}$, and $\mathbb{E}=\mathbb{F}$. ∎ <br>Consequence used below: if $\mathbb{F}\subseteq\mathbb{L}\subseteq\mathbb{E}$ and $[\mathbb{E}:\mathbb{L}]=1$ then $\mathbb{L}=\mathbb{E}$.</div></div>
+
+<div class="card q"><span class="lbl">Question 4</span>
+If $[\mathbb{F}[\alpha]:\mathbb{F}]=3$, show $\mathbb{F}[\alpha]=\mathbb{F}[\alpha^2]$.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Tower $\mathbb{F}\subseteq\mathbb{F}[\alpha^2]\subseteq\mathbb{F}[\alpha]$. What degrees are possible for $[\mathbb{F}[\alpha^2]:\mathbb{F}]$?</div>
+<div class="sol">Clearly $\mathbb{F}\subseteq\mathbb{F}[\alpha^2]\subseteq\mathbb{F}[\alpha]$. By the Tower Law $3=[\mathbb{F}[\alpha]:\mathbb{F}[\alpha^2]]\cdot[\mathbb{F}[\alpha^2]:\mathbb{F}]$, so $[\mathbb{F}[\alpha^2]:\mathbb{F}]\in\{1,3\}$. If it were $1$, then $\alpha^2=c\in\mathbb{F}$ (Question 3), so $\alpha$ is a root of $x^2-c$, and its minimal polynomial has degree $\le2$, contradicting degree $3$. So $[\mathbb{F}[\alpha^2]:\mathbb{F}]=3$ and $[\mathbb{F}[\alpha]:\mathbb{F}[\alpha^2]]=1$, giving $\mathbb{F}[\alpha]=\mathbb{F}[\alpha^2]$ by Question 3. ∎</div></div>
+
+<div class="card q"><span class="lbl">Question 5</span>
+Show $\mathbb{Q}[\sqrt2,\sqrt3]=\mathbb{Q}[\sqrt2+\sqrt3]$.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Put $\gamma=\sqrt2+\sqrt3$. Compute $\gamma^2$ and $\gamma\sqrt2$.</div>
+<div class="sol">($\supseteq$) $\gamma\in\mathbb{Q}[\sqrt2,\sqrt3]$. ($\subseteq$) $\gamma^2=5+2\sqrt6$, so $\sqrt6=(\gamma^2-5)/2\in\mathbb{Q}[\gamma]$. Also $\gamma\sqrt2=2+\sqrt6$, so $\sqrt2=(2+\sqrt6)/\gamma\in\mathbb{Q}[\gamma]$ ($\mathbb{Q}[\gamma]$ is a field since $\gamma$ is algebraic). Then $\sqrt3=\gamma-\sqrt2\in\mathbb{Q}[\gamma]$. Hence equality. ∎<br>Moreover $(\gamma^2-5)^2=24$ gives $\gamma^4-10\gamma^2+1=0$; since $[\mathbb{Q}[\gamma]:\mathbb{Q}]=4$ (Lecture 2, Question 6), this is the minimal polynomial of $\gamma$. So the field with basis $\{1,\sqrt2,\sqrt3,\sqrt6\}$ is a <b>simple extension</b>.</div></div>
+
+<h2><span>§3</span> $\mathbb{F}(\alpha)$ — the smallest field containing $\mathbb{F}$ and $\alpha$</h2>
+<div class="card q"><span class="lbl">Question 6</span>
+Let $\mathbb{K}\supseteq\mathbb{F}$ and $\alpha\in\mathbb{K}$. Show that $\mathbb{F}(\alpha)$, the field of fractions of $\mathbb{F}[\alpha]$, is the smallest subfield of $\mathbb{K}$ containing $\mathbb{F}$ and $\alpha$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$\mathbb{F}[\alpha]=\{f(\alpha):f\in\mathbb{F}[x]\}$ is a subring of the field $\mathbb{K}$, hence an integral domain. Its field of fractions embeds in $\mathbb{K}$ as $L=\{f(\alpha)g(\alpha)^{-1}:f,g\in\mathbb{F}[x],\ g(\alpha)\ne0\}$, which is closed under $+,\times$, inverses of non-zero elements, and contains $\mathbb{F}$ and $\alpha$: so $L$ is a subfield of $\mathbb{K}$ containing $\mathbb{F}$ and $\alpha$. <b>Smallest:</b> if $M$ is any subfield containing $\mathbb{F}$ and $\alpha$, it is closed under sums and products, so $\mathbb{F}[\alpha]\subseteq M$; being a field, $M$ also contains all quotients $f(\alpha)/g(\alpha)$, so $L\subseteq M$. Thus $L$ is the intersection of all such subfields, which is exactly $\mathbb{F}(\alpha)$. ∎<br>If $\alpha$ is algebraic, $\mathbb{F}[\alpha]$ is already a field, so $\mathbb{F}(\alpha)=\mathbb{F}[\alpha]$; if $\alpha$ is transcendental, $\mathbb{F}(\alpha)\cong\mathbb{F}(x)$.</div></div>
+
+<h2><span>§4</span> Separability and the primitive element theorem</h2>
+<div class="card def"><span class="lbl">Definitions — separability</span>
+<ol class="d" style="padding-left:1.2em">
+<li>A non-zero $f\in\mathbb{F}[x]$ is <b>separable</b> if it has no repeated roots in a splitting field; equivalently $\gcd(f,f')=1$. (Some books call $f$ separable when each irreducible factor is; for irreducible $f$ the two definitions agree.)</li>
+<li>An algebraic element $\alpha\in\mathbb{K}$ is <b>separable over $\mathbb{F}$</b> if its minimal polynomial is separable.</li>
+<li>An algebraic extension $\mathbb{K}/\mathbb{F}$ is <b>separable</b> if every element of $\mathbb{K}$ is separable over $\mathbb{F}$.</li>
+</ol>
+In characteristic $0$ every irreducible polynomial is separable, and so are all algebraic extensions. An irreducible $f$ is inseparable iff $f'=0$ (possible only in characteristic $p$, i.e. $f(x)=g(x^p)$); example: $x^p-t$ over $\mathbb{F}_p(t)$. Finite fields have only separable extensions.</div>
+
+<div class="card q"><span class="lbl">Question 7 — Primitive element theorem</span>
+Show: every finite separable extension $\mathbb{K}/\mathbb{F}$ is simple, i.e. $\mathbb{K}=\mathbb{F}(\gamma)$ for some $\gamma$.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">Finite field: $\mathbb{K}^\times$ is cyclic. Infinite field: reduce to two generators $\alpha,\beta$ and take $\gamma=\alpha+c\beta$ with $c\in\mathbb{F}$ chosen to avoid finitely many bad values.</div>
+<div class="sol"><b>Case 1: $\mathbb{F}$ finite.</b> Then $\mathbb{K}$ is finite and $\mathbb{K}^\times$ is cyclic, generated by some $\gamma$; so $\mathbb{K}=\mathbb{F}(\gamma)$.<br>
+<b>Case 2: $\mathbb{F}$ infinite.</b> $\mathbb{K}$ is finite over $\mathbb{F}$, so $\mathbb{K}=\mathbb{F}(\alpha_1,\dots,\alpha_n)$ with all $\alpha_i$ separable. By induction (using $\mathbb{F}(a,b)=\mathbb{F}(a)(b)$) it suffices to prove $\mathbb{F}(\alpha,\beta)=\mathbb{F}(\gamma)$ when $\beta$ is separable.<br>
+Let $f,g$ be the minimal polynomials of $\alpha,\beta$, and in a splitting field let $\alpha=\alpha_1,\dots,\alpha_r$ and $\beta=\beta_1,\dots,\beta_s$ be their roots; the $\beta_j$ are distinct since $g$ is separable. For each $i$ and each $j\ne1$ the equation $\alpha_i+c\beta_j=\alpha_1+c\beta_1$ has at most one solution $c$. As $\mathbb{F}$ is infinite, choose $c\in\mathbb{F}$ avoiding all these finitely many values, and put $\gamma=\alpha+c\beta$.<br>
+Let $h(x)=f(\gamma-cx)\in\mathbb{F}(\gamma)[x]$. Then $h(\beta)=f(\alpha)=0$ and $g(\beta)=0$. If $\beta_j$ ($j\ne1$) were a root of $h$, then $\gamma-c\beta_j=\alpha_i$ for some $i$, i.e. $\alpha_i+c\beta_j=\alpha+c\beta$, excluded by the choice of $c$. So the only common root of $g$ and $h$ is $\beta$, and it is simple in $g$: $\gcd(g,h)=x-\beta$. A gcd does not change under field extension, so $x-\beta\in\mathbb{F}(\gamma)[x]$, i.e. $\beta\in\mathbb{F}(\gamma)$, and then $\alpha=\gamma-c\beta\in\mathbb{F}(\gamma)$. Hence $\mathbb{F}(\alpha,\beta)=\mathbb{F}(\gamma)$. ∎<br>
+<span class="y">Example:</span> $\mathbb{Q}(\sqrt2,\sqrt3)=\mathbb{Q}(\sqrt2+\sqrt3)$ (Question 5), where $c=1$ works.</div></div>
+
+<h2><span>§5</span> Quick quiz</h2>
+<div class="card q"><span class="lbl">Quiz 1</span>How many fields lie strictly between $\mathbb{Q}$ and $\mathbb{Q}(\sqrt2,\sqrt3)$?
+<div class="opts"><button class="opt" onclick="pick(this,0)">1</button><button class="opt" onclick="pick(this,0)">2</button><button class="opt" onclick="pick(this,1)">3</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 2</span>The minimal polynomial of $\sqrt2+\sqrt3$ over $\mathbb{Q}$ is
+<div class="opts"><button class="opt" onclick="pick(this,0)">$x^2-5$</button><button class="opt" onclick="pick(this,1)">$x^4-10x^2+1$</button><button class="opt" onclick="pick(this,0)">$x^4-5x^2+6$</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 3</span>If $[\mathbb{F}[\alpha]:\mathbb{F}]=3$, then $\mathbb{F}[\alpha^2]=$
+<div class="opts"><button class="opt" onclick="pick(this,0)">$\mathbb{F}$</button><button class="opt" onclick="pick(this,1)">$\mathbb{F}[\alpha]$</button><button class="opt" onclick="pick(this,0)">depends on $\alpha$</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 4</span>Which extensions are always simple?
+<div class="opts"><button class="opt" onclick="pick(this,0)">all finite extensions</button><button class="opt" onclick="pick(this,1)">finite separable extensions</button><button class="opt" onclick="pick(this,0)">only quadratic extensions</button></div><div class="fb"></div></div>
+
+<h2><span>§6</span> SAQ — Short Answer Questions</h2>
+<p class="sub">Answer on paper first, then reveal.</p>
+<div class="card q"><span class="lbl">SAQ 1</span>Why does a ring isomorphism $\mathbb{Q}[\sqrt2]\to\mathbb{Q}[\sqrt3]$ have to fix $\mathbb{Q}$?<br><button onclick="sol(this)">Answer</button><div class="sol">It sends $1\mapsto1$, hence $n\mapsto n$ and $1/n\mapsto1/n$.</div></div>
+<div class="card q"><span class="lbl">SAQ 2</span>When is $\mathbb{F}(\alpha)=\mathbb{F}[\alpha]$?<br><button onclick="sol(this)">Answer</button><div class="sol">Exactly when $\alpha$ is algebraic over $\mathbb{F}$.</div></div>
+<div class="card q"><span class="lbl">SAQ 3</span>Define a separable polynomial.<br><button onclick="sol(this)">Answer</button><div class="sol">A polynomial with no repeated root in a splitting field, equivalently $\gcd(f,f')=1$.</div></div>
+<div class="card q"><span class="lbl">SAQ 4</span>Why is every irreducible polynomial over $\mathbb{Q}$ separable?<br><button onclick="sol(this)">Answer</button><div class="sol">If $f$ is irreducible, $\gcd(f,f')$ divides $f$, so is $1$ or $f$; but $f'\ne0$ has smaller degree in characteristic $0$, so it is $1$.</div></div>
+<div class="card q"><span class="lbl">SAQ 5</span>State the primitive element theorem.<br><button onclick="sol(this)">Answer</button><div class="sol">Every finite separable extension $\mathbb{K}/\mathbb{F}$ is simple: $\mathbb{K}=\mathbb{F}(\gamma)$ for some $\gamma$.</div></div>
+<div class="card q"><span class="lbl">SAQ 6</span>Give an inseparable irreducible polynomial.<br><button onclick="sol(this)">Answer</button><div class="sol">$x^p-t$ over $\mathbb{F}_p(t)$: its derivative is $0$ and $x^p-t=(x-\sqrt[p]t)^p$ in a splitting field.</div></div>
+<div class="card q"><span class="lbl">SAQ 7</span>What is the degree of $\mathbb{Q}(\sqrt2,\sqrt3)$ over $\mathbb{Q}$, and a basis?<br><button onclick="sol(this)">Answer</button><div class="sol">$4$, with basis $\{1,\sqrt2,\sqrt3,\sqrt6\}$.</div></div>
+
+<nav style="margin-top:34px"><a href="L2.html">← Lecture 2</a><a href="FE.html">☰ Index</a><a href="L4.html">Lecture 4 →</a></nav>
+</div>
+<script>
+var opened=new Set(),done=0;
+function sol(b){var s=b.parentNode.querySelector('.sol');s.classList.toggle('on');b.textContent=s.classList.contains('on')?'Hide':(b.textContent==='Hide'?'Show solution':b.textContent);opened.add(s);document.getElementById('cnt').textContent=opened.size;if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([s]);}
+function hint(b){b.parentNode.querySelector('.hintb').classList.toggle('on');}
+function pick(b,ok){var c=b.closest('.card');if(c.dataset.done)return;c.dataset.done=1;b.classList.add(ok?'right':'wrong');var fb=c.querySelector('.fb');fb.innerHTML=ok?'<span class="g">Correct!</span>':'<span class="o">Not quite — revisit the definition and try again in your head.</span>';if(ok){done++;document.getElementById('qs').textContent=done;document.getElementById('pb').style.width=(done*25)+'%';}}
+</script>
+</body>
+</html>

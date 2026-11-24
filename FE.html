@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Seven Lectures on Field Extensions — Index</title>
+<style>
+:root{--cy:#22e5ff;--li:#b6ff3b;--gr:#2bd96b;--ye:#ffe94d;--or:#ff9a2e;--pk:#ff5cc8;--card:#0e0e12;--bd:#26262e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:#000;color:#f2f2f2;font:17px/1.6 Georgia,'Times New Roman',serif}
+.wrap{max-width:960px;margin:0 auto;padding:22px 16px 70px}
+header{text-align:center;padding:26px 8px 8px}
+.tag{font:13px system-ui,sans-serif;letter-spacing:3px;color:var(--or);text-transform:uppercase}
+h1{font-size:2.4rem;margin:.2em 0;background:linear-gradient(90deg,var(--cy),var(--li),var(--ye),var(--or),var(--pk));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.15}
+.sub{color:#aaa;font-style:italic;max-width:640px;margin:0 auto}
+h2{color:var(--ye);border-bottom:1px dashed var(--bd);padding-bottom:6px;margin-top:2.2em;font-size:1.45rem}
+.road{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:10px;margin:18px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;margin-top:14px}
+a.card{display:block;text-decoration:none;color:inherit;background:var(--card);border:1px solid var(--bd);border-top:4px solid var(--c,#22e5ff);border-radius:12px;padding:14px 16px;transition:transform .15s,border-color .15s}
+a.card:hover{transform:translateY(-3px);border-color:var(--c,#22e5ff)}
+.num{font:700 13px system-ui,sans-serif;letter-spacing:2px;color:var(--c,#22e5ff)}
+.card h3{margin:.15em 0 .3em;font-size:1.15rem;color:#fff}
+.card p{margin:.3em 0;font-size:.93rem;color:#c9c9d2}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font:12px system-ui,sans-serif;border:1px solid var(--bd);border-radius:20px;padding:2px 9px;color:#bbb}
+.badge{float:right;font:700 11px system-ui,sans-serif;letter-spacing:1px;border-radius:20px;padding:2px 9px;text-transform:uppercase}
+.ready{color:#000;background:var(--gr)}
+.soon{color:var(--ye);border:1px solid var(--ye)}
+.visited{outline:1px solid var(--gr)}
+.how{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--cy);border-radius:10px;padding:12px 16px;margin:18px 0;font-size:.97rem}
+.how b{color:var(--li)}
+.foot{margin-top:40px;text-align:center;color:#777;font:13px system-ui,sans-serif}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<div class="tag">Interactive lecture series</div>
+<h1>Seven Lectures<br>on Field Extensions</h1>
+<div class="sub">From rings and polynomials to ruler-and-compass constructions and the Kronecker–Weber theorem — with questions, solution boxes and a short-answer set at the end of every lecture.</div>
+</header>
+
+<div class="how"><b>How to use.</b> Start with <b>Lecture 0</b> (background) before attending the lectures. Every lecture has hint and solution buttons, a quick quiz and SAQs. Keep all files in one folder so the links work. Lectures you have opened get a green outline.</div>
+
+<div class="road">
+<svg viewBox="0 0 900 150" width="100%" role="img" aria-label="Course roadmap L0 to L6 with two problem sets">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ffe94d"/></marker></defs>
+<g stroke="#ffe94d" stroke-width="2" fill="none" marker-end="url(#ar)">
+<line x1="62" y1="55" x2="100" y2="55"/><line x1="170" y1="55" x2="208" y2="55"/><line x1="278" y1="55" x2="316" y2="55"/><line x1="386" y1="55" x2="424" y2="55"/><line x1="494" y1="55" x2="532" y2="55"/><line x1="602" y1="55" x2="640" y2="55"/>
+</g>
+<g font-family="system-ui" text-anchor="middle" font-size="14" font-weight="700">
+<rect x="-8" y="30" width="70" height="50" rx="12" fill="#14120a" stroke="#ffe94d" stroke-width="2"/><text x="27" y="60" fill="#ffe94d">L0</text>
+<rect x="102" y="30" width="70" height="50" rx="12" fill="#06161a" stroke="#22e5ff" stroke-width="2"/><text x="137" y="60" fill="#22e5ff">L1</text>
+<rect x="210" y="30" width="70" height="50" rx="12" fill="#0b1a06" stroke="#b6ff3b" stroke-width="2"/><text x="245" y="60" fill="#b6ff3b">L2</text>
+<rect x="318" y="30" width="70" height="50" rx="12" fill="#1a0f04" stroke="#ff9a2e" stroke-width="2"/><text x="353" y="60" fill="#ff9a2e">L3</text>
+<rect x="426" y="30" width="70" height="50" rx="12" fill="#0b1a06" stroke="#b6ff3b" stroke-width="2"/><text x="461" y="60" fill="#b6ff3b">L4</text>
+<rect x="534" y="30" width="70" height="50" rx="12" fill="#1a0410" stroke="#ff5cc8" stroke-width="2"/><text x="569" y="60" fill="#ff5cc8">L5</text>
+<rect x="642" y="30" width="70" height="50" rx="12" fill="#04140a" stroke="#2bd96b" stroke-width="2"/><text x="677" y="60" fill="#2bd96b">L6</text>
+<a href="P1.html" aria-label="Problem Set 1"><rect x="190" y="100" width="70" height="40" rx="12" fill="#000" stroke="#aaa" stroke-width="2" stroke-dasharray="5 4"/><text x="225" y="126" fill="#ccc">P1</text></a>
+<a href="P2.html" aria-label="Problem Set 2"><rect x="560" y="100" width="70" height="40" rx="12" fill="#000" stroke="#aaa" stroke-width="2" stroke-dasharray="5 4"/><text x="595" y="126" fill="#ccc">P2</text></a>
+</g>
+<g stroke="#777" stroke-width="1.5" stroke-dasharray="3 3"><line x1="225" y1="100" x2="245" y2="80"/><line x1="595" y1="100" x2="569" y2="80"/></g>
+<text x="760" y="50" fill="#aaa" font-size="13" font-family="system-ui">Background → degree → algebraic</text>
+<text x="760" y="68" fill="#aaa" font-size="13" font-family="system-ui">elements → applications</text>
+<text x="760" y="124" fill="#777" font-size="12" font-family="system-ui">P1 / P2 = problem sets</text>
+</svg></div>
+
+<h2>Lectures</h2>
+<div class="grid">
+
+<a class="card" href="L0.html" style="--c:#ffe94d" data-id="L0">
+<span class="badge ready">Ready</span><div class="num">LECTURE 0</div><h3>Background before the lectures</h3>
+<p>Rings, units, zero divisors, ideals; why 𝔽[x] is a PID; maximal ideals ↔ monic irreducible polynomials; roots, Eisenstein, characteristic.</p>
+<div class="chips"><span class="chip">PID</span><span class="chip">maximal ideals</span><span class="chip">irreducibility</span></div></a>
+
+<a class="card" href="L1.html" style="--c:#22e5ff" data-id="L1">
+<span class="badge ready">Ready</span><div class="num">LECTURE 1</div><h3>Extensions, degree and the Tower Law</h3>
+<p>Finite vs infinite extensions, 𝔽[x]/⟨f⟩ as a field, algebraic and transcendental elements, finite ⇒ algebraic.</p>
+<div class="chips"><span class="chip">degree</span><span class="chip">Tower Law</span><span class="chip">flowcharts</span></div></a>
+
+<a class="card" href="L2.html" style="--c:#b6ff3b" data-id="L2">
+<span class="badge ready">Ready</span><div class="num">LECTURE 2</div><h3>Adjoining roots and the minimal polynomial</h3>
+<p>Kronecker's construction, simple extensions 𝔽(a), minimal polynomial, finite ⇔ finitely generated, tower of algebraic extensions, compositum.</p>
+<div class="chips"><span class="chip">𝔽(α)=𝔽[α]</span><span class="chip">minimal polynomial</span><span class="chip">lattice of subfields</span></div></a>
+
+<a class="card" href="L3.html" style="--c:#ff9a2e" data-id="L3">
+<span class="badge ready">Ready</span><div class="num">LECTURE 3</div><h3>Algebraic elements: worked problems</h3>
+<p>Algebraic elements form a field, ℚ[√2] ≇ ℚ[√3], ℚ[√2,√3] = ℚ[√2+√3], separability and the primitive element theorem.</p>
+<div class="chips"><span class="chip">matrix proof</span><span class="chip">separable</span><span class="chip">primitive element</span></div></a>
+
+<a class="card" href="L4.html" style="--c:#b6ff3b" data-id="L4"><span class="badge ready">Ready</span><div class="num">LECTURE 4</div><h3>Simple extensions, separability, splitting fields and automorphisms</h3></a>
+
+<a class="card" href="L5.html" style="--c:#ff5cc8" data-id="L5">
+<span class="badge ready">Ready</span><div class="num">LECTURE 5</div><h3>Ruler and compass constructions</h3>
+<p>Constructible numbers form a field closed under square roots; the quadratic-tower criterion; squaring the circle, doubling the cube, trisecting an angle; Gauss's polygons.</p>
+<div class="chips"><span class="chip">constructible numbers</span><span class="chip">power of 2</span><span class="chip">Fermat primes</span></div></a>
+
+<a class="card" href="L6.html" style="--c:#2bd96b" data-id="L6">
+<span class="badge ready">Ready</span><div class="num">LECTURE 6</div><h3>The Kronecker–Weber theorem</h3>
+<p>Cyclotomic polynomials and fields, Galois group (ℤ/nℤ)*, quadratic fields via Gauss sums, reduction to cyclic p-power extensions.</p>
+<div class="chips"><span class="chip">cyclotomic</span><span class="chip">abelian extensions</span><span class="chip">conductor</span></div></a>
+</div>
+
+<h2>Posters</h2><div class="grid"><a class="card" href="posters.html" style="--c:#ffe94d" data-id="posters"><h3>Poster Gallery</h3><p>Browse the field extension posters in teaching order.</p></a></div>
+<h2>Problem sets</h2>
+<div class="grid">
+<a class="card" href="P1.html" style="--c:#cccccc" data-id="P1">
+<span class="badge ready">Ready</span><div class="num">PROBLEM SET 1</div><h3>P1.html</h3>
+<p>Problems on Lectures 0–3: polynomials, degree, minimal polynomials, algebraic elements.</p></a>
+<a class="card" href="P2.html" style="--c:#cccccc" data-id="P2">
+<span class="badge ready">Ready</span><div class="num">PROBLEM SET 2</div><h3>P2.html</h3>
+<p>Problems on Lectures 4–6: constructions, cyclotomic fields, abelian extensions.</p></a>
+</div>
+
+<div class="foot">Seven Lectures on Field Extensions · interactive HTML course · <a href="index.html">Back to GA index</a></div>
+</div>
+<script>
+try{var seen=JSON.parse(localStorage.getItem('fe_seen')||'{}');}catch(e){var seen={};}
+document.querySelectorAll('a.card').forEach(function(a){
+ var id=a.dataset.id;if(seen[id])a.classList.add('visited');
+ a.addEventListener('click',function(){seen[id]=1;try{localStorage.setItem('fe_seen',JSON.stringify(seen));}catch(e){}});
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lecture 2 — Adjoining Roots, Simple Extensions, Minimal Polynomial</title>
+<script>
+window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+<style>
+:root{--cy:#22e5ff;--li:#b6ff3b;--gr:#2bd96b;--ye:#ffe94d;--or:#ff9a2e;--pk:#ff5cc8;--card:#0e0e12;--bd:#26262e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:#000;color:#f2f2f2;font:17px/1.65 Georgia,'Times New Roman',serif}
+.wrap{max-width:860px;margin:0 auto;padding:18px 16px 70px}
+nav{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font:14px system-ui,sans-serif;margin-bottom:14px}
+nav a{color:var(--cy);text-decoration:none;border:1px solid var(--bd);padding:5px 12px;border-radius:20px}
+nav a:hover{border-color:var(--cy)}
+header{text-align:center;padding:22px 8px 10px}
+.tag{font:13px system-ui,sans-serif;letter-spacing:3px;color:var(--or);text-transform:uppercase}
+h1{font-size:2.1rem;margin:.2em 0;background:linear-gradient(90deg,var(--pk),var(--ye),var(--li),var(--cy));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2}
+.sub{color:#aaa;font-style:italic}
+h2{color:var(--ye);border-bottom:1px dashed var(--bd);padding-bottom:6px;margin-top:2.2em;font-size:1.45rem}
+h2 span{color:var(--pk)}
+.card{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--cy);border-radius:10px;padding:12px 16px;margin:14px 0}
+.card.def{border-left-color:var(--li)}.card.thm{border-left-color:var(--or)}.card.q{border-left-color:var(--pk)}
+.lbl{font:700 12px system-ui,sans-serif;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--cy)}
+.def .lbl{color:var(--li)}.thm .lbl{color:var(--or)}.q .lbl{color:var(--pk)}
+b{color:var(--li)}.c{color:var(--cy)}.y{color:var(--ye)}.o{color:var(--or)}.p{color:var(--pk)}.g{color:var(--gr)}
+button{font:600 14px system-ui,sans-serif;cursor:pointer;border-radius:8px;border:1px solid var(--gr);background:transparent;color:var(--gr);padding:6px 14px;margin:6px 6px 0 0}
+button:hover{background:var(--gr);color:#000}
+.sol{display:none;margin-top:10px;padding:10px 14px;border:1px solid var(--gr);border-radius:8px;background:#04140a;color:#d8ffe6}
+.sol.on{display:block;animation:f .35s}
+@keyframes f{from{opacity:0;transform:translateY(-4px)}to{opacity:1}}
+.hint{border-color:var(--ye);color:var(--ye)}.hint:hover{background:var(--ye)}
+.hintb{display:none;margin-top:8px;color:var(--ye);font-style:italic}.hintb.on{display:block}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opt{text-align:left;border-color:var(--bd);color:#f2f2f2;font-weight:400;font-family:Georgia,serif;font-size:16px;margin:0}
+.opt:hover{background:#15151c;border-color:var(--cy);color:#f2f2f2}
+.opt.right{border-color:var(--gr);background:#06210f}.opt.wrong{border-color:#ff4d4d;background:#260808}
+.fb{margin-top:8px;font:14px system-ui,sans-serif;min-height:1em}
+.score{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;text-align:right;font:13px system-ui,sans-serif;color:var(--ye);background:#000c;padding:4px 0}
+.bar{height:6px;background:#1a1a20;border-radius:4px;overflow:hidden;margin:2px 0 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--li));transition:width .4s}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a href="L1.html">← Lecture 1</a><a href="FE.html">☰ Index</a><a href="L3.html">Lecture 3 →</a></nav>
+<div class="score">Questions opened: <span id="cnt">0</span> · Quiz: <span id="qs">0</span>/4<div class="bar"><i id="pb"></i></div></div>
+
+<header>
+<div class="tag">Seven Lectures on Field Extensions</div>
+<h1>Lecture 2<br>Adjoining Roots &amp; the Minimal Polynomial</h1>
+<div class="sub">How to build a field in which a polynomial finally has a root.</div>
+</header>
+
+<h2><span>§1</span> Adjoining a root</h2>
+<div class="card thm"><span class="lbl">Theorem 1 (Kronecker)</span>
+Let $f(x)\in\mathbb{F}[x]$ be irreducible. Then there is a field $\mathbb{K}$ containing an isomorphic copy of $\mathbb{F}$ in which $f$ has a <b>root</b>.</div>
+
+<div class="card q"><span class="lbl">Question 1</span>
+Prove Theorem 1.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">Take $\mathbb{K}=\mathbb{F}[x]/\langle f\rangle$ and the root $\alpha=x+\langle f\rangle$.</div>
+<div class="sol">Put $I=\langle f\rangle$, $\mathbb{K}=\mathbb{F}[x]/I$. $\mathbb{F}[x]$ is a Euclidean domain (so a PID), $f$ is irreducible, hence $I$ is maximal and $\mathbb{K}$ is a field.<br>
+<b>Copy of $\mathbb{F}$.</b> $\phi:\mathbb{F}\to\mathbb{K}$, $\phi(a)=a+I$ is a ring homomorphism, injective (a nonzero constant is not a multiple of $f$), so $\mathbb{F}\cong\phi(\mathbb{F})\subseteq\mathbb{K}$.<br>
+<b>Root.</b> Let $\alpha=x+I$ and $f=a_0+\dots+a_nx^n$. Then $f(\alpha)=(a_0+I)+(a_1+I)(x+I)+\dots=a_0+a_1x+\dots+a_nx^n+I=f+I=I=0_{\mathbb{K}}$. ∎</div></div>
+
+<div class="card thm"><span class="lbl">Computing in $\mathbb{F}[x]/\langle f\rangle$</span>
+Let $\deg f=n>0$. Every coset has a <b>unique</b> representative $r$ with $r=0$ or $\deg r<n$, so every element of $\mathbb{K}$ is uniquely
+$$c_0+c_1\alpha+c_2\alpha^2+\dots+c_{n-1}\alpha^{n-1},\quad c_i\in\mathbb{F}.$$</div>
+
+<div class="card q"><span class="lbl">Question 2</span>
+Why is the representative unique?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol"><b>Exists:</b> divide, $g=fq+r$ with $r=0$ or $\deg r<n$; then $g-r\in\langle f\rangle$, so $g+I=r+I=r(\alpha)$. <b>Unique:</b> if $r_1,r_2$ both work, $f\mid r_1-r_2$, but $\deg(r_1-r_2)<n$, so $r_1=r_2$.</div></div>
+
+<div class="card q"><span class="lbl">Question 3 — compute!</span>
+In $\mathbb{K}=\mathbb{Q}[x]/\langle x^3-2\rangle$ let $\alpha=x+I$. Find $\dfrac1{1+\alpha}$ in the form $c_0+c_1\alpha+c_2\alpha^2$.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">$(1+\alpha)(\alpha^2-\alpha+1)=\alpha^3+1$. What is $\alpha^3$?</div>
+<div class="sol">$\alpha^3=2$, so $(1+\alpha)(\alpha^2-\alpha+1)=3$. Hence $\dfrac1{1+\alpha}=\dfrac13\alpha^2-\dfrac13\alpha+\dfrac13$.</div></div>
+
+<div class="card q"><span class="lbl">Question 4</span>
+Is $\mathbb{Q}[x]/\langle x^2-1\rangle$ a field? What goes wrong?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">No. $x^2-1=(x-1)(x+1)$ is reducible, so $\langle x^2-1\rangle$ is not maximal. $(x-1)(x+1)=0$ in the quotient with both factors nonzero: zero divisors.</div></div>
+
+<h2><span>§2</span> Generated extensions and simple extensions</h2>
+<div class="card def"><span class="lbl">Definition</span>
+For $a_1,\dots,a_n\in\mathbb{K}\supseteq\mathbb{F}$, the intersection of all subfields of $\mathbb{K}$ containing $\mathbb{F}$ and the $a_i$ is the <b>smallest</b> such field, written $\mathbb{F}(a_1,\dots,a_n)$. It is a <b>finitely generated</b> extension of $\mathbb{F}$. When $n=1$, $\mathbb{F}(a)$ is a <b>simple extension</b>.</div>
+<div class="card def"><span class="lbl">Algebraic or transcendental via degree</span>
+$a\in\mathbb{K}$ is <b>algebraic</b> over $\mathbb{F}$ if $[\mathbb{F}(a):\mathbb{F}]<\infty$ and <b>transcendental</b> if $[\mathbb{F}(a):\mathbb{F}]=\infty$. For $a\in\mathbb{F}$: $\mathbb{F}(a)=\mathbb{F}$, degree 1.</div>
+
+<div class="card q"><span class="lbl">Question 5</span>
+Show $\mathbb{F}(a,b)=\mathbb{F}(a)(b)$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$\mathbb{F}(a)(b)$ is a field containing $\mathbb{F},a,b$, so $\mathbb{F}(a,b)\subseteq\mathbb{F}(a)(b)$. Conversely $\mathbb{F}(a,b)$ is a field containing $\mathbb{F}$ and $a$, hence $\mathbb{F}(a)$, and it contains $b$, so $\mathbb{F}(a)(b)\subseteq\mathbb{F}(a,b)$. This gives the <b>tower</b> $\mathbb{F}\subseteq\mathbb{F}(a_1)\subseteq\mathbb{F}(a_1,a_2)\subseteq\dots$</div></div>
+
+<div class="card q"><span class="lbl">Question 6</span>
+Describe $\mathbb{Q}(\sqrt2,\sqrt3)$ as a tower and give its degree (answer: 4).
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$\mathbb{Q}\subset\mathbb{Q}(\sqrt2)\subset\mathbb{Q}(\sqrt2)(\sqrt3)$. $[\mathbb{Q}(\sqrt2):\mathbb{Q}]=2$. $\sqrt3\notin\mathbb{Q}(\sqrt2)$ (else $\sqrt3=a+b\sqrt2$ gives $3=a^2+2b^2+2ab\sqrt2$, forcing $ab=0$, impossible), so $x^2-3$ stays irreducible over $\mathbb{Q}(\sqrt2)$: degree 2. Tower Law: $2\cdot2=4$.</div></div>
+<div class="card"><span class="lbl">Lattice diagram for Question 6 — subfields of $\mathbb{Q}(\sqrt2,\sqrt3)$</span>
+<svg viewBox="0 0 700 360" width="100%" role="img" aria-label="Lattice of subfields of Q(sqrt2,sqrt3)">
+<g stroke="#ffe94d" stroke-width="2" fill="none">
+<line x1="350" y1="64" x2="130" y2="150"/><line x1="350" y1="64" x2="350" y2="150"/><line x1="350" y1="64" x2="570" y2="150"/>
+<line x1="130" y1="200" x2="350" y2="286"/><line x1="350" y1="200" x2="350" y2="286"/><line x1="570" y1="200" x2="350" y2="286"/>
+</g>
+<g font-family="system-ui" text-anchor="middle">
+<rect x="195" y="12" width="310" height="52" rx="12" fill="#06161a" stroke="#22e5ff" stroke-width="2"/>
+<text x="350" y="36" fill="#22e5ff" font-size="17">Q(√2, √3) = Q(√2 + √3)</text>
+<text x="350" y="55" fill="#aaa" font-size="12">basis {1, √2, √3, √6}, degree 4 · group {e}</text>
+<rect x="40" y="150" width="180" height="50" rx="12" fill="#0b1a06" stroke="#b6ff3b" stroke-width="2"/>
+<text x="130" y="173" fill="#b6ff3b" font-size="16">Q(√2)</text><text x="130" y="191" fill="#aaa" font-size="12">fixed by τ: √3 ↦ −√3</text>
+<rect x="260" y="150" width="180" height="50" rx="12" fill="#1a0f04" stroke="#ff9a2e" stroke-width="2"/>
+<text x="350" y="173" fill="#ff9a2e" font-size="16">Q(√3)</text><text x="350" y="191" fill="#aaa" font-size="12">fixed by σ: √2 ↦ −√2</text>
+<rect x="480" y="150" width="180" height="50" rx="12" fill="#1a0410" stroke="#ff5cc8" stroke-width="2"/>
+<text x="570" y="173" fill="#ff5cc8" font-size="16">Q(√6)</text><text x="570" y="191" fill="#aaa" font-size="12">fixed by στ</text>
+<rect x="260" y="286" width="180" height="50" rx="12" fill="#14120a" stroke="#ffe94d" stroke-width="2"/>
+<text x="350" y="310" fill="#ffe94d" font-size="17">Q</text><text x="350" y="328" fill="#aaa" font-size="12">whole group {e, σ, τ, στ}</text>
+</g>
+<g font-family="system-ui" font-size="14" fill="#ffe94d" text-anchor="middle">
+<text x="215" y="100">2</text><text x="362" y="108">2</text><text x="487" y="100">2</text>
+<text x="215" y="254">2</text><text x="362" y="248">2</text><text x="487" y="254">2</text>
+<text x="640" y="50" fill="#aaa" font-size="12">total degree 2·2 = 4</text>
+</g></svg>
+<button onclick="sol(this)">Why exactly these three?</button>
+<div class="sol">Every edge has degree $2$, and by the Tower Law the top has degree $4$ over $\mathbb{Q}$. The extension is Galois with group $\{e,\sigma,\tau,\sigma\tau\}\cong\mathbb{Z}_2\times\mathbb{Z}_2$, which has exactly three subgroups of order $2$; by the Galois correspondence there are exactly three intermediate fields, $\mathbb{Q}(\sqrt2),\mathbb{Q}(\sqrt3),\mathbb{Q}(\sqrt6)$ (the fixed fields of $\tau$, $\sigma$, $\sigma\tau$). Subgroups go <i>down</i> as fields go <i>up</i>. Since $4$ is not prime, Theorem 2 of Lecture 1 allows intermediate fields here, unlike the prime-degree case in Lecture 1, Question 6.</div></div>
+
+
+<h2><span>§3</span> A closer look at $\mathbb{F}(a)$</h2>
+<p>Define $\psi:\mathbb{F}[x]\to\mathbb{F}[a]$, $\psi(f)=f(a)$. It is an <b>onto ring homomorphism</b>, and $\ker\psi=\{f:f(a)=0\}$ is an ideal of $\mathbb{F}[x]$.</p>
+<div class="card"><span class="lbl">Flowchart — what $\ker\psi$ tells us</span>
+<svg viewBox="0 0 700 300" width="100%" role="img" aria-label="kernel zero gives transcendental, nonzero gives algebraic">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ffe94d"/></marker></defs>
+<rect x="190" y="8" width="320" height="46" rx="12" fill="#06161a" stroke="#22e5ff" stroke-width="2"/>
+<text x="350" y="37" text-anchor="middle" fill="#22e5ff" font-size="16" font-family="system-ui">ψ : F[x] → F[a],  ψ(f) = f(a)</text>
+<path d="M300 54L170 105" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<path d="M400 54L530 105" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<rect x="30" y="107" width="280" height="50" rx="12" fill="#1a0410" stroke="#ff5cc8" stroke-width="2"/>
+<text x="170" y="130" text-anchor="middle" fill="#ff5cc8" font-size="15" font-family="system-ui">ker ψ = 0  (one-one)</text>
+<text x="170" y="149" text-anchor="middle" fill="#ff5cc8" font-size="12" font-family="system-ui">no nonzero polynomial kills a</text>
+<rect x="390" y="107" width="280" height="50" rx="12" fill="#04140a" stroke="#2bd96b" stroke-width="2"/>
+<text x="530" y="130" text-anchor="middle" fill="#2bd96b" font-size="15" font-family="system-ui">ker ψ ≠ 0</text>
+<text x="530" y="149" text-anchor="middle" fill="#2bd96b" font-size="12" font-family="system-ui">ker ψ = ⟨q(x)⟩, q irreducible</text>
+<path d="M170 157L170 195" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<path d="M530 157L530 195" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<rect x="30" y="197" width="280" height="80" rx="12" fill="#000" stroke="#ff5cc8" stroke-width="2"/>
+<text x="170" y="220" text-anchor="middle" fill="#ff5cc8" font-size="14" font-family="system-ui">a TRANSCENDENTAL</text>
+<text x="170" y="240" text-anchor="middle" fill="#f2f2f2" font-size="12" font-family="system-ui">F[a] ≅ F[x] (not a field: 1/a ∉ F[a])</text>
+<text x="170" y="260" text-anchor="middle" fill="#f2f2f2" font-size="12" font-family="system-ui">F(a) purely transcendental, [F(a):F] = ∞</text>
+<rect x="390" y="197" width="280" height="80" rx="12" fill="#000" stroke="#2bd96b" stroke-width="2"/>
+<text x="530" y="220" text-anchor="middle" fill="#2bd96b" font-size="14" font-family="system-ui">a ALGEBRAIC</text>
+<text x="530" y="240" text-anchor="middle" fill="#f2f2f2" font-size="12" font-family="system-ui">F[x]/⟨q⟩ ≅ F[a] = F(a)  (a field)</text>
+<text x="530" y="260" text-anchor="middle" fill="#f2f2f2" font-size="12" font-family="system-ui">[F(a):F] = deg q</text>
+</svg></div>
+
+<div class="card q"><span class="lbl">Question 7</span>
+If $a$ is transcendental over $\mathbb{F}$, why is $\mathbb{F}[a]$ <b>not</b> a field, and why is $[\mathbb{F}(a):\mathbb{F}]=\infty$?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">Here $\mathbb{F}[a]\cong\mathbb{F}[x]$, whose only units are the non-zero constants. So $a$ (non-constant) has no inverse in $\mathbb{F}[a]$. The elements $1,a,a^2,\dots$ are independent over $\mathbb{F}$, so the dimension is infinite. Example: $\mathbb{Q}[\pi]\cong\mathbb{Q}[x]$ and $\mathbb{Q}(\pi)\cong\mathbb{Q}(x)$.</div></div>
+
+<div class="card q"><span class="lbl">Question 8</span>
+If $a$ and $b$ are both transcendental over $\mathbb{F}$, is $\mathbb{F}[a]\cong\mathbb{F}[b]$?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">Yes: $\mathbb{F}[a]\cong\mathbb{F}[x]\cong\mathbb{F}[b]$, via $f(a)\mapsto f(b)$. So $\mathbb{Q}(\pi)\cong\mathbb{Q}(e)$ as abstract fields, though $\pi\ne e$.</div></div>
+
+<h2><span>§4</span> The minimal polynomial</h2>
+<div class="card def"><span class="lbl">Definition</span>
+If $\alpha$ is algebraic over $\mathbb{F}$, its <b>minimal polynomial</b> is the monic $q(x)\in\mathbb{F}[x]$ of least degree with $q(\alpha)=0$. $\alpha$ has <b>degree $n$</b> over $\mathbb{F}$ if $\deg q=n$.</div>
+
+<div class="card q"><span class="lbl">Question 9</span>
+Prove: $q$ is irreducible, and if $f(\alpha)=0$ then $q\mid f$.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">Use the division algorithm and minimality of $\deg q$.</div>
+<div class="sol"><b>Divides.</b> Write $f=qs+r$ with $r=0$ or $\deg r<\deg q$. Then $r(\alpha)=f(\alpha)-q(\alpha)s(\alpha)=0$; minimality forces $r=0$.<br>
+<b>Irreducible.</b> If $q=gh$ with lower degrees, then $g(\alpha)h(\alpha)=0$ in a field, so $g(\alpha)=0$ or $h(\alpha)=0$, contradicting minimality. ∎ So $\ker\psi=\langle q\rangle$ and the minimal polynomial is <b>unique</b>.</div></div>
+
+<div class="card q"><span class="lbl">Question 10 — find them</span>
+Minimal polynomial of $2-i$ over $\mathbb{Q}$ and over $\mathbb{C}$; and of $1+i$ over $\mathbb{Q}$ and $\mathbb{C}$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$2-i$: $(x-2)^2=-1$, so $x^2-4x+5$ over $\mathbb{Q}$ (irreducible: no rational root), and $x-2+i$ over $\mathbb{C}$. Similarly $1+i$: $x^2-2x+2$ over $\mathbb{Q}$, and $x-1-i$ over $\mathbb{C}$. The minimal polynomial depends on the <b>base field</b>!</div></div>
+
+<div class="card thm"><span class="lbl">Theorem 2</span>
+Let $\alpha$ be algebraic of degree $n$ over $\mathbb{F}$. Then (1) $\mathbb{F}(\alpha)=\mathbb{F}[\alpha]$, and (2) $\mathbb{F}(\alpha)=\{a_0+a_1\alpha+\dots+a_{n-1}\alpha^{n-1}:a_i\in\mathbb{F}\}$; so $[\mathbb{F}(\alpha):\mathbb{F}]=n$ and $\mathbb{F}(\alpha)\cong\mathbb{F}[x]/\langle q\rangle$.</div>
+
+<div class="card q"><span class="lbl">Question 11</span>
+Prove Theorem 2.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">An element of $\mathbb{F}(\alpha)$ is $g(\alpha)/h(\alpha)$. Since $h(\alpha)\ne0$, $q\nmid h$. What is $\gcd(h,q)$?</div>
+<div class="sol">Clearly $\mathbb{F}[\alpha]\subseteq\mathbb{F}(\alpha)$. Take $g(\alpha)/h(\alpha)$ with $h(\alpha)\ne0$. As $q$ is irreducible and $q\nmid h$, $\gcd(h,q)=1$, so $qr+hs=1$ for some $r,s\in\mathbb{F}[x]$. Evaluating at $\alpha$: $h(\alpha)s(\alpha)=1$, so $1/h(\alpha)=s(\alpha)$ and $g(\alpha)/h(\alpha)=g(\alpha)s(\alpha)\in\mathbb{F}[\alpha]$. This proves (1).<br>
+For (2) divide $gs=qt+\rho$ with $\rho=0$ or $\deg\rho<n$; then $g(\alpha)s(\alpha)=\rho(\alpha)$ has the stated form. ∎</div></div>
+
+<div class="card q"><span class="lbl">Question 12</span>
+Invert $1+\sqrt2$ in $\mathbb{Q}(\sqrt2)$ and describe all elements of $\mathbb{Q}(\sqrt2)$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$\mathbb{Q}(\sqrt2)=\mathbb{Q}[\sqrt2]=\{a+b\sqrt2\}$, and $\dfrac1{1+\sqrt2}=\sqrt2-1$ because $(\sqrt2-1)(\sqrt2+1)=1$ (Bezout in action: $q=x^2-2$).</div></div>
+
+<h2><span>§5</span> Finitely generated, algebraic elements, and towers</h2>
+<div class="card thm"><span class="lbl">Theorem 3</span>
+$\mathbb{K}/\mathbb{F}$ is <b>finite</b> iff $\mathbb{K}$ is generated by finitely many algebraic elements. If $a_1,\dots,a_k$ are algebraic of degrees $n_1,\dots,n_k$, then $[\mathbb{F}(a_1,\dots,a_k):\mathbb{F}]\le n_1\cdots n_k$.</div>
+<div class="card q"><span class="lbl">Question 13</span>
+Prove Theorem 3.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol">($\Rightarrow$) A finite basis generates $\mathbb{K}$ over $\mathbb{F}$, and each element is algebraic (finite ⇒ algebraic).<br>
+($\Leftarrow$) $\mathbb{F}\subseteq\mathbb{F}_1=\mathbb{F}(a_1)\subseteq\dots\subseteq\mathbb{F}_k$ with $\mathbb{F}_i=\mathbb{F}_{i-1}(a_i)$. $a_i$ is algebraic over $\mathbb{F}$, hence over $\mathbb{F}_{i-1}$ with minimal polynomial dividing the old one, so $[\mathbb{F}_i:\mathbb{F}_{i-1}]\le n_i$. Tower Law: $[\mathbb{F}_k:\mathbb{F}]\le n_1\cdots n_k$. ∎</div></div>
+
+<div class="card thm"><span class="lbl">Corollary</span>
+If $a,b\in\mathbb{K}$ are algebraic over $\mathbb{F}$, then $\mathbb{F}(a,b)$ is finite over $\mathbb{F}$; hence $a\pm b$, $ab$, $a/b$ ($b\ne0$) are algebraic. The algebraic elements of $\mathbb{K}$ over $\mathbb{F}$ form a <b>subfield</b>.</div>
+<div class="card q"><span class="lbl">Question 14</span>
+Now justify the examples from Lecture 1: $\mathbb{Q}(\sqrt2,\sqrt3,\sqrt5,\sqrt7,\dots)$ and $\mathbb{Q}(\sqrt2,\sqrt[3]2,\sqrt[4]2,\dots)$ are algebraic but not finite extensions of $\mathbb{Q}$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">Every element is a rational function in finitely many generators, so lies in a finitely generated sub-extension, which is finite; by the Corollary the element is algebraic. Not finite: the second field contains $\sqrt[n]2$ of degree $n$ for every $n$, and if $[\mathbb{K}:\mathbb{Q}]=N$ were finite, Theorem 2 of Lecture 1 would give $n\mid N$ for every $n$, impossible. (The first field is similar: it contains $\mathbb{Q}(\sqrt{p_1},\dots,\sqrt{p_k})$ of degree $2^k$ for every $k$.)</div></div>
+
+<div class="card thm"><span class="lbl">Theorem 4 (Tower of algebraic extensions)</span>
+If $\mathbb{K}/\mathbb{F}$ and $\mathbb{L}/\mathbb{K}$ are algebraic, then $\mathbb{L}/\mathbb{F}$ is algebraic.</div>
+<div class="card q"><span class="lbl">Question 15</span>
+Prove Theorem 4.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">Take $c\in\mathbb{L}$ and its minimal polynomial over $\mathbb{K}$. Its coefficients live in $\mathbb{K}$ — adjoin them to $\mathbb{F}$ first.</div>
+<div class="sol">Let $c\in\mathbb{L}$ with minimal polynomial $x^m+k_{m-1}x^{m-1}+\dots+k_0$ over $\mathbb{K}$. Put $\mathbb{F}_0=\mathbb{F}(k_0,\dots,k_{m-1})$. Each $k_i$ is algebraic over $\mathbb{F}$, so $[\mathbb{F}_0:\mathbb{F}]<\infty$ (Theorem 3). Since $c$ is algebraic over $\mathbb{F}_0$, $[\mathbb{F}_0(c):\mathbb{F}_0]<\infty$. By the Tower Law $[\mathbb{F}_0(c):\mathbb{F}]<\infty$, so $c$ is algebraic over $\mathbb{F}$. ∎</div></div>
+
+<h2><span>§6</span> Compositum</h2>
+<div class="card def"><span class="lbl">Definition</span>
+For subfields $\mathbb{K}_1,\mathbb{K}_2$ of $\mathbb{K}$, the <b>composite</b> $\mathbb{K}_1\mathbb{K}_2$ is the smallest subfield of $\mathbb{K}$ containing both (similarly for any collection of subfields).</div>
+<div class="card q"><span class="lbl">Question 16</span>
+Identify $\mathbb{Q}(\sqrt2)\,\mathbb{Q}(\sqrt3)$ and give its degree over $\mathbb{Q}$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">It contains $\mathbb{Q},\sqrt2,\sqrt3$ and is generated by them, so it is $\mathbb{Q}(\sqrt2,\sqrt3)$, of degree 4 (Question 6).</div></div>
+
+<h2><span>§7</span> Quick quiz</h2>
+<div class="card q" data-ok="1"><span class="lbl">Quiz 1</span>The minimal polynomial of $\sqrt3$ over $\mathbb{Q}(\sqrt2)$ is
+<div class="opts"><button class="opt" onclick="pick(this,0)">$x-\sqrt3$</button><button class="opt" onclick="pick(this,1)">$x^2-3$</button><button class="opt" onclick="pick(this,0)">$x^4-10x^2+1$</button></div><div class="fb"></div></div>
+<div class="card q" data-ok="1"><span class="lbl">Quiz 2</span>Which extension is <i>purely transcendental</i>?
+<div class="opts"><button class="opt" onclick="pick(this,0)">$\mathbb{Q}(\sqrt2)/\mathbb{Q}$</button><button class="opt" onclick="pick(this,1)">$\mathbb{Q}(\pi)/\mathbb{Q}$</button><button class="opt" onclick="pick(this,0)">$\mathbb{C}/\mathbb{R}$</button></div><div class="fb"></div></div>
+<div class="card q" data-ok="0"><span class="lbl">Quiz 3</span>If $\alpha$ has minimal polynomial of degree 5 over $\mathbb{F}$, then $[\mathbb{F}(\alpha):\mathbb{F}]=$
+<div class="opts"><button class="opt" onclick="pick(this,1)">5</button><button class="opt" onclick="pick(this,0)">4</button><button class="opt" onclick="pick(this,0)">infinite</button></div><div class="fb"></div></div>
+<div class="card q" data-ok="1"><span class="lbl">Quiz 4</span>$\mathbb{Q}(\sqrt2)\,\mathbb{Q}(\sqrt3)$ equals
+<div class="opts"><button class="opt" onclick="pick(this,0)">$\mathbb{Q}(\sqrt6)$</button><button class="opt" onclick="pick(this,1)">$\mathbb{Q}(\sqrt2,\sqrt3)$</button><button class="opt" onclick="pick(this,0)">$\mathbb{Q}(\sqrt5)$</button></div><div class="fb"></div></div>
+
+<h2><span>§8</span> SAQ — Short Answer Questions</h2>
+<p class="sub">Answer on paper first, then reveal.</p>
+<div class="card q"><span class="lbl">SAQ 1</span>State Kronecker's theorem (adjoining a root).<br><button onclick="sol(this)">Answer</button><div class="sol">For irreducible $f\in\mathbb{F}[x]$, $\mathbb{F}[x]/\langle f\rangle$ is a field containing a copy of $\mathbb{F}$ and the root $x+\langle f\rangle$ of $f$.</div></div>
+<div class="card q"><span class="lbl">SAQ 2</span>What is the unique form of an element of $\mathbb{F}[x]/\langle f\rangle$, $\deg f=n$?<br><button onclick="sol(this)">Answer</button><div class="sol">$c_0+c_1\alpha+\dots+c_{n-1}\alpha^{n-1}$, $c_i\in\mathbb{F}$.</div></div>
+<div class="card q"><span class="lbl">SAQ 3</span>Define a simple extension.<br><button onclick="sol(this)">Answer</button><div class="sol">An extension of the form $\mathbb{F}(a)$, generated by a single element.</div></div>
+<div class="card q"><span class="lbl">SAQ 4</span>When is $\mathbb{F}[a]=\mathbb{F}(a)$?<br><button onclick="sol(this)">Answer</button><div class="sol">Exactly when $a$ is algebraic over $\mathbb{F}$.</div></div>
+<div class="card q"><span class="lbl">SAQ 5</span>Why is the minimal polynomial irreducible?<br><button onclick="sol(this)">Answer</button><div class="sol">A factorisation $q=gh$ would give $g(\alpha)h(\alpha)=0$, so one factor vanishes at $\alpha$ with smaller degree.</div></div>
+<div class="card q"><span class="lbl">SAQ 6</span>Bound $[\mathbb{F}(a,b):\mathbb{F}]$ for algebraic $a,b$ of degrees $m,n$.<br><button onclick="sol(this)">Answer</button><div class="sol">At most $mn$.</div></div>
+<div class="card q"><span class="lbl">SAQ 7</span>Define the composite of two subfields.<br><button onclick="sol(this)">Answer</button><div class="sol">The smallest subfield containing both.</div></div>
+
+<nav style="margin-top:34px"><a href="L1.html">← Lecture 1</a><a href="FE.html">☰ Index</a><a href="L3.html">Lecture 3 →</a></nav>
+</div>
+<script>
+var opened=new Set(),done=0;
+function sol(b){var s=b.parentNode.querySelector('.sol');s.classList.toggle('on');b.textContent=s.classList.contains('on')?'Hide':(b.textContent==='Hide'?'Show solution':b.textContent);opened.add(s);document.getElementById('cnt').textContent=opened.size;if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([s]);}
+function hint(b){b.parentNode.querySelector('.hintb').classList.toggle('on');}
+function pick(b,ok){var c=b.closest('.card');if(c.dataset.done)return;c.dataset.done=1;b.classList.add(ok?'right':'wrong');var fb=c.querySelector('.fb');fb.innerHTML=ok?'<span class="g">Correct!</span>':'<span class="o">Not quite — revisit the definition and try again in your head.</span>';if(ok){done++;document.getElementById('qs').textContent=done;document.getElementById('pb').style.width=(done*25)+'%';}}
+</script>
+</body>
+</html>

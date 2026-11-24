@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lecture 1 — Field Extensions and Degree</title>
+<script>
+window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+<style>
+:root{--bg:#000;--tx:#f2f2f2;--cy:#22e5ff;--li:#b6ff3b;--gr:#2bd96b;--ye:#ffe94d;--or:#ff9a2e;--pk:#ff5cc8;--card:#0e0e12;--bd:#26262e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:#000;color:var(--tx);font:17px/1.65 Georgia,'Times New Roman',serif}
+.wrap{max-width:860px;margin:0 auto;padding:18px 16px 70px}
+nav{display:flex;justify-content:space-between;gap:10px;font:14px system-ui,sans-serif;margin-bottom:14px}
+nav a{color:var(--cy);text-decoration:none;border:1px solid var(--bd);padding:5px 12px;border-radius:20px}
+nav a:hover{border-color:var(--cy)}
+header{text-align:center;padding:22px 8px 10px}
+.tag{font:13px system-ui,sans-serif;letter-spacing:3px;color:var(--or);text-transform:uppercase}
+h1{font-size:2.2rem;margin:.2em 0;background:linear-gradient(90deg,var(--cy),var(--li),var(--ye),var(--pk));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2}
+.sub{color:#aaa;font-style:italic}
+h2{color:var(--ye);border-bottom:1px dashed var(--bd);padding-bottom:6px;margin-top:2.2em;font-size:1.45rem}
+h2 span{color:var(--pk)}
+.card{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--cy);border-radius:10px;padding:12px 16px;margin:14px 0}
+.card.def{border-left-color:var(--li)}
+.card.thm{border-left-color:var(--or)}
+.card.q{border-left-color:var(--pk)}
+.lbl{font:700 12px system-ui,sans-serif;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px}
+.def .lbl{color:var(--li)}.thm .lbl{color:var(--or)}.q .lbl{color:var(--pk)}.card .lbl{color:var(--cy)}
+b,.k{color:var(--li)}.c{color:var(--cy)}.y{color:var(--ye)}.o{color:var(--or)}.p{color:var(--pk)}.g{color:var(--gr)}
+button{font:600 14px system-ui,sans-serif;cursor:pointer;border-radius:8px;border:1px solid var(--gr);background:transparent;color:var(--gr);padding:6px 14px;margin:6px 6px 0 0}
+button:hover{background:var(--gr);color:#000}
+.sol{display:none;margin-top:10px;padding:10px 14px;border:1px solid var(--gr);border-radius:8px;background:#04140a;color:#d8ffe6}
+.sol.on{display:block;animation:f .35s}
+@keyframes f{from{opacity:0;transform:translateY(-4px)}to{opacity:1}}
+.hint{border-color:var(--ye);color:var(--ye)}.hint:hover{background:var(--ye)}
+.hintb{display:none;margin-top:8px;color:var(--ye);font-style:italic}.hintb.on{display:block}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opt{text-align:left;border-color:var(--bd);color:var(--tx);font-weight:400;font-family:Georgia,serif;font-size:16px;margin:0}
+.opt:hover{background:#15151c;border-color:var(--cy);color:var(--tx)}
+.opt.right{border-color:var(--gr);background:#06210f}
+.opt.wrong{border-color:#ff4d4d;background:#260808}
+.fb{margin-top:8px;font:14px system-ui,sans-serif;min-height:1em}
+.score{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;text-align:right;font:13px system-ui,sans-serif;color:var(--ye);background:#000c;padding:4px 0}
+.bar{height:6px;background:#1a1a20;border-radius:4px;overflow:hidden;margin:2px 0 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--li));transition:width .4s}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+td,th{border:1px solid var(--bd);padding:6px 10px;text-align:left}th{color:var(--cy)}
+mjx-container{color:inherit}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+input[type=number]{width:70px;background:#000;color:var(--ye);border:1px solid var(--ye);border-radius:6px;padding:4px;font-size:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a href="FE.html">☰ Index</a><a href="L2.html">Lecture 2 →</a></nav>
+<div class="score">Questions opened: <span id="cnt">0</span> · Quiz: <span id="qs">0</span>/4<div class="bar"><i id="pb"></i></div></div>
+
+<header>
+<div class="tag">Seven Lectures on Field Extensions</div>
+<h1>Lecture 1<br>Extensions, Degree &amp; the Tower Law</h1>
+<div class="sub">Big fields, small fields — and how to measure the gap.</div>
+</header>
+
+<h2><span>§1</span> What is a field extension?</h2>
+<div class="card def"><span class="lbl">Definition</span>
+A field $\mathbb{K}$ is an <b>extension</b> of a field $\mathbb{F}$ if $\mathbb{K}$ contains $\mathbb{F}$, i.e. $\mathbb{F}$ is a <b>subfield</b> of $\mathbb{K}$. We write $\mathbb{K}/\mathbb{F}$.</div>
+<p>Familiar examples: $\mathbb{Q}\subset\mathbb{R}\subset\mathbb{C}$. Also $\mathbb{Q}\subset\mathbb{Q}[\sqrt2]=\{a+b\sqrt2: a,b\in\mathbb{Q}\}$.</p>
+
+<div class="card q"><span class="lbl">Question 1</span>
+Is $\mathbb{Z}_3$ an extension of $\mathbb{Z}_2$? Is $\mathbb{Q}[\sqrt2]$ an extension of $\mathbb{Q}$?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$\mathbb{Z}_3$ is <b>not</b> an extension of $\mathbb{Z}_2$: $\mathbb{Z}_2$ is not even a subset of $\mathbb{Z}_3$ as a subfield ($1+1=0$ in $\mathbb{Z}_2$ but $1+1=2\neq0$ in $\mathbb{Z}_3$). Fields of different characteristic can never be nested. Yes, $\mathbb{Q}[\sqrt2]/\mathbb{Q}$ is an extension.</div></div>
+
+<h2><span>§2</span> Extensions are vector spaces</h2>
+<div class="card thm"><span class="lbl">Fact</span>
+If $\mathbb{K}$ is an extension of $\mathbb{F}$, then $\mathbb{K}$ is a <b>vector space over $\mathbb{F}$</b>: add elements of $\mathbb{K}$, multiply by scalars from $\mathbb{F}\subseteq\mathbb{K}$.</div>
+<div class="card def"><span class="lbl">Definition — degree</span>
+The dimension of $\mathbb{K}$ over $\mathbb{F}$ is the <b>degree</b> $[\mathbb{K}:\mathbb{F}]$. If it is finite, $\mathbb{K}$ is a <b>finite extension</b>; otherwise an <b>infinite extension</b>.</div>
+
+<div class="tbl"><table>
+<tr><th>Extension</th><th>A basis over the small field</th><th>Degree</th></tr>
+<tr><td>$\mathbb{C}/\mathbb{R}$</td><td>$\{1,i\}$</td><td class="y">2</td></tr>
+<tr><td>$\mathbb{Q}[\sqrt2]/\mathbb{Q}$</td><td>$\{1,\sqrt2\}$</td><td class="y">2</td></tr>
+<tr><td>$\mathbb{K}/\mathbb{K}$</td><td>$\{1\}$</td><td class="y">1</td></tr>
+<tr><td>$\mathbb{R}/\mathbb{Q}$</td><td>uncountable — no finite basis</td><td class="y">$\infty$</td></tr>
+</table></div>
+
+
+<div class="card"><span class="lbl">Flowchart 1 — Classification by degree</span>
+<svg viewBox="0 0 700 250" width="100%" role="img" aria-label="Extensions split into finite and infinite">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ffe94d"/></marker></defs>
+<rect x="230" y="10" width="240" height="52" rx="12" fill="#06161a" stroke="#22e5ff" stroke-width="2"/>
+<text x="350" y="42" text-anchor="middle" fill="#22e5ff" font-size="18" font-family="system-ui">Extension  K / F</text>
+<text x="350" y="92" text-anchor="middle" fill="#ffe94d" font-size="13" font-family="system-ui">compute [K : F] = dim<tspan font-size="10" dy="3">F</tspan><tspan dy="-3"> K</tspan></text>
+<path d="M300 62L170 122" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<path d="M400 62L530 122" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<rect x="50" y="125" width="240" height="52" rx="12" fill="#0b1a06" stroke="#b6ff3b" stroke-width="2"/>
+<text x="170" y="148" text-anchor="middle" fill="#b6ff3b" font-size="16" font-family="system-ui">FINITE extension</text>
+<text x="170" y="167" text-anchor="middle" fill="#b6ff3b" font-size="13" font-family="system-ui">[K : F] &lt; ∞</text>
+<rect x="410" y="125" width="240" height="52" rx="12" fill="#1a0f04" stroke="#ff9a2e" stroke-width="2"/>
+<text x="530" y="148" text-anchor="middle" fill="#ff9a2e" font-size="16" font-family="system-ui">INFINITE extension</text>
+<text x="530" y="167" text-anchor="middle" fill="#ff9a2e" font-size="13" font-family="system-ui">[K : F] = ∞</text>
+<text x="170" y="205" text-anchor="middle" fill="#ff5cc8" font-size="13" font-family="system-ui">C/R (2), Q(√2)/Q (2), K/K (1)</text>
+<text x="530" y="205" text-anchor="middle" fill="#ff5cc8" font-size="13" font-family="system-ui">R/Q, Q(x)/Q, Q(π)/Q</text>
+<text x="350" y="240" text-anchor="middle" fill="#aaa" font-size="12" font-family="system-ui">Every extension is exactly one of the two.</text>
+</svg></div>
+<div class="card q"><span class="lbl">Question 1b</span>
+Place each in the flowchart: $\mathbb{Q}[\sqrt2]/\mathbb{Q}$, $\mathbb{R}/\mathbb{Q}$, $\mathbb{F}/\mathbb{F}$, $\mathbb{Q}(x)/\mathbb{Q}$ (rational functions).
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$\mathbb{Q}[\sqrt2]/\mathbb{Q}$ and $\mathbb{F}/\mathbb{F}$ are finite (degrees 2 and 1). $\mathbb{R}/\mathbb{Q}$ is infinite (uncountable). $\mathbb{Q}(x)/\mathbb{Q}$ is infinite: $1,x,x^2,\dots$ are independent over $\mathbb{Q}$.</div></div>
+
+<div class="card q"><span class="lbl">Question 2</span>
+Why is $[\mathbb{R}:\mathbb{Q}]=\infty$?
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Count: how many elements does a finite-dimensional $\mathbb{Q}$-vector space have?</div>
+<div class="sol">If $[\mathbb{R}:\mathbb{Q}]=n$ then $\mathbb{R}\cong\mathbb{Q}^n$, which is <b>countable</b>. But $\mathbb{R}$ is uncountable. Hence $[\mathbb{R}:\mathbb{Q}]=\infty$. (Another route: $1,\pi,\pi^2,\dots$ are linearly independent over $\mathbb{Q}$.)</div></div>
+
+<div class="card q"><span class="lbl">Question 3 — try it</span>
+What is $[\mathbb{C}:\mathbb{R}]$? Enter a number: <input type="number" id="in3"> <button onclick="chk3()">Check</button>
+<div class="fb" id="fb3"></div></div>
+
+<div class="card q"><span class="lbl">Question 4</span>
+Give an example of a <b>non-zero vector space with only finitely many elements</b>.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$\mathbb{Z}_p$ ($p$ prime) is a vector space over itself with exactly $p$ elements. More generally $\mathbb{Z}_p^n$ has $p^n$ elements. A finite field always yields such an example.</div></div>
+
+<h2><span>§3</span> The Tower Law</h2>
+<div class="card thm"><span class="lbl">Theorem 1</span>
+Let $\mathbb{F}\subseteq\mathbb{K}\subseteq\mathbb{L}$. If $\mathbb{L}$ is finite over $\mathbb{K}$ and $\mathbb{K}$ is finite over $\mathbb{F}$, then $\mathbb{L}$ is finite over $\mathbb{F}$ and
+$$[\mathbb{L}:\mathbb{F}]=[\mathbb{L}:\mathbb{K}]\,[\mathbb{K}:\mathbb{F}].$$</div>
+
+<div class="card q"><span class="lbl">Question 5</span>
+Prove the Tower Law.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">Take a basis $x_1,\dots,x_m$ of $\mathbb{K}/\mathbb{F}$ and a basis $y_1,\dots,y_n$ of $\mathbb{L}/\mathbb{K}$. Show that the $mn$ products $x_iy_j$ form a basis of $\mathbb{L}/\mathbb{F}$.</div>
+<div class="sol"><b>Spanning.</b> Let $l\in\mathbb{L}$. Then $l=\sum_j k_j y_j$ with $k_j\in\mathbb{K}$, and each $k_j=\sum_i f_{ij}x_i$ with $f_{ij}\in\mathbb{F}$. So $l=\sum_{i,j}f_{ij}\,x_iy_j$.<br>
+<b>Independence.</b> If $\sum_{i,j}f_{ij}x_iy_j=0$, group as $\sum_j\big(\sum_i f_{ij}x_i\big)y_j=0$. The $y_j$ are independent over $\mathbb{K}$, so each $\sum_i f_{ij}x_i=0$; the $x_i$ are independent over $\mathbb{F}$, so every $f_{ij}=0$.<br>
+Hence $\{x_iy_j\}$ is a basis with $mn$ elements. ∎</div></div>
+
+<div class="card q"><span class="lbl">Question 6</span>
+If $[\mathbb{L}:\mathbb{F}]=7$ (prime), how many fields can lie strictly between $\mathbb{F}$ and $\mathbb{L}$?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">None. If $\mathbb{F}\subseteq\mathbb{K}\subseteq\mathbb{L}$ then $[\mathbb{K}:\mathbb{F}]$ divides $7$, so it is $1$ ($\mathbb{K}=\mathbb{F}$) or $7$ ($\mathbb{K}=\mathbb{L}$). This is exactly the next theorem.</div></div>
+
+<div class="card thm"><span class="lbl">Theorem 2</span>
+If $\mathbb{L}$ is a finite extension of $\mathbb{F}$ and $\mathbb{K}$ is a subfield of $\mathbb{L}$ containing $\mathbb{F}$, then $[\mathbb{K}:\mathbb{F}]$ <b>divides</b> $[\mathbb{L}:\mathbb{F}]$.</div>
+
+<div class="card q"><span class="lbl">Question 7</span>
+Prove Theorem 2.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol">$\mathbb{K}\subseteq\mathbb{L}$ is an $\mathbb{F}$-subspace of a finite-dimensional space, so $[\mathbb{K}:\mathbb{F}]<\infty$. An $\mathbb{F}$-basis of $\mathbb{L}$ spans $\mathbb{L}$ over $\mathbb{K}$ as well, so $[\mathbb{L}:\mathbb{K}]<\infty$. By the Tower Law $[\mathbb{L}:\mathbb{F}]=[\mathbb{L}:\mathbb{K}][\mathbb{K}:\mathbb{F}]$, so $[\mathbb{K}:\mathbb{F}]$ divides $[\mathbb{L}:\mathbb{F}]$. ∎</div></div>
+
+<div class="card q"><span class="lbl">Question 8</span>
+Can there be a field $\mathbb{K}$ with $\mathbb{Q}\subset\mathbb{K}\subset\mathbb{Q}[\sqrt[3]{2}]$ and $\mathbb{K}$ different from both? (Assume $[\mathbb{Q}[\sqrt[3]{2}]:\mathbb{Q}]=3$.)
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">No. $[\mathbb{K}:\mathbb{Q}]$ must divide $3$, so it is $1$ or $3$, forcing $\mathbb{K}=\mathbb{Q}$ or $\mathbb{K}=\mathbb{Q}[\sqrt[3]2]$.</div></div>
+
+<h2><span>§4</span> Building fields from polynomials</h2>
+<div class="card thm"><span class="lbl">Theorem 3</span>
+Let $f(x)\in\mathbb{F}[x]$ be <b>irreducible</b> of degree $n$. Then $\mathbb{F}[x]/\langle f(x)\rangle$ is a field, it contains (a copy of) $\mathbb{F}$, and it is a finite extension of $\mathbb{F}$ of degree $n$.</div>
+
+<div class="card q"><span class="lbl">Question 9</span>
+Why is $\mathbb{F}[x]/\langle f\rangle$ a field when $f$ is irreducible?
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">$\mathbb{F}[x]$ is a PID. In a PID, what do irreducible elements generate?</div>
+<div class="sol">In the PID $\mathbb{F}[x]$, $f$ irreducible $\Rightarrow$ $\langle f\rangle$ is a <b>maximal ideal</b>. Indeed if $\langle f\rangle\subseteq\langle g\rangle$ then $g\mid f$, so $g$ is a unit or an associate of $f$. A quotient by a maximal ideal is a field. The constants $c+\langle f\rangle$ give a copy of $\mathbb{F}$.<br>
+<b>Degree.</b> By the division algorithm every class has a unique representative of degree $<n$, so $\{1,\bar x,\dots,\bar x^{\,n-1}\}$ is an $\mathbb{F}$-basis. ∎</div></div>
+
+<div class="card q"><span class="lbl">Question 10</span>
+Identify $\mathbb{R}[x]/\langle x^2+1\rangle$. What is its degree over $\mathbb{R}$?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$x^2+1$ is irreducible over $\mathbb{R}$, so the quotient is a field with basis $\{1,\bar x\}$ and $\bar x^2=-1$. It is isomorphic to $\mathbb{C}$, degree $2$ — the complex numbers are born from a polynomial!</div></div>
+
+<div class="card q"><span class="lbl">Question 11</span>
+Show that $\mathbb{Z}_2[x]/\langle x^2+x+1\rangle$ is a field with exactly 4 elements. List them.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$x^2+x+1$ has no root in $\mathbb{Z}_2$ ($f(0)=f(1)=1$) and has degree 2, so it is irreducible. The degree is 2, so there are $2^2=4$ elements: $0,\ 1,\ \bar x,\ 1+\bar x$, with $\bar x^2=\bar x+1$.</div></div>
+
+<h2><span>§5</span> Algebraic and transcendental elements</h2>
+<div class="card def"><span class="lbl">Definition (Lecture 2)</span>
+Let $\mathbb{K}/\mathbb{F}$. An element $a\in\mathbb{K}$ is <b>algebraic over $\mathbb{F}$</b> if there are $\alpha_0,\dots,\alpha_n\in\mathbb{F}$, not all zero, with $\alpha_0+\alpha_1a+\dots+\alpha_na^n=0$.</div>
+<div class="card q"><span class="lbl">Question 12</span>
+Why is every $a\in\mathbb{F}$ algebraic over $\mathbb{F}$?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$a$ is a root of the non-zero polynomial $x-a\in\mathbb{F}[x]$.</div></div>
+
+<div class="card def"><span class="lbl">Definition — transcendental</span>
+An element $a\in\mathbb{K}$ that is <b>not</b> algebraic over $\mathbb{F}$ is called <b>transcendental over $\mathbb{F}$</b>: no non-zero polynomial in $\mathbb{F}[x]$ vanishes at $a$, i.e. $1,a,a^2,\dots$ are linearly independent over $\mathbb{F}$. Examples over $\mathbb{Q}$: $\pi$ and $e$ (hard theorems of Lindemann and Hermite), while $\sqrt2,\ i,\ \sqrt[3]{5}$ are algebraic.</div>
+
+<div class="card q"><span class="lbl">Question 13</span>
+Do the algebraic elements of $\mathbb{K}$ over $\mathbb{F}$ form a <b>field</b>? In particular, if $a,b$ are algebraic, are $a\pm b$, $ab$, $a/b$ algebraic?
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Consider $\mathbb{F}[a,b]$. How large is it as an $\mathbb{F}$-vector space?</div>
+<div class="sol"><b>Yes.</b> If $a$ has degree $m$ and $b$ degree $n$, then $\mathbb{F}[a,b]$ is spanned over $\mathbb{F}$ by $a^ib^j$ ($i&lt;m,\ j&lt;n$), so it is a finite extension of degree $\le mn$. Every element of a finite extension is algebraic (shown below), and $a\pm b,\ ab,\ a/b$ all lie in $\mathbb{F}[a,b]$. So the algebraic elements form a subfield (full details in Lecture 2).</div></div>
+
+<div class="card q"><span class="lbl">Question 14</span>
+The set of algebraic numbers (elements of $\mathbb{C}$ algebraic over $\mathbb{Q}$) is <b>countable</b>. Is every element of $\mathbb{C}$ algebraic over $\mathbb{Q}$? Is every element of $\mathbb{C}$ algebraic over $\mathbb{R}$?
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Over $\mathbb{R}$: for $z=x+iy$ find a real quadratic with root $z$.</div>
+<div class="sol"><b>Over $\mathbb{Q}$: no.</b> $\mathbb{Q}[x]$ is countable and each non-zero polynomial has finitely many roots, so the algebraic numbers are countable. But $\mathbb{C}$ is uncountable, so transcendental numbers exist — in fact "almost all" complex numbers are transcendental.<br>
+<b>Over $\mathbb{R}$: yes.</b> For $z=x+iy$, the real polynomial $t^2-2x\,t+(x^2+y^2)$ has $z$ as a root. (Also $[\mathbb{C}:\mathbb{R}]=2$ is finite, so $\mathbb{C}/\mathbb{R}$ is algebraic.) Same field $\mathbb{C}$, different base fields, different answers!</div></div>
+
+<div class="card def"><span class="lbl">Definition — algebraic extension</span>
+An extension $\mathbb{K}/\mathbb{F}$ is an <b>algebraic extension</b> if <b>every</b> element of $\mathbb{K}$ is algebraic over $\mathbb{F}$. Otherwise it contains a transcendental element.</div>
+
+<div class="card q"><span class="lbl">Question 15</span>
+Is every finite extension an algebraic extension?
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">If $[\mathbb{K}:\mathbb{F}]=n$, how many elements can a linearly independent set in $\mathbb{K}$ have?</div>
+<div class="sol"><b>Yes.</b> Let $[\mathbb{K}:\mathbb{F}]=n$ and $a\in\mathbb{K}$. The $n+1$ elements $1,a,\dots,a^n$ are linearly dependent over $\mathbb{F}$, so $\alpha_0+\alpha_1a+\dots+\alpha_na^n=0$ with $\alpha_i\in\mathbb{F}$ not all zero. Thus $a$ is algebraic. ∎</div></div>
+
+<div class="card q"><span class="lbl">Question 16</span>
+What about the <b>converse</b>: is every algebraic extension finite?
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Let $\overline{\mathbb{Q}}$ be all algebraic numbers. Does it contain $\sqrt[n]{2}$ for every $n$?</div>
+<div class="sol"><b>No.</b> $\overline{\mathbb{Q}}/\mathbb{Q}$ is algebraic by definition, yet infinite: for each $n$ it contains $\sqrt[n]{2}$, whose minimal polynomial $x^n-2$ (Eisenstein) has degree $n$, so $[\mathbb{Q}[\sqrt[n]2]:\mathbb{Q}]=n$. If $[\overline{\mathbb{Q}}:\mathbb{Q}]$ were finite, Theorem 2 would bound all these $n$. Contradiction.<br>
+Hence: <span class="y">finite ⇒ algebraic</span>, but <span class="o">algebraic ⇏ finite</span>.</div></div>
+
+<div class="card"><span class="lbl">Flowchart 2 — Finite, infinite, algebraic, transcendental</span>
+<svg viewBox="0 0 700 360" width="100%" role="img" aria-label="Relation between finite, infinite and algebraic extensions">
+<defs><marker id="ar2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ffe94d"/></marker></defs>
+<rect x="240" y="8" width="220" height="44" rx="12" fill="#06161a" stroke="#22e5ff" stroke-width="2"/>
+<text x="350" y="36" text-anchor="middle" fill="#22e5ff" font-size="17" font-family="system-ui">Extension K / F</text>
+<path d="M300 52L170 100" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar2)"/>
+<path d="M400 52L530 100" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar2)"/>
+<rect x="60" y="102" width="220" height="44" rx="12" fill="#0b1a06" stroke="#b6ff3b" stroke-width="2"/>
+<text x="170" y="130" text-anchor="middle" fill="#b6ff3b" font-size="16" font-family="system-ui">Finite  [K:F] &lt; ∞</text>
+<rect x="420" y="102" width="220" height="44" rx="12" fill="#1a0f04" stroke="#ff9a2e" stroke-width="2"/>
+<text x="530" y="130" text-anchor="middle" fill="#ff9a2e" font-size="16" font-family="system-ui">Infinite  [K:F] = ∞</text>
+<path d="M170 146L170 220" stroke="#ffe94d" stroke-width="3" marker-end="url(#ar2)"/>
+<text x="180" y="188" fill="#ffe94d" font-size="13" font-family="system-ui">ALWAYS  (n+1 elements are dependent)</text>
+<path d="M480 146L400 220" stroke="#ffe94d" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar2)"/>
+<path d="M580 146L610 220" stroke="#ffe94d" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#ar2)"/>
+<text x="470" y="200" text-anchor="middle" fill="#ffe94d" font-size="12" font-family="system-ui">maybe</text>
+<text x="615" y="200" text-anchor="middle" fill="#ffe94d" font-size="12" font-family="system-ui">maybe</text>
+<rect x="60" y="222" width="220" height="50" rx="12" fill="#04140a" stroke="#2bd96b" stroke-width="2"/>
+<text x="170" y="245" text-anchor="middle" fill="#2bd96b" font-size="16" font-family="system-ui">ALGEBRAIC</text>
+<text x="170" y="263" text-anchor="middle" fill="#ff5cc8" font-size="12" font-family="system-ui">Q(√2)/Q, C/R</text>
+<rect x="310" y="222" width="190" height="50" rx="12" fill="#04140a" stroke="#2bd96b" stroke-width="2"/>
+<text x="405" y="245" text-anchor="middle" fill="#2bd96b" font-size="15" font-family="system-ui">Algebraic, infinite</text>
+<text x="405" y="263" text-anchor="middle" fill="#ff5cc8" font-size="12" font-family="system-ui">Q̄ / Q</text>
+<rect x="520" y="222" width="170" height="50" rx="12" fill="#1a0410" stroke="#ff5cc8" stroke-width="2"/>
+<text x="605" y="245" text-anchor="middle" fill="#ff5cc8" font-size="15" font-family="system-ui">NOT algebraic</text>
+<text x="605" y="263" text-anchor="middle" fill="#ffe94d" font-size="12" font-family="system-ui">R/Q, Q(π)/Q</text>
+<text x="350" y="310" text-anchor="middle" fill="#f2f2f2" font-size="14" font-family="system-ui">finite ⇒ algebraic        but        algebraic ⇏ finite</text>
+<text x="350" y="334" text-anchor="middle" fill="#aaa" font-size="12" font-family="system-ui">An infinite extension may or may not be algebraic — it needs a transcendental element to fail.</text>
+</svg></div>
+
+<div class="card q"><span class="lbl">Question 17</span>
+Classify each as (finite) / (infinite algebraic) / (not algebraic): $\mathbb{C}/\mathbb{R}$, $\overline{\mathbb{Q}}/\mathbb{Q}$, $\mathbb{R}/\mathbb{Q}$, $\mathbb{Q}(\pi)/\mathbb{Q}$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$\mathbb{C}/\mathbb{R}$: finite (degree 2). $\overline{\mathbb{Q}}/\mathbb{Q}$: infinite but algebraic. $\mathbb{R}/\mathbb{Q}$ and $\mathbb{Q}(\pi)/\mathbb{Q}$: not algebraic (contain the transcendental $\pi$), hence infinite.</div></div>
+
+<h2><span>§6</span> Problems with solutions</h2>
+<div class="card q"><span class="lbl">Problem A</span>
+Give an irreducible polynomial over <b>any</b> field $\mathbb{F}$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$x$ (or $x-a$ for any $a\in\mathbb{F}$). A degree-1 polynomial cannot be a product of two polynomials of lower degree. Over $\mathbb{Z}_2$, $x$ and $x+1$ are the only irreducibles of degree 1.</div></div>
+<div class="card q"><span class="lbl">Problem B</span>
+Is there an irreducible polynomial of degree 3 in $\mathbb{R}[x]$?
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Think of the Fundamental Theorem of Algebra and Theorem 2 with $[\mathbb{C}:\mathbb{R}]=2$.</div>
+<div class="sol"><b>No.</b> Three proofs:<br>
+<span class="c">Proof 1 (degrees).</span> A real cubic has a root $\alpha\in\mathbb{C}$ (Fundamental Theorem of Algebra). If $f$ were irreducible, $[\mathbb{R}[\alpha]:\mathbb{R}]=3$ would have to divide $[\mathbb{C}:\mathbb{R}]=2$ — impossible.<br>
+<span class="c">Proof 2 (conjugate roots).</span> For $f\in\mathbb{R}[x]$, $f(z)=0\Rightarrow f(\bar z)=\overline{f(z)}=0$, so non-real roots come in conjugate pairs. A cubic has 3 roots (with multiplicity), so at least one is real: $f(r)=0$, hence $(x-r)\mid f$ and $f$ is reducible.<br>
+<span class="c">Proof 3 (Intermediate Value Theorem).</span> If $f$ is monic of degree 3, $f(x)\to-\infty$ as $x\to-\infty$ and $\to+\infty$ as $x\to+\infty$, so $f$ has a real root $r$, and $(x-r)$ divides $f$.<br>
+Consequently the only irreducible polynomials over $\mathbb{R}$ have degree 1 or 2 (degree 2 with negative discriminant). The same argument works for every odd degree $&gt;1$.</div></div>
+<div class="card q"><span class="lbl">Problem C</span>
+Give a polynomial of degree $n$ in $\mathbb{Q}[x]$ irreducible over $\mathbb{Q}$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$x^n-2$, by Eisenstein's criterion with $p=2$ ($2\nmid1$, $2\mid0,\dots,2\mid 2$ at the constant term, $4\nmid2$).</div></div>
+<div class="card q"><span class="lbl">Problem D</span>
+State Eisenstein's criterion.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">Let $f=a_0+a_1x+\dots+a_nx^n\in\mathbb{Z}[x]$. If for some prime $p$: $p\nmid a_n$; $p\mid a_0,a_1,\dots,a_{n-1}$; and $p^2\nmid a_0$, then $f$ is irreducible over $\mathbb{Q}$.</div></div>
+
+<h2><span>§7</span> Quick quiz</h2>
+<div class="card q" data-ok="1"><span class="lbl">Quiz 1</span>If $[\mathbb{K}:\mathbb{F}]=3$ and $[\mathbb{L}:\mathbb{K}]=4$, then $[\mathbb{L}:\mathbb{F}]=$
+<div class="opts"><button class="opt" onclick="pick(this,0)">7</button><button class="opt" onclick="pick(this,1)">12</button><button class="opt" onclick="pick(this,0)">1</button></div><div class="fb"></div></div>
+<div class="card q" data-ok="2"><span class="lbl">Quiz 2</span>Which can be $[\mathbb{K}:\mathbb{Q}]$ for a field $\mathbb{K}$ with $\mathbb{Q}\subseteq\mathbb{K}\subseteq\mathbb{L}$ and $[\mathbb{L}:\mathbb{Q}]=10$?
+<div class="opts"><button class="opt" onclick="pick(this,0)">3</button><button class="opt" onclick="pick(this,0)">4</button><button class="opt" onclick="pick(this,1)">5</button></div><div class="fb"></div></div>
+<div class="card q" data-ok="1"><span class="lbl">Quiz 3</span>$\mathbb{F}[x]/\langle f\rangle$ is a field exactly when $f$ is…
+<div class="opts"><button class="opt" onclick="pick(this,0)">monic</button><button class="opt" onclick="pick(this,1)">irreducible</button><button class="opt" onclick="pick(this,0)">of even degree</button></div><div class="fb"></div></div>
+<div class="card q" data-ok="1"><span class="lbl">Quiz 4</span>$|\mathbb{Z}_5[x]/\langle f\rangle|$ for an irreducible $f$ of degree 3 is
+<div class="opts"><button class="opt" onclick="pick(this,0)">15</button><button class="opt" onclick="pick(this,1)">125</button><button class="opt" onclick="pick(this,0)">243</button></div><div class="fb"></div></div>
+
+<h2><span>§8</span> SAQ — Short Answer Questions</h2>
+<p class="sub">Answer in a line or two on paper first, then reveal.</p>
+<div class="card q"><span class="lbl">SAQ 1</span>Define the degree of an extension $\mathbb{K}/\mathbb{F}$.<br><button onclick="sol(this)">Answer</button><div class="sol">The dimension of $\mathbb{K}$ as a vector space over $\mathbb{F}$, written $[\mathbb{K}:\mathbb{F}]$.</div></div>
+<div class="card q"><span class="lbl">SAQ 2</span>State the Tower Law.<br><button onclick="sol(this)">Answer</button><div class="sol">For $\mathbb{F}\subseteq\mathbb{K}\subseteq\mathbb{L}$ with finite degrees, $[\mathbb{L}:\mathbb{F}]=[\mathbb{L}:\mathbb{K}][\mathbb{K}:\mathbb{F}]$.</div></div>
+<div class="card q"><span class="lbl">SAQ 3</span>Can $[\mathbb{L}:\mathbb{F}]=9$ and a subfield $\mathbb{K}\supseteq\mathbb{F}$ have $[\mathbb{K}:\mathbb{F}]=2$?<br><button onclick="sol(this)">Answer</button><div class="sol">No, since $2\nmid9$.</div></div>
+<div class="card q"><span class="lbl">SAQ 4</span>What is $[\mathbb{F}[x]/\langle f\rangle:\mathbb{F}]$ for irreducible $f$ of degree $n$?<br><button onclick="sol(this)">Answer</button><div class="sol">$n$, with basis $1,\bar x,\dots,\bar x^{n-1}$.</div></div>
+<div class="card q"><span class="lbl">SAQ 5</span>Is $\mathbb{Q}$ a subfield of $\mathbb{Z}_7$? Why?<br><button onclick="sol(this)">Answer</button><div class="sol">No. $\mathbb{Z}_7$ has characteristic 7, $\mathbb{Q}$ has characteristic 0.</div></div>
+<div class="card q"><span class="lbl">SAQ 6</span>Why is $\mathbb{Z}_2[x]/\langle x^2+1\rangle$ <i>not</i> a field?<br><button onclick="sol(this)">Answer</button><div class="sol">$x^2+1=(x+1)^2$ over $\mathbb{Z}_2$ is reducible, so $\langle x^2+1\rangle$ is not maximal; $(x+1)$ is a zero divisor in the quotient.</div></div>
+<div class="card q"><span class="lbl">SAQ 8</span>Define a transcendental element and give an example over $\mathbb{Q}$.<br><button onclick="sol(this)">Answer</button><div class="sol">An element not algebraic over $\mathbb{Q}$: no non-zero rational polynomial vanishes at it. Example: $\pi$ or $e$.</div></div>
+<div class="card q"><span class="lbl">SAQ 9</span>Is $\overline{\mathbb{Q}}/\mathbb{Q}$ finite? Is it algebraic?<br><button onclick="sol(this)">Answer</button><div class="sol">Algebraic, yes; finite, no (it contains $\sqrt[n]2$ of degree $n$ for every $n$).</div></div>
+<div class="card q"><span class="lbl">SAQ 7</span>Give an infinite extension of $\mathbb{Q}$.<br><button onclick="sol(this)">Answer</button><div class="sol">$\mathbb{R}$ (or $\mathbb{Q}(x)$, the field of rational functions).</div></div>
+
+<nav style="margin-top:34px"><a href="FE.html">☰ Index</a><a href="L2.html">Lecture 2: Algebraic elements →</a></nav>
+</div>
+<script>
+var opened=new Set(),done=0;
+function sol(b){var s=b.parentNode.querySelector('.sol');s.classList.toggle('on');b.textContent=s.classList.contains('on')?'Hide':'Show solution';opened.add(s);document.getElementById('cnt').textContent=opened.size;if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([s]);}
+function hint(b){b.parentNode.querySelector('.hintb').classList.toggle('on');}
+function chk3(){var v=document.getElementById('in3').value,f=document.getElementById('fb3');f.innerHTML=v==='2'?'<span class="g">Correct! Basis {1, i}.</span>':'<span class="o">Not quite — find a basis of C over R.</span>';}
+function pick(b,ok){var c=b.closest('.card');if(c.dataset.done)return;c.dataset.done=1;b.classList.add(ok?'right':'wrong');var fb=c.querySelector('.fb');fb.innerHTML=ok?'<span class="g">Correct!</span>':'<span class="o">Try to reason it out with the Tower Law.</span>';if(ok){done++;document.getElementById('qs').textContent=done;document.getElementById('pb').style.width=(done*25)+'%';}}
+</script>
+</body>
+</html>

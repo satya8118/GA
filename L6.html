@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lecture 6 — The Kronecker–Weber Theorem</title>
+<script>
+window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+<style>
+:root{--cy:#22e5ff;--li:#b6ff3b;--gr:#2bd96b;--ye:#ffe94d;--or:#ff9a2e;--pk:#ff5cc8;--card:#0e0e12;--bd:#26262e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:#000;color:#f2f2f2;font:17px/1.65 Georgia,'Times New Roman',serif}
+.wrap{max-width:860px;margin:0 auto;padding:18px 16px 70px}
+nav{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font:14px system-ui,sans-serif;margin-bottom:14px}
+nav a{color:var(--cy);text-decoration:none;border:1px solid var(--bd);padding:5px 12px;border-radius:20px}
+nav a:hover{border-color:var(--cy)}
+header{text-align:center;padding:22px 8px 10px}
+.tag{font:13px system-ui,sans-serif;letter-spacing:3px;color:var(--or);text-transform:uppercase}
+h1{font-size:2.1rem;margin:.2em 0;background:linear-gradient(90deg,var(--li),var(--cy),var(--pk),var(--ye));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2}
+.sub{color:#aaa;font-style:italic}
+h2{color:var(--ye);border-bottom:1px dashed var(--bd);padding-bottom:6px;margin-top:2.2em;font-size:1.45rem}
+h2 span{color:var(--pk)}
+.card{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--cy);border-radius:10px;padding:12px 16px;margin:14px 0}
+.card.def{border-left-color:var(--li)}.card.thm{border-left-color:var(--or)}.card.q{border-left-color:var(--pk)}
+.lbl{font:700 12px system-ui,sans-serif;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--cy)}
+.def .lbl{color:var(--li)}.thm .lbl{color:var(--or)}.q .lbl{color:var(--pk)}
+b{color:var(--li)}.c{color:var(--cy)}.y{color:var(--ye)}.o{color:var(--or)}.p{color:var(--pk)}.g{color:var(--gr)}
+button{font:600 14px system-ui,sans-serif;cursor:pointer;border-radius:8px;border:1px solid var(--gr);background:transparent;color:var(--gr);padding:6px 14px;margin:6px 6px 0 0}
+button:hover{background:var(--gr);color:#000}
+.sol{display:none;margin-top:10px;padding:10px 14px;border:1px solid var(--gr);border-radius:8px;background:#04140a;color:#d8ffe6}
+.sol.on{display:block;animation:f .35s}
+@keyframes f{from{opacity:0;transform:translateY(-4px)}to{opacity:1}}
+.hint{border-color:var(--ye);color:var(--ye)}.hint:hover{background:var(--ye)}
+.hintb{display:none;margin-top:8px;color:var(--ye);font-style:italic}.hintb.on{display:block}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opt{text-align:left;border-color:var(--bd);color:#f2f2f2;font-weight:400;font-family:Georgia,serif;font-size:16px;margin:0}
+.opt:hover{background:#15151c;border-color:var(--cy);color:#f2f2f2}
+.opt.right{border-color:var(--gr);background:#06210f}.opt.wrong{border-color:#ff4d4d;background:#260808}
+.fb{margin-top:8px;font:14px system-ui,sans-serif;min-height:1em;word-break:break-word}
+.score{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;text-align:right;font:13px system-ui,sans-serif;color:var(--ye);background:#000c;padding:4px 0}
+.bar{height:6px;background:#1a1a20;border-radius:4px;overflow:hidden;margin:2px 0 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--li));transition:width .4s}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+td,th{border:1px solid var(--bd);padding:5px 9px;text-align:left}th{color:var(--cy)}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+input[type=number]{width:90px;background:#000;color:var(--ye);border:1px solid var(--ye);border-radius:6px;padding:4px;font-size:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a href="L5.html">← Lecture 5</a><a href="FE.html">☰ Index</a><a href="posters.html">Poster Gallery →</a></nav>
+<div class="score">Questions opened: <span id="cnt">0</span> · Quiz: <span id="qs">0</span>/4<div class="bar"><i id="pb"></i></div></div>
+
+<header>
+<div class="tag">Seven Lectures on Field Extensions</div>
+<h1>Lecture 6<br>The Kronecker–Weber Theorem</h1>
+<div class="sub">Every abelian extension of ℚ is cyclotomic.</div>
+</header>
+
+<h2><span>§1</span> The theorem</h2>
+<div class="card thm"><span class="lbl">Theorem (Kronecker–Weber)</span>
+Every finite abelian extension $K/\mathbb{Q}$ is contained in a cyclotomic field $\mathbb{Q}(\zeta_n)$ for some $n\ge1$. Equivalently, the maximal abelian extension is
+$$\mathbb{Q}^{\mathrm{ab}}=\bigcup_{n\ge1}\mathbb{Q}(\zeta_n).$$</div>
+<p>Conjectured by Kronecker (1853), proved by Weber (1886). Modern proofs use class field theory; special cases are elementary.</p>
+<div class="card q"><span class="lbl">Question 1</span>
+Why are the two formulations of the theorem equivalent?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">Each $\mathbb{Q}(\zeta_n)$ is abelian over $\mathbb{Q}$ (§3), so $\bigcup\mathbb{Q}(\zeta_n)\subseteq\mathbb{Q}^{\mathrm{ab}}$. Conversely a finite abelian $K$ lies in some $\mathbb{Q}(\zeta_n)$, and every element of $\mathbb{Q}^{\mathrm{ab}}$ lies in a finite abelian subextension, so $\mathbb{Q}^{\mathrm{ab}}\subseteq\bigcup\mathbb{Q}(\zeta_n)$.</div></div>
+
+<h2><span>§2</span> Cyclotomic polynomials</h2>
+<div class="card def"><span class="lbl">Definitions</span>
+$\zeta_n=e^{2\pi i/n}$. The group $R_n=\{\zeta_n^k:0\le k<n\}\cong\mathbb{Z}/n\mathbb{Z}$ of $n$-th roots of unity; the set $m_n=\{\zeta_n^k:(k,n)=1\}$ of <b>primitive</b> ones has $|m_n|=\varphi(n)$, and $R_n=\bigcup_{d\mid n}m_d$. The <b>$n$-th cyclotomic polynomial</b> is $\Phi_n(x)=\prod_{\alpha\in m_n}(x-\alpha)$.</div>
+<div class="card thm"><span class="lbl">Basic identities</span>
+$$x^n-1=\prod_{d\mid n}\Phi_d(x),\qquad n=\sum_{d\mid n}\varphi(d).$$
+$\Phi_p(x)=x^{p-1}+\dots+x+1$; $\Phi_{2m}(x)=\Phi_m(-x)$ for odd $m$; $\Phi_{p^k}(x)=\Phi_p(x^{p^{k-1}})=\dfrac{x^{p^k}-1}{x^{p^{k-1}}-1}$.</div>
+
+<div class="tbl"><table>
+<tr><th>$n$</th><th>$\Phi_n(x)$</th><th>$n$</th><th>$\Phi_n(x)$</th></tr>
+<tr><td>1</td><td>$x-1$</td><td>7</td><td>$x^6+x^5+\dots+x+1$</td></tr>
+<tr><td>2</td><td>$x+1$</td><td>8</td><td>$x^4+1$</td></tr>
+<tr><td>3</td><td>$x^2+x+1$</td><td>9</td><td>$x^6+x^3+1$</td></tr>
+<tr><td>4</td><td>$x^2+1$</td><td>10</td><td>$x^4-x^3+x^2-x+1$</td></tr>
+<tr><td>5</td><td>$x^4+x^3+x^2+x+1$</td><td>11</td><td>$x^{10}+\dots+x+1$</td></tr>
+<tr><td>6</td><td>$x^2-x+1$</td><td>12</td><td>$x^4-x^2+1$</td></tr>
+</table></div>
+
+<div class="card q"><span class="lbl">Question 2 — try it</span>
+Compute $\Phi_n$ for any $n\le 120$: <input type="number" id="cn" min="1" max="120" value="15"> <button onclick="cyc()">Compute</button>
+<div class="fb" id="cfb"></div>
+<button onclick="sol(this)">Why does this work?</button>
+<div class="sol">The program divides $x^n-1$ by $\Phi_d$ for every proper divisor $d\mid n$, using $x^n-1=\prod_{d\mid n}\Phi_d$ — exactly the identity above. Notice $\Phi_{15}$ has degree $\varphi(15)=8$ and all coefficients small.</div></div>
+
+<div class="card q"><span class="lbl">Question 3</span>
+Deduce $\Phi_{p^k}(x)=\Phi_p(x^{p^{k-1}})$ and compute $\Phi_9$ and $\Phi_{10}$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">Roots of $x^{p^k}-1$ not roots of $x^{p^{k-1}}-1$ are exactly the primitive $p^k$-th roots, so $\Phi_{p^k}=\frac{x^{p^k}-1}{x^{p^{k-1}}-1}=1+y+\dots+y^{p-1}$ with $y=x^{p^{k-1}}$. So $\Phi_9=x^6+x^3+1$. And $\Phi_{10}(x)=\Phi_5(-x)=x^4-x^3+x^2-x+1$.</div></div>
+
+<h2><span>§3</span> Irreducibility and the Galois group</h2>
+<div class="card thm"><span class="lbl">Theorem 1</span>
+$\Phi_n(x)$ is monic and irreducible in $\mathbb{Z}[x]$. Hence $[\mathbb{Q}(\zeta_n):\mathbb{Q}]=\varphi(n)$.</div>
+<div class="card q"><span class="lbl">Question 4</span>
+Prove Theorem 1.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">Let $f$ be the minimal polynomial of $\zeta_n$. Show $f(\alpha^p)=0$ for primes $p\nmid n$ by reducing mod $p$ and using $x^n-1$ separable over $\mathbb{F}_p$.</div>
+<div class="sol">Write $\Phi_n=fg$ with $f$ monic irreducible in $\mathbb{Z}[x]$ (Gauss lemma), $f(\alpha)=0$ for a primitive $n$-th root $\alpha$. Let $p\nmid n$ be prime; $\alpha^p$ is again primitive. <b>Claim:</b> $f(\alpha^p)=0$. If not, $g(\alpha^p)=0$, so $f(x)\mid g(x^p)$, say $g(x^p)=f(x)h(x)$. Mod $p$: $\bar g(x)^p=\bar g(x^p)=\bar f\bar h$ (Frobenius), so $\bar f,\bar g$ share a factor, hence $\bar\Phi_n$ and therefore $x^n-1$ has a repeated root in $\overline{\mathbb{F}_p}$. But $(x^n-1)'=nx^{n-1}$ with $p\nmid n$ is coprime to $x^n-1$: contradiction.<br>
+Now any $a$ with $(a,n)=1$ is a product of primes $p_1\cdots p_k\nmid n$; applying the claim repeatedly, $\alpha^a$ is a root of $f$. So all primitive roots are roots of $f$, giving $f=\Phi_n$. ∎</div></div>
+
+<div class="card thm"><span class="lbl">Theorem 2</span>
+$\operatorname{Gal}(\mathbb{Q}(\zeta_n)/\mathbb{Q})\cong(\mathbb{Z}/n\mathbb{Z})^*=U_n$. In particular $\mathbb{Q}(\zeta_n)/\mathbb{Q}$ is abelian.</div>
+<div class="card q"><span class="lbl">Question 5</span>
+Prove Theorem 2.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol">Each $\sigma$ permutes roots of $\Phi_n$, so $\sigma(\zeta_n)=\zeta_n^{k}$ with $(k,n)=1$. The map $\sigma\mapsto k\bmod n$ is a homomorphism ($\sigma\tau(\zeta)=\zeta^{k_\sigma k_\tau}$), injective since $\sigma$ is determined by $\sigma(\zeta_n)$. Both groups have order $\varphi(n)$ (Theorem 1), so it is an isomorphism. ∎</div></div>
+
+<div class="card thm"><span class="lbl">Corollary</span>
+$U_n$ is cyclic iff $n\in\{1,2,4,p^k,2p^k\}$ with $p$ an odd prime.</div>
+<div class="card q"><span class="lbl">Question 6 — explorer</span>
+Enter $n\le 2000$: <input type="number" id="un" min="1" max="2000" value="15"> <button onclick="units()">Galois group of $\mathbb{Q}(\zeta_n)/\mathbb{Q}$</button>
+<div class="fb" id="ufb"></div></div>
+
+<h2><span>§4</span> Quadratic fields are cyclotomic</h2>
+<div class="card thm"><span class="lbl">Lemma 1 (Gauss)</span>
+For an odd prime $p$ put $p^*=(-1)^{(p-1)/2}p$ (so $p^*=p$ if $p\equiv1$, $-p$ if $p\equiv3\pmod 4$). Then $\sqrt{p^*}\in\mathbb{Q}(\zeta_p)$.</div>
+<div class="card q"><span class="lbl">Question 7</span>
+Prove Lemma 1 using the Gauss sum $\tau=\sum_{a=1}^{p-1}\chi(a)\zeta_p^a$, $\chi$ the Legendre symbol.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">Compute $\tau^2$; substitute $b=ac$ and use $\sum_{a=1}^{p-1}\zeta^{a m}=p-1$ if $p\mid m$, else $-1$.</div>
+<div class="sol">$\tau^2=\sum_{a,b}\chi(a)\chi(b)\zeta^{a+b}$. Putting $b=ac$: $\chi(a)\chi(ac)=\chi(a)^2\chi(c)=\chi(c)$, so
+$$\tau^2=\sum_{c=1}^{p-1}\chi(c)\sum_{a=1}^{p-1}\zeta^{a(1+c)}.$$
+The inner sum is $p-1$ if $c\equiv-1$, else $-1$. Hence $\tau^2=\chi(-1)(p-1)-\big(\sum_{c}\chi(c)-\chi(-1)\big)=\chi(-1)p$, since $\sum_{c}\chi(c)=0$. And $\chi(-1)=(-1)^{(p-1)/2}$, so $\tau^2=p^*$ with $\tau\in\mathbb{Q}(\zeta_p)$. ∎</div></div>
+
+<div class="card thm"><span class="lbl">Lemma 2</span>
+Every quadratic extension $\mathbb{Q}(\sqrt d)$ ($d$ squarefree) lies in some $\mathbb{Q}(\zeta_N)$.</div>
+<div class="card q"><span class="lbl">Question 8</span>
+Prove Lemma 2 by cases.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol"><b>$d=-1$:</b> $\mathbb{Q}(i)=\mathbb{Q}(\zeta_4)$. <b>$d=2$:</b> $\zeta_8+\zeta_8^{-1}=2\cos\frac\pi4=\sqrt2$. <b>$d=-2$:</b> $(\zeta_8-\zeta_8^{-1})^2=-2$, so $\sqrt{-2}\in\mathbb{Q}(\zeta_8)$.<br>
+<b>$d>1$ odd, $d=p_1\cdots p_k$:</b> by Lemma 1, $\sqrt{p_1^*\cdots p_k^*}\in\mathbb{Q}(\zeta_d)$ and $p_1^*\cdots p_k^*=(-1)^{\sum(p_i-1)/2}d$. If the exponent is even, $\sqrt d\in\mathbb{Q}(\zeta_d)$; if odd, $\sqrt{-d}\in\mathbb{Q}(\zeta_d)$ and $\sqrt d=\pm i\sqrt{-d}\in\mathbb{Q}(\zeta_{4d})$.<br>
+<b>$d<0$:</b> $\sqrt d=i\sqrt{|d|}$ lies in $\mathbb{Q}(\zeta_{4N})$ when $\sqrt{|d|}\in\mathbb{Q}(\zeta_N)$.<br>
+<b>$d$ even, $|d|>2$:</b> $d=\pm2d'$ with $d'$ odd; $\sqrt d=\sqrt{\pm2}\sqrt{d'}$ is a product of elements of two cyclotomic fields, lying in their compositum $\mathbb{Q}(\zeta_{8})\mathbb{Q}(\zeta_{N'})\subseteq\mathbb{Q}(\zeta_{\mathrm{lcm}})$. ∎</div></div>
+
+<div class="card q"><span class="lbl">Question 9 — explorer</span>
+Enter squarefree $d\ne0,1$: <input type="number" id="qd" value="-3"> <button onclick="quad()">Smallest $n$ with $\mathbb{Q}(\sqrt d)\subseteq\mathbb{Q}(\zeta_n)$</button>
+<div class="fb" id="qfb"></div></div>
+
+<h2><span>§5</span> Reduction to cyclic $p$-power extensions</h2>
+<div class="card thm"><span class="lbl">Proposition</span>
+If every cyclic extension of $\mathbb{Q}$ of prime-power degree lies in a cyclotomic field, then every finite abelian extension does.</div>
+<div class="card q"><span class="lbl">Question 10</span>
+Prove the proposition.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol">Let $G=\operatorname{Gal}(K/\mathbb{Q})$. By the structure theorem, $G\cong C_1\times\dots\times C_m$ with $|C_j|=p_j^{a_j}$. Let $H_j=\prod_{i\ne j}C_i$ and $K_j=K^{H_j}$; then $\operatorname{Gal}(K_j/\mathbb{Q})\cong G/H_j\cong C_j$ is cyclic of prime-power order. Since $\bigcap_jH_j=1$, the Galois correspondence gives $K=K_1\cdots K_m$. By hypothesis $K_j\subseteq\mathbb{Q}(\zeta_{n_j})$, hence $K\subseteq\mathbb{Q}(\zeta_{n_1})\cdots\mathbb{Q}(\zeta_{n_m})=\mathbb{Q}(\zeta_N)$ with $N=\operatorname{lcm}(n_j)$. ∎</div></div>
+
+<div class="card"><span class="lbl">Flowchart — structure of the proof</span>
+<svg viewBox="0 0 700 380" width="100%" role="img" aria-label="structure of the Kronecker-Weber proof">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ffe94d"/></marker></defs>
+<rect x="190" y="8" width="320" height="44" rx="12" fill="#06161a" stroke="#22e5ff" stroke-width="2"/>
+<text x="350" y="36" text-anchor="middle" fill="#22e5ff" font-size="15" font-family="system-ui">K/Q finite abelian, G = Gal(K/Q)</text>
+<path d="M350 52L350 76" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<rect x="150" y="78" width="400" height="44" rx="12" fill="#0b1a06" stroke="#b6ff3b" stroke-width="2"/>
+<text x="350" y="106" text-anchor="middle" fill="#b6ff3b" font-size="15" font-family="system-ui">G ≅ C₁ × … × C_m, |C_j| = p_j^{a_j}</text>
+<path d="M350 122L350 146" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<rect x="150" y="148" width="400" height="44" rx="12" fill="#1a0f04" stroke="#ff9a2e" stroke-width="2"/>
+<text x="350" y="176" text-anchor="middle" fill="#ff9a2e" font-size="15" font-family="system-ui">K = K₁ ⋯ K_m,  each K_j cyclic of prime-power degree</text>
+<path d="M350 192L220 226" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<path d="M350 192L480 226" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<rect x="40" y="228" width="360" height="62" rx="12" fill="#1a0410" stroke="#ff5cc8" stroke-width="2"/>
+<text x="220" y="252" text-anchor="middle" fill="#ff5cc8" font-size="14" font-family="system-ui">degree 2: Gauss sums ⇒ √p* ∈ Q(ζ_p)</text>
+<text x="220" y="274" text-anchor="middle" fill="#ff5cc8" font-size="14" font-family="system-ui">(fully proved in §4)</text>
+<rect x="420" y="228" width="250" height="62" rx="12" fill="#04140a" stroke="#2bd96b" stroke-width="2"/>
+<text x="545" y="252" text-anchor="middle" fill="#2bd96b" font-size="14" font-family="system-ui">degree p^n: conductor theorem</text>
+<text x="545" y="274" text-anchor="middle" fill="#2bd96b" font-size="14" font-family="system-ui">K_j ⊂ Q(ζ_{n_j})</text>
+<path d="M220 290L330 322" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<path d="M545 290L400 322" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<rect x="150" y="324" width="400" height="46" rx="12" fill="#000" stroke="#ffe94d" stroke-width="2"/>
+<text x="350" y="352" text-anchor="middle" fill="#ffe94d" font-size="15" font-family="system-ui">K ⊂ Q(ζ_N),  N = lcm(n₁,…,n_m)</text>
+</svg></div>
+
+<h2><span>§6</span> Cyclic extensions of prime-power degree</h2>
+<div class="card def"><span class="lbl">Structure of $\mathbb{Q}(\zeta_{p^n})$</span>
+For odd $p$: $\operatorname{Gal}(\mathbb{Q}(\zeta_{p^n})/\mathbb{Q})\cong(\mathbb{Z}/p^n)^*\cong\mathbb{Z}/(p-1)\times\mathbb{Z}/p^{n-1}$. For $p=2$, $n\ge3$: $(\mathbb{Z}/2^n)^*\cong\mathbb{Z}/2\times\mathbb{Z}/2^{n-2}$. So for odd $p$ there is a <b>unique</b> subfield $K_n\subset\mathbb{Q}(\zeta_{p^n})$ of degree $p^{n-1}$; it is cyclic and totally ramified at $p$.</div>
+<div class="card q"><span class="lbl">Question 11</span>
+Identify the degree-3 subfield of $\mathbb{Q}(\zeta_9)$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$\operatorname{Gal}(\mathbb{Q}(\zeta_9)/\mathbb{Q})\cong(\mathbb{Z}/9)^*\cong\mathbb{Z}/6$, which has a unique subgroup of order 2, namely $\{\pm1\}$ (complex conjugation). Its fixed field has degree 3: it is $\mathbb{Q}(\zeta_9)^+=\mathbb{Q}(\zeta_9+\zeta_9^{-1})=\mathbb{Q}(2\cos\frac{2\pi}9)$, the cyclic cubic field of conductor 9.</div></div>
+
+<div class="card thm"><span class="lbl">Conductor theorem</span>
+Let $K/\mathbb{Q}$ be finite abelian. There is a positive integer $\mathfrak f$ (the <b>conductor</b>) such that (1) a prime $p$ ramifies in $K$ iff $p\mid\mathfrak f$, and (2) $K\subseteq\mathbb{Q}(\zeta_{\mathfrak f})$.</div>
+<div class="card" style="border-left-color:var(--or)"><span class="lbl">Honest remark</span>
+Part (2) <i>is</i> the Kronecker–Weber theorem, so the conductor theorem is equivalent to it. It follows from the conductor–discriminant formula and Artin reciprocity (class field theory). What we have proved elementarily is: cyclotomic fields are abelian with group $U_n$, all quadratic fields are cyclotomic, and the full theorem reduces to cyclic $p$-power extensions.</div>
+<div class="card thm"><span class="lbl">Theorem 3</span>
+Let $K/\mathbb{Q}$ be cyclic of degree $p^n$ with $p$ the only ramified prime. Then $K\subseteq\mathbb{Q}(\zeta_{p^{n+1}})$ for odd $p$, and $K\subseteq\mathbb{Q}(\zeta_{2^{n+2}})$ for $p=2$.</div>
+<div class="card q"><span class="lbl">Question 12</span>
+Sketch the proof of Theorem 3.
+<br><button onclick="sol(this)">Show sketch</button>
+<div class="sol">Only $p$ ramifies, so the conductor $\mathfrak f$ is a power of $p$ (conductor theorem, part 1). The conductor–discriminant formula $\mathrm{Disc}(K)=\prod_\chi\mathfrak f(\chi)$ over the characters of $\operatorname{Gal}(K/\mathbb{Q})$ together with the discriminant of $\mathbb{Q}(\zeta_{p^{n+1}})$ shows $\mathfrak f\mid p^{n+1}$ ($p$ odd), respectively $\mathfrak f\mid 2^{n+2}$. Then (2) gives $K\subseteq\mathbb{Q}(\zeta_{\mathfrak f})\subseteq\mathbb{Q}(\zeta_{p^{n+1}})$. (This is a sketch relying on class field theory.)</div></div>
+
+<h2><span>§7</span> Assembling the proof</h2>
+<div class="card q"><span class="lbl">Question 13</span>
+Assemble the Kronecker–Weber theorem from the pieces.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol"><b>Step 1.</b> By the Proposition (§5) it suffices to treat cyclic $K/\mathbb{Q}$ of degree $p^n$.<br>
+<b>Step 2.</b> For such $K$ the conductor theorem gives $K\subseteq\mathbb{Q}(\zeta_{\mathfrak f})$.<br>
+<b>Step 3.</b> A general finite abelian $K$ is the compositum $K_1\cdots K_m$ of such fields, $K_j\subseteq\mathbb{Q}(\zeta_{n_j})$, hence $K\subseteq\mathbb{Q}(\zeta_N)$, $N=\operatorname{lcm}(n_j)$. ∎<br>
+<span class="y">Status:</span> Step 2 uses class field theory; an elementary proof would prove the conductor statement for $p$-power cyclic fields directly from the structure of $\mathbb{Q}(\zeta_{p^n})$ and Gauss sums.</div></div>
+
+<div class="card thm"><span class="lbl">Consequences</span>
+(1) $\mathbb{Q}^{\mathrm{ab}}=\bigcup_n\mathbb{Q}(\zeta_n)$. (2) $\operatorname{Gal}(\mathbb{Q}^{\mathrm{ab}}/\mathbb{Q})\cong\varprojlim U_n=\widehat{\mathbb{Z}}^{\,*}=\prod_p\mathbb{Z}_p^*$, the unit group of the profinite integers.<br>
+Kronecker–Weber is the first case of class field theory: abelian extensions of a number field are governed by its idèle class group. For imaginary quadratic fields the analogue uses complex multiplication of elliptic curves; for general number fields this is Hilbert's 12th problem, still open.</div>
+
+<h2><span>§8</span> Exercises with solutions</h2>
+<div class="card q"><span class="lbl">Exercise 1</span>$\mathbb{Q}(\zeta_5)\supseteq\mathbb{Q}(\sqrt5)$.<br><button onclick="sol(this)">Show solution</button><div class="sol">Lemma 1 with $p=5\equiv1\pmod4$: $\tau=\zeta+\zeta^4-\zeta^2-\zeta^3$ satisfies $\tau^2=5$.</div></div>
+<div class="card q"><span class="lbl">Exercise 2</span>$\mathbb{Q}(\sqrt d)\subseteq\mathbb{Q}(\zeta_{|D|})$, $D$ the discriminant of $\mathbb{Q}(\sqrt d)$.<br><button onclick="sol(this)">Show solution</button><div class="sol">$D=d$ if $d\equiv1\pmod4$, so $d=\prod p_i^*$ and $\sqrt D=\prod\sqrt{p_i^*}\in\mathbb{Q}(\zeta_{|d|})$. If $d\equiv 2,3\pmod 4$, $D=4d$: for odd $d$ use $\sqrt{4d}=2\sqrt d$ and $\mathbb{Q}(\zeta_{4|d|})$; for even $d$ use $|D|=4|d|=8|d'|$ and the case analysis of Lemma 2. (This is the quadratic case of the conductor theorem; the explorer in §4 gives $n=|D|$.)</div></div>
+<div class="card q"><span class="lbl">Exercise 3</span>For odd $p$, $\mathbb{Q}(\zeta_p)$ has a unique quadratic subfield, $\mathbb{Q}(\sqrt{p^*})$.<br><button onclick="sol(this)">Show solution</button><div class="sol">$\operatorname{Gal}(\mathbb{Q}(\zeta_p)/\mathbb{Q})\cong\mathbb{Z}/(p-1)$ is cyclic of even order, so it has exactly one subgroup of index 2, hence exactly one quadratic subfield; by Lemma 1 it is $\mathbb{Q}(\sqrt{p^*})$.</div></div>
+<div class="card q"><span class="lbl">Exercise 4</span>$\mathbb{Q}(\zeta_8)\supseteq\mathbb{Q}(\sqrt2),\mathbb{Q}(\sqrt{-2})$.<br><button onclick="sol(this)">Show solution</button><div class="sol">$\zeta_8+\zeta_8^{-1}=\sqrt2$ and $\zeta_8-\zeta_8^{-1}=i\sqrt2$, whose square is $-2$. Together with $i=\zeta_8^2$: $\mathbb{Q}(\zeta_8)=\mathbb{Q}(i,\sqrt2)$ of degree $4=\varphi(8)$.</div></div>
+<div class="card q"><span class="lbl">Exercise 5</span>Conductor of the cyclic cubic field inside $\mathbb{Q}(\zeta_9)$.<br><button onclick="sol(this)">Show solution</button><div class="sol">It lies in $\mathbb{Q}(\zeta_9)$ and is ramified only at 3, so the conductor is a power of 3 dividing 9. It is not inside $\mathbb{Q}(\zeta_3)$ (degree 2, and $3\nmid2$), so the conductor is $9$.</div></div>
+<div class="card q"><span class="lbl">Exercise 6</span>For odd $p$, the degree-$p$ subfield of $\mathbb{Q}(\zeta_{p^2})$ is the cyclic $p$-extension of conductor $p^2$.<br><button onclick="sol(this)">Show solution</button><div class="sol">$\operatorname{Gal}(\mathbb{Q}(\zeta_{p^2})/\mathbb{Q})\cong\mathbb{Z}/(p-1)\times\mathbb{Z}/p$; the fixed field of the order-$(p-1)$ subgroup has degree $p$ and is cyclic. It is not in $\mathbb{Q}(\zeta_p)$, whose degree $p-1$ is prime to $p$, so its conductor is not $p$; being a power of $p$ dividing $p^2$, it is $p^2$.</div></div>
+
+<h2><span>§9</span> Quick quiz</h2>
+<div class="card q"><span class="lbl">Quiz 1</span>$[\mathbb{Q}(\zeta_{12}):\mathbb{Q}]=$
+<div class="opts"><button class="opt" onclick="pick(this,0)">12</button><button class="opt" onclick="pick(this,1)">4</button><button class="opt" onclick="pick(this,0)">6</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 2</span>$\sqrt{-3}$ lies in
+<div class="opts"><button class="opt" onclick="pick(this,1)">$\mathbb{Q}(\zeta_3)$</button><button class="opt" onclick="pick(this,0)">$\mathbb{Q}(\zeta_5)$</button><button class="opt" onclick="pick(this,0)">$\mathbb{Q}(\zeta_4)$</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 3</span>$(\mathbb{Z}/15\mathbb{Z})^*$ is
+<div class="opts"><button class="opt" onclick="pick(this,0)">cyclic of order 8</button><button class="opt" onclick="pick(this,1)">$\mathbb{Z}/2\times\mathbb{Z}/4$, not cyclic</button><button class="opt" onclick="pick(this,0)">cyclic of order 15</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 4</span>Which field is <i>not</i> abelian over $\mathbb{Q}$?
+<div class="opts"><button class="opt" onclick="pick(this,0)">$\mathbb{Q}(\zeta_{20})$</button><button class="opt" onclick="pick(this,1)">$\mathbb{Q}(\sqrt[3]2)$</button><button class="opt" onclick="pick(this,0)">$\mathbb{Q}(\sqrt2,\sqrt3)$</button></div><div class="fb"></div></div>
+
+<h2><span>§10</span> SAQ — Short Answer Questions</h2>
+<p class="sub">Answer on paper first, then reveal.</p>
+<div class="card q"><span class="lbl">SAQ 1</span>State the Kronecker–Weber theorem.<br><button onclick="sol(this)">Answer</button><div class="sol">Every finite abelian extension of $\mathbb{Q}$ lies in some $\mathbb{Q}(\zeta_n)$; $\mathbb{Q}^{\mathrm{ab}}=\bigcup\mathbb{Q}(\zeta_n)$.</div></div>
+<div class="card q"><span class="lbl">SAQ 2</span>Degree of $\Phi_n$ and of $\mathbb{Q}(\zeta_n)/\mathbb{Q}$?<br><button onclick="sol(this)">Answer</button><div class="sol">$\varphi(n)$ for both.</div></div>
+<div class="card q"><span class="lbl">SAQ 3</span>What is $\operatorname{Gal}(\mathbb{Q}(\zeta_n)/\mathbb{Q})$?<br><button onclick="sol(this)">Answer</button><div class="sol">$(\mathbb{Z}/n\mathbb{Z})^*$ via $\sigma\mapsto k$ where $\sigma(\zeta_n)=\zeta_n^k$.</div></div>
+<div class="card q"><span class="lbl">SAQ 4</span>What is $\Phi_p(x)$ and $\Phi_{2m}(x)$ for odd $m$?<br><button onclick="sol(this)">Answer</button><div class="sol">$\Phi_p=1+x+\dots+x^{p-1}$; $\Phi_{2m}(x)=\Phi_m(-x)$.</div></div>
+<div class="card q"><span class="lbl">SAQ 5</span>Which quadratic field lies in $\mathbb{Q}(\zeta_p)$?<br><button onclick="sol(this)">Answer</button><div class="sol">$\mathbb{Q}(\sqrt{p^*})$, $p^*=(-1)^{(p-1)/2}p$.</div></div>
+<div class="card q"><span class="lbl">SAQ 6</span>Why does it suffice to treat cyclic extensions of prime-power degree?<br><button onclick="sol(this)">Answer</button><div class="sol">A finite abelian group is a product of cyclic $p$-groups, so $K$ is a compositum of cyclic prime-power subextensions, and a compositum of subfields of $\mathbb{Q}(\zeta_{n_j})$ lies in $\mathbb{Q}(\zeta_{\mathrm{lcm}})$.</div></div>
+<div class="card q"><span class="lbl">SAQ 7</span>Is $\mathbb{Q}(\sqrt[3]2)$ in a cyclotomic field?<br><button onclick="sol(this)">Answer</button><div class="sol">No. It is not Galois over $\mathbb{Q}$ (its conjugate $\omega\sqrt[3]2$ is not real), so it is not abelian, hence not a subfield of any $\mathbb{Q}(\zeta_n)$.</div></div>
+
+<h2><span>§11</span> Notation</h2>
+<div class="card">$\zeta_n=e^{2\pi i/n}$; $R_n$ roots of unity; $m_n$ primitive roots; $\Phi_n=\prod_{\alpha\in m_n}(x-\alpha)$; $x^n-1=\prod_{d\mid n}\Phi_d$; $U_n=(\mathbb{Z}/n\mathbb{Z})^*$; $\operatorname{Gal}(\mathbb{Q}(\zeta_n)/\mathbb{Q})\cong U_n$; $\mathbb{Q}^{\mathrm{ab}}=\bigcup_n\mathbb{Q}(\zeta_n)$.</div>
+
+<nav style="margin-top:34px"><a href="L5.html">← Lecture 5</a><a href="FE.html">☰ Index</a><a href="posters.html">Poster Gallery →</a></nav>
+</div>
+<script>
+var opened=new Set(),done=0;
+function sol(b){var s=b.parentNode.querySelector('.sol');if(!b.dataset.t)b.dataset.t=b.textContent;var on=s.classList.toggle('on');b.textContent=on?'Hide':b.dataset.t;opened.add(s);document.getElementById('cnt').textContent=opened.size;if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([s]);}
+function hint(b){b.parentNode.querySelector('.hintb').classList.toggle('on');}
+function pick(b,ok){var c=b.closest('.card');if(c.dataset.done)return;c.dataset.done=1;b.classList.add(ok?'right':'wrong');var fb=c.querySelector('.fb');fb.innerHTML=ok?'<span class="g">Correct!</span>':'<span class="o">Not quite — recheck with phi(n) and U_n.</span>';if(ok){done++;document.getElementById('qs').textContent=done;document.getElementById('pb').style.width=(done*25)+'%';}}
+function gcd(a,b){while(b){var t=a%b;a=b;b=t;}return a;}
+function phi(n){var c=0;for(var k=1;k<=n;k++)if(gcd(k,n)===1)c++;return c;}
+var memo={};
+function div(a,b){a=a.slice();var q=[];for(var i=a.length-b.length;i>=0;i--){var c=a[i+b.length-1]/b[b.length-1];q[i]=c;for(var j=0;j<b.length;j++)a[i+j]-=c*b[j];}return q;}
+function cyclo(n){if(memo[n])return memo[n];var p=[-1];for(var i=1;i<n;i++)p.push(0);p.push(1);for(var d=1;d<n;d++)if(n%d===0)p=div(p,cyclo(d));return memo[n]=p;}
+function fmt(p){var s=[];for(var i=p.length-1;i>=0;i--){var c=Math.round(p[i]);if(!c)continue;var t=(i===0)?String(Math.abs(c)):((Math.abs(c)===1?'':Math.abs(c))+(i===1?'x':'x^'+i));s.push((c<0?'−':(s.length?'+':''))+(s.length&&c<0?' ':'')+t);}return s.join(' ').replace(/\+/g,'+ ');}
+function cyc(){var n=parseInt(document.getElementById('cn').value),f=document.getElementById('cfb');if(!(n>=1&&n<=120)){f.textContent='Enter 1 to 120.';return;}
+ var p=cyclo(n);f.innerHTML='<span class="y">Φ<sub>'+n+'</sub>(x)</span> = '+fmt(p)+' &nbsp;(degree '+(p.length-1)+' = φ('+n+'))';}
+function isCyc(n){if(n<=4)return true;if(n%4===0)return false;var m=n%2===0?n/2:n,pr=0,x=m;for(var p=3;p<=x;p+=2){if(x%p===0){pr++;while(x%p===0)x/=p;}}return pr===1;}
+function units(){var n=parseInt(document.getElementById('un').value),f=document.getElementById('ufb');if(!(n>=1&&n<=2000)){f.textContent='Enter 1 to 2000.';return;}
+ var e=phi(n),mx=0,list=[];for(var k=1;k<=n;k++)if(gcd(k,n)===1){var o=1,x=k%n;while(x!==1%n){x=(x*k)%n;o++;if(o>n)break;}mx=Math.max(mx,o);if(n<=40)list.push(k);}
+ f.innerHTML='φ('+n+') = <span class="y">'+e+'</span> = [Q(ζ<sub>'+n+'</sub>):Q]. Largest element order = '+mx+' → <span class="'+(mx===e?'g':'o')+'">'+(mx===e?'cyclic':'not cyclic')+'</span> (criterion n∈{1,2,4,p^k,2p^k}: '+(isCyc(n)?'yes':'no')+').'+(list.length?'<br>Units: '+list.join(', '):'');}
+function quad(){var d=parseInt(document.getElementById('qd').value),f=document.getElementById('qfb');if(!d||d===1){f.textContent='Enter d ≠ 0, 1.';return;}
+ var a=Math.abs(d);for(var p=2;p*p<=a;p++)if(a%(p*p)===0){f.innerHTML='<span class="o">d must be squarefree ('+(p*p)+' divides '+d+').</span>';return;}
+ var D=(((d%4)+4)%4===1)?d:4*d;f.innerHTML='Discriminant D = '+D+'. So Q(√'+d+') ⊂ Q(ζ<sub>'+Math.abs(D)+'</sub>), and '+Math.abs(D)+' is the conductor (smallest such n).';}
+</script>
+</body>
+</html>

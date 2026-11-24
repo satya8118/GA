@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lecture 5 — Ruler and Compass Constructions</title>
+<script>
+window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+<style>
+:root{--cy:#22e5ff;--li:#b6ff3b;--gr:#2bd96b;--ye:#ffe94d;--or:#ff9a2e;--pk:#ff5cc8;--card:#0e0e12;--bd:#26262e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:#000;color:#f2f2f2;font:17px/1.65 Georgia,'Times New Roman',serif}
+.wrap{max-width:860px;margin:0 auto;padding:18px 16px 70px}
+nav{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font:14px system-ui,sans-serif;margin-bottom:14px}
+nav a{color:var(--cy);text-decoration:none;border:1px solid var(--bd);padding:5px 12px;border-radius:20px}
+nav a:hover{border-color:var(--cy)}
+header{text-align:center;padding:22px 8px 10px}
+.tag{font:13px system-ui,sans-serif;letter-spacing:3px;color:var(--or);text-transform:uppercase}
+h1{font-size:2.1rem;margin:.2em 0;background:linear-gradient(90deg,var(--or),var(--ye),var(--li),var(--cy),var(--pk));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2}
+.sub{color:#aaa;font-style:italic}
+h2{color:var(--ye);border-bottom:1px dashed var(--bd);padding-bottom:6px;margin-top:2.2em;font-size:1.45rem}
+h2 span{color:var(--pk)}
+h3{color:var(--cy);font-size:1.1rem;margin:1.6em 0 .4em}
+.card{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--cy);border-radius:10px;padding:12px 16px;margin:14px 0}
+.card.def{border-left-color:var(--li)}.card.thm{border-left-color:var(--or)}.card.q{border-left-color:var(--pk)}.card.warn{border-left-color:#ff4d4d}
+.lbl{font:700 12px system-ui,sans-serif;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--cy)}
+.def .lbl{color:var(--li)}.thm .lbl{color:var(--or)}.q .lbl{color:var(--pk)}.warn .lbl{color:#ff6b6b}
+b{color:var(--li)}.c{color:var(--cy)}.y{color:var(--ye)}.o{color:var(--or)}.p{color:var(--pk)}.g{color:var(--gr)}
+button{font:600 14px system-ui,sans-serif;cursor:pointer;border-radius:8px;border:1px solid var(--gr);background:transparent;color:var(--gr);padding:6px 14px;margin:6px 6px 0 0}
+button:hover{background:var(--gr);color:#000}
+.sol{display:none;margin-top:10px;padding:10px 14px;border:1px solid var(--gr);border-radius:8px;background:#04140a;color:#d8ffe6}
+.sol.on{display:block;animation:f .35s}
+@keyframes f{from{opacity:0;transform:translateY(-4px)}to{opacity:1}}
+.hint{border-color:var(--ye);color:var(--ye)}.hint:hover{background:var(--ye)}
+.hintb{display:none;margin-top:8px;color:var(--ye);font-style:italic}.hintb.on{display:block}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opt{text-align:left;border-color:var(--bd);color:#f2f2f2;font-weight:400;font-family:Georgia,serif;font-size:16px;margin:0}
+.opt:hover{background:#15151c;border-color:var(--cy);color:#f2f2f2}
+.opt.right{border-color:var(--gr);background:#06210f}.opt.wrong{border-color:#ff4d4d;background:#260808}
+.fb{margin-top:8px;font:14px system-ui,sans-serif;min-height:1em}
+.score{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;text-align:right;font:13px system-ui,sans-serif;color:var(--ye);background:#000c;padding:4px 0}
+.bar{height:6px;background:#1a1a20;border-radius:4px;overflow:hidden;margin:2px 0 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--li));transition:width .4s}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+input[type=number]{width:90px;background:#000;color:var(--ye);border:1px solid var(--ye);border-radius:6px;padding:4px;font-size:16px}
+ul,ol{margin:.4em 0;padding-left:1.4em}
+li{margin:.18em 0}
+.fig{margin:12px 0;text-align:center}
+.fig svg{max-width:100%;height:auto;background:#050507;border:1px solid var(--bd);border-radius:10px}
+.cap{font:13px system-ui,sans-serif;color:#aaa;margin-top:5px;max-width:640px;margin-left:auto;margin-right:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a href="L4.html">← Lecture 4</a><a href="FE.html">☰ Index</a><a href="L6.html">Lecture 6 →</a></nav>
+<div class="score">Questions opened: <span id="cnt">0</span> · Quiz: <span id="qs">0</span>/4<div class="bar"><i id="pb"></i></div></div>
+
+<header>
+<div class="tag">Seven Lectures on Field Extensions</div>
+<h1>Lecture 5<br>Ruler and Compass Constructions</h1>
+<div class="sub">Geometry meets fields: why some ancient problems are impossible.</div>
+</header>
+
+<div class="card"><span class="lbl">How to read this lecture</span>
+Everything here comes from one idea: <b>a drawing is a computation with numbers</b>. We start with two points $A,B$. A step draws a line or a circle through points we already have, and then takes an intersection. Taking an intersection means solving equations, and solving equations means adjoining numbers to a field.
+<ul>
+<li><b>§1</b> fixes the rules: what a ruler-and-compass construction actually is.</li>
+<li><b>§2</b> puts coordinates on the picture. Points become complex numbers, and "can I construct this point?" becomes "is this number constructible?"</li>
+<li><b>§3</b> proves the constructible numbers form a field closed under square roots.</li>
+<li><b>§4</b> proves the main criterion: every step is at most quadratic, so a constructible number has degree a power of $2$ over $\mathbb{Q}$.</li>
+<li><b>§5–6</b> settle the three classical problems and describe the constructible regular polygons.</li>
+</ul>
+Read each worked question with paper and pencil: the figures are meant to be redrawn.</div>
+
+<h2><span>§1</span> The rules of the game</h2>
+<div class="card"><span class="lbl">Preliminaries</span>
+Mathematics is an axiomatic theory: <b>axioms</b> are assumed, every other statement must be proved from axioms and earlier results, and a proved statement is a <b>theorem</b>. In geometry we say "draw a line perpendicular to…". To justify it we give a <b>ruler-and-compass construction</b> and <i>prove it is correct</i>; once proved, it may be reused, like a theorem.<br>
+The ruler and compass have <b>no markings</b>: distances are never read off a scale. The only way a length enters the picture is through the compass: every point of the circle with centre $P$ through $Q$ is at the same distance $|PQ|$ from $P$.</div>
+
+<div class="card"><span class="lbl">Why only these five operations?</span>
+A construction is a <b>finite</b> list of operations. With an unmarked ruler we can draw only straight lines, and with a compass only circles. So the only new points we can ever obtain are intersections of two such curves. This is why the list below is complete — there is nothing else a ruler and compass can do.</div>
+
+<div class="card def"><span class="lbl">The five basic constructions</span>
+Using points, lines and circles already constructed:
+<ul><li>the line through two existing points;</li><li>the circle through one point with centre another point;</li><li>the intersection point of two non-parallel lines;</li><li>the one or two intersection points of a line and a circle;</li><li>the one or two intersection points of two circles.</li></ul>
+<b>Notation.</b> $PQ$ is the segment, $|PQ|$ its length, $L(P,Q)$ the line through $P,Q$, and $C(P;Q)$ the circle with centre $P$ through $Q$.</div>
+
+<div class="card q"><span class="lbl">Question 1</span>
+Why can a ruler-and-compass construction never produce a number "by measuring"? What replaces measuring?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">Neither tool has a scale. Lengths are transferred only by drawing a circle: every point of $C(P;Q)$ is at distance $|PQ|$ from $P$. So lengths enter via circles and intersections only.</div></div>
+
+<h2><span>§2</span> Coordinates and constructible numbers</h2>
+<div class="card def"><span class="lbl">Setting up coordinates</span>
+Choose two distinct points $A,B$; the line $AB$ is the <b>x-axis</b>. Draw $C(A;B)$ and $C(B;A)$; they meet in two points, and the line through them is the <b>y-axis</b> (the perpendicular bisector of $AB$). It meets the x-axis in the <b>origin</b> $O$. Declare $|OA|=1$, so $A=(1,0)$ and $B=(-1,0)$.<br>
+<b>Why may we declare $|OA|=1$?</b> A construction is scale-invariant: if we double the whole picture, the same operations still work. So choosing the unit costs nothing and gives us actual numbers to compute with.</div>
+
+<div class="card"><span class="lbl">Figure — setting up coordinates</span>
+<div class="fig">
+<svg viewBox="0 0 700 420" width="520" role="img" aria-label="Coordinate system from A and B: two circles meet at P2 and P3, their line is the y-axis, meeting the x-axis at O">
+<line x1="30" y1="210" x2="680" y2="210" stroke="#888" stroke-width="1.5"/>
+<line x1="350" y1="40" x2="350" y2="390" stroke="#ff5cc8" stroke-width="1.5" stroke-dasharray="6 5"/>
+<circle cx="430" cy="210" r="160" fill="none" stroke="#22e5ff" stroke-width="2" opacity=".85"/>
+<circle cx="270" cy="210" r="160" fill="none" stroke="#b6ff3b" stroke-width="2" opacity=".85"/>
+<circle cx="430" cy="210" r="4.5" fill="#22e5ff"/>
+<circle cx="270" cy="210" r="4.5" fill="#b6ff3b"/>
+<circle cx="350" cy="210" r="4.5" fill="#ffe94d"/>
+<circle cx="350" cy="71.4" r="5" fill="#ff5cc8"/>
+<circle cx="350" cy="348.6" r="5" fill="#ff5cc8"/>
+<text x="438" y="232" fill="#22e5ff" font-size="14" font-family="system-ui">A=(1,0)</text>
+<text x="186" y="232" fill="#b6ff3b" font-size="14" font-family="system-ui">B=(−1,0)</text>
+<text x="358" y="232" fill="#ffe94d" font-size="14" font-family="system-ui">O=(0,0)</text>
+<text x="368" y="80" fill="#ff5cc8" font-size="14" font-family="system-ui">P₂</text>
+<text x="296" y="360" fill="#ff5cc8" font-size="14" font-family="system-ui">P₃</text>
+<text x="596" y="146" fill="#22e5ff" font-size="13" font-family="system-ui">C(A;B)</text>
+<text x="40" y="146" fill="#b6ff3b" font-size="13" font-family="system-ui">C(B;A)</text>
+<text x="662" y="202" fill="#aaa" font-size="13" font-family="system-ui">x</text>
+<text x="356" y="34" fill="#ff5cc8" font-size="13" font-family="system-ui">y</text>
+</svg>
+<div class="cap">The circles $C(A;B)$ and $C(B;A)$ have radius $2$ and meet at $P_2=(0,\sqrt3)$ and $P_3=(0,-\sqrt3)$. The line $L(P_2,P_3)$ is the y-axis (the perpendicular bisector of $AB$); it meets the x-axis at $O=(0,0)$.</div>
+</div>
+</div>
+
+<div class="card def"><span class="lbl">Definitions — points and numbers</span>
+<b>(a) A point.</b> A point $Z$ is <b>constructible from</b> $E,F,G,H$ if one of the following holds:
+<ul>
+<li>$Z\in L(E,F)\cap L(G,H)$, where $L(E,F)\neq L(G,H)$;</li>
+<li>$Z\in L(E,F)\cap C(G;H)$;</li>
+<li>$Z\in C(E;F)\cap C(G;H)$, where $C(E;F)\neq C(G;H)$.</li>
+</ul>
+<b>(b) A constructible point.</b> A point is <b>constructible</b> if it is $A$, or $B$, or the last point of a finite chain $P_1,\dots,P_n$ in which each $P_{i+1}$ is constructible from $\{A,B,P_1,\dots,P_i\}$.<br>
+<b>(c) A complex number.</b> $z=x+iy$ is <b>constructible</b> if the point $(x,y)$ is a constructible point.<br>
+<b>(d) A real number.</b> $x\in\mathbb{R}$ is <b>constructible</b> if the point $(x,0)$ on the x-axis is a constructible point — equivalently, if $x=x+0i$ is a constructible complex number.<br>
+<b>(e) The set.</b> $\mathbb{K}=\{z\in\mathbb{C}: z$ is constructible$\}$; the constructible real numbers are $\mathbb{K}\cap\mathbb{R}$.</div>
+
+<div class="card"><span class="lbl">Important note</span>
+Given a pair of constructible points, we do <b>not</b> assert that every point on the drawn line or on the drawn circles is constructible. Only the finitely many points explicitly obtained in the construction chain count.</div>
+
+<div class="card"><span class="lbl">Figure — a complex number as a point</span>
+<div class="fig">
+<svg viewBox="0 0 340 240" width="300" role="img" aria-label="Complex number x plus i y drawn as the point x,y with dashed projections to the axes">
+<line x1="20" y1="195" x2="325" y2="195" stroke="#888" stroke-width="1.5"/>
+<line x1="55" y1="225" x2="55" y2="25" stroke="#888" stroke-width="1.5"/>
+<line x1="245" y1="195" x2="245" y2="75" stroke="#22e5ff" stroke-width="1.5" stroke-dasharray="5 5"/>
+<line x1="55" y1="75" x2="245" y2="75" stroke="#22e5ff" stroke-width="1.5" stroke-dasharray="5 5"/>
+<line x1="55" y1="195" x2="245" y2="75" stroke="#ff5cc8" stroke-width="2"/>
+<circle cx="245" cy="75" r="5" fill="#ff5cc8"/>
+<circle cx="245" cy="195" r="4" fill="#b6ff3b"/>
+<circle cx="55" cy="75" r="4" fill="#b6ff3b"/>
+<circle cx="55" cy="195" r="4" fill="#ffe94d"/>
+<text x="252" y="68" fill="#ff5cc8" font-size="14" font-family="system-ui">Z=(x,y)</text>
+<text x="222" y="215" fill="#b6ff3b" font-size="13" font-family="system-ui">(x,0)</text>
+<text x="4" y="72" fill="#b6ff3b" font-size="13" font-family="system-ui">(0,y)</text>
+<text x="36" y="215" fill="#ffe94d" font-size="13" font-family="system-ui">O</text>
+<text x="314" y="188" fill="#aaa" font-size="13" font-family="system-ui">x</text>
+<text x="61" y="22" fill="#aaa" font-size="13" font-family="system-ui">y</text>
+</svg>
+<div class="cap">$z=x+iy$ is constructible exactly when the point $(x,y)$ is constructible. For a real number $x$, the point is $(x,0)$ on the x-axis.</div>
+</div>
+</div>
+
+<div class="card q"><span class="lbl">Question 2</span>
+Show $(0,1)$ is constructible, hence $1,-1,0,i\sqrt3,-i\sqrt3,i\in\mathbb{K}$.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">The two circles $C(A;B)$, $C(B;A)$ meet at two points on the y-axis. How far from $O$?</div>
+<div class="sol">
+<ul>
+<li>$O=(0,0)$ is constructible (Figure above).</li>
+<li>Both $P_2=(0,\sqrt3)$ and $P_3=(0,-\sqrt3)$ lie in $C(A;B)\cap C(B;A)$: each is at distance $2$ from both $A$ and $B$, so its height is $\sqrt{4-1}=\sqrt3$.</li>
+<li>Hence $L(P_2,P_3)$ is the y-axis.</li>
+<li>Then $(0,1)\in L(P_2,P_3)\cap C(O;A)$, and $C(O;A)$ has radius $1$.</li>
+</ul>
+So $(0,1)$ is constructible, and so are $i=(0,1)$, $1=(1,0)$, $-1=(-1,0)$, $0=(0,0)$, $\pm i\sqrt3=(0,\pm\sqrt3)$.
+</div></div>
+
+<div class="card"><span class="lbl">Figure — why $(0,1)$ is constructible</span>
+<div class="fig">
+<svg viewBox="0 0 560 340" width="420" role="img" aria-label="The point 0,1 is where the y-axis meets the circle centered at O through A">
+<line x1="30" y1="170" x2="545" y2="170" stroke="#888" stroke-width="1.5"/>
+<line x1="280" y1="20" x2="280" y2="320" stroke="#888" stroke-width="1.5"/>
+<circle cx="360" cy="170" r="160" fill="none" stroke="#22e5ff" stroke-width="2" opacity=".65"/>
+<circle cx="200" cy="170" r="160" fill="none" stroke="#b6ff3b" stroke-width="2" opacity=".65"/>
+<circle cx="280" cy="170" r="80" fill="none" stroke="#ffe94d" stroke-width="2"/>
+<circle cx="360" cy="170" r="4.5" fill="#22e5ff"/>
+<circle cx="200" cy="170" r="4.5" fill="#b6ff3b"/>
+<circle cx="280" cy="170" r="4.5" fill="#ffe94d"/>
+<circle cx="280" cy="31.4" r="5" fill="#ff5cc8"/>
+<circle cx="280" cy="308.6" r="5" fill="#ff5cc8"/>
+<circle cx="280" cy="90" r="5" fill="#ff9a2e"/>
+<text x="368" y="192" fill="#22e5ff" font-size="14" font-family="system-ui">A</text>
+<text x="176" y="192" fill="#b6ff3b" font-size="14" font-family="system-ui">B</text>
+<text x="288" y="192" fill="#ffe94d" font-size="14" font-family="system-ui">O</text>
+<text x="290" y="30" fill="#ff5cc8" font-size="13" font-family="system-ui">P₂</text>
+<text x="290" y="326" fill="#ff5cc8" font-size="13" font-family="system-ui">P₃</text>
+<text x="292" y="86" fill="#ff9a2e" font-size="14" font-family="system-ui">(0,1)</text>
+<text x="186" y="136" fill="#ffe94d" font-size="12" font-family="system-ui">C(O;A)</text>
+<text x="532" y="164" fill="#aaa" font-size="13" font-family="system-ui">x</text>
+<text x="264" y="22" fill="#aaa" font-size="13" font-family="system-ui">y</text>
+</svg>
+<div class="cap">The y-axis is $L(P_2,P_3)$. The circle $C(O;A)$ has radius $1$, so it meets the y-axis exactly at $(0,1)$ and $(0,-1)$.</div>
+</div>
+</div>
+
+<div class="card thm"><span class="lbl">Lemma 1</span>
+$z=x+iy$ is constructible if and only if its real part $x$ and its imaginary part $y$ are constructible real numbers.</div>
+<div class="card q"><span class="lbl">Question 3</span>
+Prove Lemma 1.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol">
+<b>(⇒)</b> Suppose $z=x+iy$ is constructible, i.e. $(x,y)$ is a constructible point.
+<ul>
+<li>Draw the vertical line through $(x,y)$ (parallel to the y-axis). It meets the x-axis at $(x,0)$, so $x$ is constructible.</li>
+<li>Draw the horizontal line through $(x,y)$; it meets the y-axis at $(0,y)$.</li>
+<li>The circle $C(O;(0,y))$ meets the x-axis at $(y,0)$ and $(-y,0)$: the compass has copied the length $|y|$ from the y-axis to the x-axis. So $y$ is constructible.</li>
+</ul>
+<b>(⇐)</b> Suppose $x$ and $y$ are constructible, so $(x,0)$ and $(y,0)$ are constructible points.
+<ul>
+<li>Move the length $|y|$ from the x-axis to the y-axis: $C(O;(y,0))$ meets the y-axis at $(0,y)$ and $(0,-y)$. So $(0,y)$ is constructible.</li>
+<li>Draw the vertical line through $(x,0)$ and the horizontal line through $(0,y)$.</li>
+<li>These lines are not parallel and meet at $(x,y)$. ∎</li>
+</ul>
+</div></div>
+
+<div class="card"><span class="lbl">Why do we send $(0,y)$ to $(y,0)$ and back?</span>
+The two axes store the same length in two different roles: $(y,0)$ is the length $y$ <i>along</i> the x-axis, while $(0,y)$ is the <i>height</i> $y$. To reach the point $(x,y)$ we need the height, i.e. the point $(0,y)$ on the y-axis — that is why we transfer.
+<ul>
+<li><b>Compass = length copier.</b> $C(O;(y,0))$ meets the y-axis at $(0,y)$ and $(0,-y)$, because all of them are at distance $|y|$ from $O$. Nothing is measured; the circle simply rotates the segment $O(y,0)$ by $90^\circ$.</li>
+<li><b>Back again.</b> $C(O;(0,y))$ meets the x-axis at $(y,0)$ and $(-y,0)$. We use this in Question 5 to get $-a$ and in Question 7 to get $1/a$.</li>
+<li><b>In short:</b> a circle centred at $O$ moves a length freely between the two axes, and this is the only way lengths are ever moved.</li>
+</ul></div>
+
+<div class="card"><span class="lbl">Figure — transferring a length between the axes</span>
+<div class="fig">
+<svg viewBox="0 0 300 220" width="270" role="img" aria-label="Circle centered at O through y,0 meets the y-axis at 0,y and 0,minus y">
+<line x1="20" y1="110" x2="280" y2="110" stroke="#888" stroke-width="1.5"/>
+<line x1="150" y1="205" x2="150" y2="20" stroke="#888" stroke-width="1.5"/>
+<circle cx="150" cy="110" r="70" fill="none" stroke="#22e5ff" stroke-width="2" opacity=".9"/>
+<circle cx="150" cy="110" r="4.5" fill="#ffe94d"/>
+<circle cx="220" cy="110" r="5" fill="#b6ff3b"/>
+<circle cx="150" cy="40" r="5" fill="#b6ff3b"/>
+<circle cx="150" cy="180" r="5" fill="#b6ff3b"/>
+<text x="134" y="130" fill="#ffe94d" font-size="13" font-family="system-ui">O</text>
+<text x="226" y="130" fill="#b6ff3b" font-size="13" font-family="system-ui">(y,0)</text>
+<text x="158" y="36" fill="#b6ff3b" font-size="13" font-family="system-ui">(0,y)</text>
+<text x="158" y="198" fill="#b6ff3b" font-size="13" font-family="system-ui">(0,−y)</text>
+<text x="196" y="56" fill="#22e5ff" font-size="12" font-family="system-ui">C(O;P)</text>
+</svg>
+<div class="cap">One circle centred at $O$ carries the length $|y|$ from the x-axis to the y-axis (and back).</div>
+</div>
+</div>
+
+<h2><span>§3</span> $\mathbb{K}$ is a field closed under square roots</h2>
+<div class="card def"><span class="lbl">Definition — the set $\mathbb{K}$</span>
+$\mathbb{K}=\{\,z\in\mathbb{C} : z \text{ is constructible}\,\}$ is the set of constructible numbers, and $\mathbb{K}\cap\mathbb{R}$ is the set of constructible real numbers.<br>
+By Lemma 1, $z\in\mathbb{K}$ exactly when $\operatorname{Re}z\in\mathbb{K}\cap\mathbb{R}$ and $\operatorname{Im}z\in\mathbb{K}\cap\mathbb{R}$. So $\mathbb{K}$ is completely described by its real part $\mathbb{K}\cap\mathbb{R}$.</div>
+
+<div class="card thm"><span class="lbl">Theorem 1</span>
+The set $\mathbb{K}$ of constructible numbers satisfies:
+<ul>
+<li>$\mathbb{K}$ is a subfield of $\mathbb{C}$ (closed under $+,-,\times$ and division by nonzero elements);</li>
+<li>$\mathbb{K}$ is closed under square roots: if $z\in\mathbb{K}$ then $\sqrt z\in\mathbb{K}$;</li>
+<li>$\mathbb{K}$ is closed under complex conjugation: if $z\in\mathbb{K}$ then $\bar z\in\mathbb{K}$.</li>
+</ul></div>
+
+<div class="card"><span class="lbl">Strategy</span>
+The theorem asks for three things at once. Lemma 2 breaks the job into two easier pieces:
+<ul>
+<li><b>(1)</b> it is enough to check the field axioms for the <b>real</b> constructible numbers $\mathbb{K}\cap\mathbb{R}$, because a complex number is just a pair of reals (Lemma 1);</li>
+<li><b>(2)</b> it is enough to construct $\sqrt a$ for positive real $a\in\mathbb{K}\cap\mathbb{R}$, because for a complex $z=re^{i\theta}$ we then take $\sqrt r$ and bisect the angle $\theta$.</li>
+</ul>
+After Lemma 2 only five real constructions remain: $a+b$, $-a$, $ab$, $a^{-1}$, $\sqrt a$ (Questions 5–8).</div>
+
+<div class="card thm"><span class="lbl">Lemma 2 (reduction)</span>
+<ul>
+<li><b>(1)</b> If $\mathbb{K}\cap\mathbb{R}$ is a subfield of $\mathbb{R}$, then $\mathbb{K}$ is a subfield of $\mathbb{C}$.</li>
+<li><b>(2)</b> If, in addition, $\sqrt a\in\mathbb{K}$ for every positive $a\in\mathbb{K}\cap\mathbb{R}$, then $\mathbb{K}$ is closed under square roots.</li>
+</ul></div>
+
+<div class="card q"><span class="lbl">Question 4</span>
+Prove Lemma 2.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">For (1) use Lemma 1 and $z^{-1}=\bar z/(z\bar z)$. For (2) write $z=re^{i\theta}$ and bisect the angle.</div>
+<div class="sol">
+<b>Part (1).</b> Let $z=a+ib$ and $w=c+id$ be in $\mathbb{K}$. By Lemma 1, $a,b,c,d\in\mathbb{K}\cap\mathbb{R}$. Since $\mathbb{K}\cap\mathbb{R}$ is a subfield of $\mathbb{R}$:
+<ul>
+<li>$a+c,\ b+d\in\mathbb{K}\cap\mathbb{R}$, hence $z+w=(a+c)+i(b+d)\in\mathbb{K}$, again by Lemma 1;</li>
+<li>$ac-bd,\ ad+bc\in\mathbb{K}\cap\mathbb{R}$, hence $zw=(ac-bd)+i(ad+bc)\in\mathbb{K}$;</li>
+<li>$0,1\in\mathbb{K}\cap\mathbb{R}$, so $0,1\in\mathbb{K}$, and $-z=(-a)+i(-b)\in\mathbb{K}$;</li>
+<li>if $z\neq0$ then $a^2+b^2\in\mathbb{K}\cap\mathbb{R}$ is nonzero, so $a/(a^2+b^2)$ and $-b/(a^2+b^2)$ lie in $\mathbb{K}\cap\mathbb{R}$, and
+$$z^{-1}=\frac{a}{a^2+b^2}-i\,\frac{b}{a^2+b^2}\in\mathbb{K}.$$
+</ul>
+Hence $\mathbb{K}$ is a subfield of $\mathbb{C}$.<br><br>
+<b>Part (2).</b> Let $0\neq z=a+ib\in\mathbb{K}$. Write $z=re^{i\theta}$.
+<ul>
+<li>$r^2=a^2+b^2\in\mathbb{K}\cap\mathbb{R}$ and $r^2&gt;0$;</li>
+<li>by hypothesis $r=\sqrt{r^2}\in\mathbb{K}\cap\mathbb{R}$, and then $\sqrt r\in\mathbb{K}\cap\mathbb{R}$;</li>
+<li>$e^{i\theta}=r^{-1}z\in\mathbb{K}$, since $\mathbb{K}$ is a field;</li>
+<li>every angle can be bisected (see the next card), so $e^{i\theta/2}\in\mathbb{K}$;</li>
+<li>therefore $\sqrt z=\sqrt r\,e^{i\theta/2}\in\mathbb{K}$. ∎</li>
+</ul>
+</div></div>
+
+<div class="card q"><span class="lbl">Angle bisection — statement and proof</span>
+<b>Claim.</b> Every angle can be bisected with ruler and compass: if $(\cos\theta,\sin\theta)$ is constructible, then so is $(\cos(\theta/2),\sin(\theta/2))$.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol">
+<ul>
+<li>Let $O$ be the origin, $A=(1,0)$ and $P=(\cos\theta,\sin\theta)$. Then $|OA|=|OP|=1$, so $\triangle OAP$ is isosceles.</li>
+<li>The perpendicular bisector of $AP$ passes through $O$ and bisects the angle $\angle AOP$.</li>
+<li>Construct it: draw the two circles $C(A;P)$ and $C(P;A)$; either intersection point $Q$ lies on the perpendicular bisector of $AP$.</li>
+<li>The line $OQ$ is the angle bisector.</li>
+<li>Intersect $OQ$ with the unit circle $C(O;A)$ to get $(\cos(\theta/2),\sin(\theta/2))$. ∎</li>
+</ul>
+</div></div>
+
+<div class="card"><span class="lbl">Figure — angle bisection</span>
+<div class="fig">
+<svg viewBox="0 0 460 300" width="400" role="img" aria-label="Angle bisection construction using two circles centered at A and P">
+<line x1="30" y1="230" x2="430" y2="230" stroke="#888" stroke-width="1.5"/>
+<line x1="80" y1="230" x2="300" y2="230" stroke="#22e5ff" stroke-width="2"/>
+<line x1="80" y1="230" x2="195.7" y2="92.1" stroke="#b6ff3b" stroke-width="2"/>
+<circle cx="80" cy="230" r="180" fill="none" stroke="#ffe94d" stroke-width="1.3" stroke-dasharray="6 5" opacity=".55"/>
+<circle cx="260" cy="230" r="152.2" fill="none" stroke="#ff9a2e" stroke-width="1.6" opacity=".75"/>
+<circle cx="195.7" cy="92.1" r="152.2" fill="none" stroke="#ff5cc8" stroke-width="1.6" opacity=".75"/>
+<line x1="80" y1="230" x2="347.2" y2="105.5" stroke="#ffe94d" stroke-width="2"/>
+<circle cx="80" cy="230" r="4.5" fill="#ffe94d"/>
+<circle cx="260" cy="230" r="4.5" fill="#22e5ff"/>
+<circle cx="195.7" cy="92.1" r="4.5" fill="#b6ff3b"/>
+<circle cx="347.2" cy="105.5" r="5" fill="#ff9a2e"/>
+<circle cx="108.5" cy="216.6" r="4.5" fill="#ff9a2e"/>
+<text x="62" y="250" fill="#ffe94d" font-size="14" font-family="system-ui">O</text>
+<text x="266" y="250" fill="#22e5ff" font-size="14" font-family="system-ui">A</text>
+<text x="202" y="86" fill="#b6ff3b" font-size="14" font-family="system-ui">P</text>
+<text x="354" y="102" fill="#ff9a2e" font-size="14" font-family="system-ui">Q</text>
+<text x="96" y="212" fill="#ff9a2e" font-size="13" font-family="system-ui">Q′</text>
+<text x="300" y="216" fill="#ffe94d" font-size="12" font-family="system-ui">bisector OQ</text>
+<text x="146" y="220" fill="#22e5ff" font-size="12" font-family="system-ui">θ</text>
+<text x="212" y="198" fill="#ffe94d" font-size="12" font-family="system-ui">θ/2</text>
+</svg>
+<div class="cap">Since $|OA|=|OP|$, the perpendicular bisector of $AP$ passes through $O$ and is the angle bisector. The circles $C(A;P)$ and $C(P;A)$ construct that perpendicular bisector.</div>
+</div>
+</div>
+
+<div class="card warn"><span class="lbl">Caution — what Lemma 2 really needs</span>
+The proof above uses Lemma 1 at every single step: a complex number is in $\mathbb{K}$ exactly when <i>both</i> of its coordinates are in $\mathbb{K}\cap\mathbb{R}$. With this "rectangle" property, the field axioms are almost automatic. Without it, the hypothesis "$\mathbb{K}\cap\mathbb{R}$ is a subfield of $\mathbb{R}$" is <b>not</b> enough, and the conclusion can fail:
+<ul>
+<li>$\mathbb{K}=\mathbb{Q}\cup\mathbb{Q}i$: then $\mathbb{K}\cap\mathbb{R}=\mathbb{Q}$ is a subfield of $\mathbb{R}$, and $1\in\mathbb{K}$, $i\in\mathbb{K}$, but $1+i\notin\mathbb{K}$ — so $\mathbb{K}$ is not even closed under addition.</li>
+<li>$\mathbb{K}=\mathbb{Q}(\sqrt2)\cup\mathbb{Q}(\sqrt2)i$: $\mathbb{K}\cap\mathbb{R}=\mathbb{Q}(\sqrt2)$ is a subfield, yet again $1+i\notin\mathbb{K}$.</li>
+<li>$\mathbb{K}=\mathbb{R}\cup\mathbb{R}i$: $\mathbb{K}\cap\mathbb{R}=\mathbb{R}$ is a subfield, but $1+i\notin\mathbb{K}$.</li>
+</ul>
+In each case $\mathbb{K}$ is a "cross" and not a "rectangle": the point $(1,1)$ has both coordinates in $\mathbb{K}\cap\mathbb{R}$, but the point itself is not in $\mathbb{K}$.<br>
+The example $\{0,i\}$ does not work: there $\mathbb{K}\cap\mathbb{R}=\{0\}$, which is not a subfield (it does not contain $1$), so the hypothesis fails. For the constructible numbers Lemma 1 supplies the rectangle property, so Lemma 2 is safe.</div>
+
+<div class="card"><span class="lbl">What remains</span>
+By Lemma 2 it suffices to show the following, for $a,b\in\mathbb{K}\cap\mathbb{R}$:
+<ul>
+<li>$a+b\in\mathbb{K}\cap\mathbb{R}$ (Question 5);</li>
+<li>$-a\in\mathbb{K}\cap\mathbb{R}$ (Question 5);</li>
+<li>$ab\in\mathbb{K}\cap\mathbb{R}$ (Question 6);</li>
+<li>$a^{-1}\in\mathbb{K}\cap\mathbb{R}$ if $a\neq0$ (Question 7);</li>
+<li>$\sqrt a\in\mathbb{K}\cap\mathbb{R}$ if $a&gt;0$ (Question 8).</li>
+</ul>
+And $a-ib\in\mathbb{K}$ follows because $i\in\mathbb{K}$ and $\mathbb{K}$ is a field.</div>
+
+<div class="card q"><span class="lbl">Question 5</span>
+Construct $-a$ and $a+b$ from $P=(a,0)$ and $Q=(b,0)$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">
+<b>$-a$.</b>
+<ul>
+<li>$(-a,0)$ is the other intersection of the x-axis with $C(O;P)$: the circle copies the length $|a|$ to the other side of $O$.</li>
+</ul>
+<b>$a+b$.</b>
+<ul>
+<li>Let $I=(0,1)$.</li>
+<li>Let $Q'=(b,1)$, the intersection of the horizontal line through $I$ with the vertical line through $(b,0)$.</li>
+<li>Draw the line through $Q'$ parallel to the line $IP$.</li>
+<li>It meets the x-axis at $S=(a+b,0)$.</li>
+</ul>
+<b>Why it works.</b> The vector $\overrightarrow{IP}=(a,-1)$ equals the vector $\overrightarrow{Q'S}$, so the second line is simply the translate of $IP$ by $(b,0)$. Hence the x-coordinate of $S$ is $a+b$.
+</div></div>
+
+<div class="card"><span class="lbl">Figure — constructing $a+b$</span>
+<div class="fig">
+<svg viewBox="0 0 520 300" width="430" role="img" aria-label="Construction of a plus b: line through Q parallel to IP meets the x-axis at a+b">
+<line x1="40" y1="230" x2="500" y2="230" stroke="#888" stroke-width="1.5"/>
+<line x1="100" y1="45" x2="100" y2="275" stroke="#888" stroke-width="1.5"/>
+<line x1="100" y1="160" x2="240" y2="230" stroke="#22e5ff" stroke-width="2"/>
+<line x1="170" y1="160" x2="310" y2="230" stroke="#ff9a2e" stroke-width="2"/>
+<line x1="100" y1="160" x2="170" y2="160" stroke="#b6ff3b" stroke-width="1.3" stroke-dasharray="5 4"/>
+<line x1="170" y1="160" x2="170" y2="230" stroke="#b6ff3b" stroke-width="1.3" stroke-dasharray="5 4"/>
+<circle cx="100" cy="230" r="4.5" fill="#ffe94d"/>
+<circle cx="100" cy="160" r="4.5" fill="#b6ff3b"/>
+<circle cx="240" cy="230" r="4.5" fill="#22e5ff"/>
+<circle cx="170" cy="160" r="4.5" fill="#b6ff3b"/>
+<circle cx="310" cy="230" r="5" fill="#ff9a2e"/>
+<text x="84" y="250" fill="#ffe94d" font-size="14" font-family="system-ui">O</text>
+<text x="110" y="152" fill="#b6ff3b" font-size="14" font-family="system-ui">I=(0,1)</text>
+<text x="228" y="252" fill="#22e5ff" font-size="14" font-family="system-ui">P=(a,0)</text>
+<text x="176" y="152" fill="#b6ff3b" font-size="14" font-family="system-ui">Q′=(b,1)</text>
+<text x="300" y="252" fill="#ff9a2e" font-size="14" font-family="system-ui">S=(a+b,0)</text>
+<text x="150" y="90" fill="#22e5ff" font-size="12" font-family="system-ui">line IP</text>
+<text x="250" y="180" fill="#ff9a2e" font-size="12" font-family="system-ui">parallel to IP</text>
+<text x="492" y="222" fill="#aaa" font-size="13" font-family="system-ui">x</text>
+<text x="106" y="42" fill="#aaa" font-size="13" font-family="system-ui">y</text>
+</svg>
+<div class="cap">$Q'=(b,1)$ is obtained from the horizontal line through $I$ and the vertical line through $(b,0)$. The line through $Q'$ parallel to $IP$ meets the x-axis at $S=(a+b,0)$, because $\overrightarrow{Q'S}=\overrightarrow{IP}=(a,-1)$.</div>
+</div>
+</div>
+
+<div class="card q"><span class="lbl">Question 6</span>
+Construct $ab$ for $a,b>0$.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Use similar triangles $OAC$ and $OBD$ with $A=(1,0)$, $B=(1+a,0)$, $C=(0,b)$.</div>
+<div class="sol">
+<ul>
+<li>Let $A=(1,0)$, $B=(1+a,0)$ (constructible by Question 5) and $C=(0,b)$ (obtained by moving $b$ to the y-axis, as in Lemma 1).</li>
+<li>Draw the line through $B$ parallel to the line $AC$; it meets the y-axis at a point $D$.</li>
+<li>Now $\overrightarrow{BD}=(1+a)\cdot\overrightarrow{AC}$, because the two lines are parallel and the x-components are $1+a$ and $-1$ respectively.</li>
+<li>Hence $\triangle OAC$ and $\triangle OBD$ are similar with ratio $1+a$, so
+$$\frac{|OD|}{|OC|}=\frac{|OB|}{|OA|}=1+a.$$</li>
+<li>Therefore $|OD|=b(1+a)$ and $|CD|=|OD|-|OC|=ab$.</li>
+<li>Since $b+ab$ and $-b$ are constructible, so is $ab$ (transfer $|CD|$ to the x-axis). ∎</li>
+</ul>
+</div></div>
+
+<div class="card"><span class="lbl">Figure — constructing $ab$</span>
+<div class="fig">
+<svg viewBox="0 0 520 340" width="420" role="img" aria-label="Construction of a times b using similar triangles with vertices A on x-axis, C on y-axis and the parallel through B meeting the y-axis at D">
+<line x1="40" y1="270" x2="480" y2="270" stroke="#888" stroke-width="1.5"/>
+<line x1="90" y1="55" x2="90" y2="305" stroke="#888" stroke-width="1.5"/>
+<line x1="145" y1="270" x2="90" y2="215" stroke="#22e5ff" stroke-width="2"/>
+<line x1="255" y1="270" x2="90" y2="105" stroke="#ff9a2e" stroke-width="2"/>
+<circle cx="90" cy="270" r="4.5" fill="#ffe94d"/>
+<circle cx="145" cy="270" r="4.5" fill="#22e5ff"/>
+<circle cx="255" cy="270" r="4.5" fill="#b6ff3b"/>
+<circle cx="90" cy="215" r="4.5" fill="#22e5ff"/>
+<circle cx="90" cy="105" r="5" fill="#ff9a2e"/>
+<text x="72" y="290" fill="#ffe94d" font-size="14" font-family="system-ui">O</text>
+<text x="132" y="292" fill="#22e5ff" font-size="14" font-family="system-ui">A=(1,0)</text>
+<text x="238" y="292" fill="#b6ff3b" font-size="14" font-family="system-ui">B=(1+a,0)</text>
+<text x="20" y="218" fill="#22e5ff" font-size="14" font-family="system-ui">C=(0,b)</text>
+<text x="98" y="100" fill="#ff9a2e" font-size="14" font-family="system-ui">D=(0,b+ab)</text>
+<text x="96" y="248" fill="#aaa" font-size="12" font-family="system-ui">b</text>
+<text x="96" y="168" fill="#aaa" font-size="12" font-family="system-ui">ab</text>
+<text x="196" y="196" fill="#ff9a2e" font-size="12" font-family="system-ui">BD ∥ AC</text>
+<text x="472" y="262" fill="#aaa" font-size="13" font-family="system-ui">x</text>
+<text x="96" y="52" fill="#aaa" font-size="13" font-family="system-ui">y</text>
+</svg>
+<div class="cap">$A=(1,0)$, $B=(1+a,0)$, $C=(0,b)$. The line through $B$ parallel to $AC$ meets the y-axis at $D$, and $|CD|=ab$.</div>
+</div>
+</div>
+
+<div class="card q"><span class="lbl">Question 7</span>
+Construct $a^{-1}$ for $a>0$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">
+<ul>
+<li>Let $I=(0,1)$, $P=(a,0)$ and $A=(1,0)$.</li>
+<li>Draw the line through $A$ parallel to $IP$; its slope is $-1/a$.</li>
+<li>It meets the y-axis at $(0,1/a)$.</li>
+<li>Transfer this height to the x-axis with $C(O;\cdot)$, giving $(1/a,0)$. ∎</li>
+</ul>
+</div></div>
+
+<div class="card q"><span class="lbl">Question 8</span>
+Construct $\sqrt a$ for $a\ge0$.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Put $P=(1+a,0)$, take the midpoint $Q$ of $OP$, and draw the circle with diameter $OP$.</div>
+<div class="sol">
+<ul>
+<li>Let $A=(1,0)$ and $P=(1+a,0)$.</li>
+<li>Construct the midpoint $Q$ of $OP$ (angle bisection of the straight angle at $O$, or the standard perpendicular-bisector construction).</li>
+<li>Draw the circle $C(Q;O)$, which has diameter $OP$.</li>
+<li>Let $R$ be its intersection with the vertical line through $A$.</li>
+<li>The angle $\angle ORP$ is a right angle (angle in a semicircle), so the right triangles $AOR$ and $ARP$ are similar, and
+$$\frac{|OA|}{|AR|}=\frac{|AR|}{|AP|}.$$</li>
+<li>Hence $|AR|^2=|OA|\cdot|AP|=1\cdot a=a$, so $|AR|=\sqrt a$. ∎</li>
+</ul>
+This completes the proof of Theorem 1.
+</div></div>
+
+<div class="card"><span class="lbl">Figure — constructing $\sqrt a$</span>
+<div class="fig">
+<svg viewBox="0 0 380 380" width="320" role="img" aria-label="Circle with diameter OP, vertical through A meets it at R, and AR has length square root of a">
+<line x1="20" y1="230" x2="360" y2="230" stroke="#888" stroke-width="1.5"/>
+<circle cx="180" cy="230" r="120" fill="none" stroke="#22e5ff" stroke-width="2" opacity=".85"/>
+<line x1="140" y1="230" x2="140" y2="108" stroke="#ff5cc8" stroke-width="1.5" stroke-dasharray="5 5"/>
+<line x1="60" y1="230" x2="140" y2="116.9" stroke="#b6ff3b" stroke-width="2"/>
+<line x1="140" y1="116.9" x2="300" y2="230" stroke="#ff9a2e" stroke-width="2"/>
+<circle cx="60" cy="230" r="4.5" fill="#ffe94d"/>
+<circle cx="140" cy="230" r="4.5" fill="#22e5ff"/>
+<circle cx="300" cy="230" r="4.5" fill="#b6ff3b"/>
+<circle cx="180" cy="230" r="4.5" fill="#ff5cc8"/>
+<circle cx="140" cy="116.9" r="5" fill="#ff9a2e"/>
+<text x="42" y="250" fill="#ffe94d" font-size="13" font-family="system-ui">O</text>
+<text x="128" y="250" fill="#22e5ff" font-size="13" font-family="system-ui">A</text>
+<text x="290" y="250" fill="#b6ff3b" font-size="13" font-family="system-ui">P</text>
+<text x="176" y="220" fill="#ff5cc8" font-size="13" font-family="system-ui">Q</text>
+<text x="146" y="110" fill="#ff9a2e" font-size="13" font-family="system-ui">R</text>
+<text x="88" y="222" fill="#aaa" font-size="12" font-family="system-ui">1</text>
+<text x="212" y="222" fill="#aaa" font-size="12" font-family="system-ui">a</text>
+<text x="94" y="186" fill="#ff9a2e" font-size="12" font-family="system-ui">√a</text>
+</svg>
+<div class="cap">Here $A=(1,0)$ and $P=(1+a,0)$, so $Q$ is the midpoint of $OP$. The vertical through $A$ meets the circle with diameter $OP$ at $R$, and $|AR|=\sqrt a$.</div>
+</div>
+</div>
+
+<div class="card thm"><span class="lbl">Corollary</span>
+If $a,b,c$ are constructible ($a\ne0$), the roots of $ax^2+bx+c$ are constructible.</div>
+<div class="card q"><span class="lbl">Question 9</span>
+Why? Is $\frac{1+\sqrt5}{2}$ constructible?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">
+<ul>
+<li>The roots are $\dfrac{-b\pm\sqrt{b^2-4ac}}{2a}$, built from $\mathbb{K}$ by field operations and one square root (Theorem 1).</li>
+<li>$\frac{1+\sqrt5}2$ is a root of $x^2-x-1$, so it is constructible.</li>
+</ul>
+</div></div>
+
+<h2><span>§4</span> Constructible = tower of quadratic extensions</h2>
+<div class="card thm"><span class="lbl">Lemma 3</span>
+Let $\mathbb{F}\subseteq\mathbb{C}$ be a <b>field</b> such that
+<ul>
+<li>$i\in\mathbb{F}$, and</li>
+<li>$\mathbb{F}$ is closed under complex conjugation.</li>
+</ul>
+Let $z=a+ib,\ w=c+id\in\mathbb{F}$ and $P=(a,b),\ Q=(c,d)$. Then:
+<ul>
+<li><b>(1)</b> $a,b\in\mathbb{F}$;</li>
+<li><b>(2)</b> if $L(P,Q)$ has equation $y=mx+q$ with $m,q\in\mathbb{R}$, then $m,q\in\mathbb{F}$;</li>
+<li><b>(3)</b> if $C(P;Q)$ has equation $(x-a)^2+(y-b)^2=r^2$, then $r^2\in\mathbb{F}$.</li>
+</ul></div>
+
+<div class="card q"><span class="lbl">Question 10</span>
+Prove Lemma 3.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol">
+<ul>
+<li><b>(1)</b> $a=\tfrac12(z+\bar z)\in\mathbb{F}$ and $ib=\tfrac12(z-\bar z)\in\mathbb{F}$; since $i\in\mathbb{F}$, also $b\in\mathbb{F}$.</li>
+<li><b>(2)</b> The slope is $m=\dfrac{d-b}{c-a}\in\mathbb{F}$ (here we use that $\mathbb{F}$ is a field, so we may divide), and then $q=b-ma\in\mathbb{F}$.</li>
+<li><b>(3)</b> $r^2=(c-a)^2+(d-b)^2\in\mathbb{F}$. ∎</li>
+</ul>
+</div></div>
+
+<div class="card thm"><span class="lbl">Lemma 4 (one step costs at most degree 2)</span>
+Let $\mathbb{F}$ be as in Lemma 3, and let $P,Q,R,S$ have coordinates in $\mathbb{F}$. Then:
+<ul>
+<li>if $\alpha=u+iv\in L(P,Q)\cap L(R,S)$ with $L(P,Q)\neq L(R,S)$, then $[\mathbb{F}(\alpha):\mathbb{F}]\le2$;</li>
+<li>if $\alpha\in L(P,Q)\cap C(R;S)$, then $[\mathbb{F}(\alpha):\mathbb{F}]\le2$;</li>
+<li>if $\alpha\in C(P;Q)\cap C(R;S)$ with $C(P;Q)\neq C(R;S)$, then $[\mathbb{F}(\alpha):\mathbb{F}]\le2$.</li>
+</ul></div>
+
+<div class="card q"><span class="lbl">Question 11</span>
+Prove Lemma 4, treating the three cases.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">Case 3 reduces to Case 2 by subtracting the two circle equations.</div>
+<div class="sol">
+<ul>
+<li><b>Case 1 (two lines).</b> The lines are $y=mx+q_1$ (or $x=b$) and $y=nx+q_2$ (or $x=c$), with coefficients in $\mathbb{F}$ by Lemma 3. They are not parallel, so solving the two linear equations gives $u,v\in\mathbb{F}$: the degree is $1$.</li>
+<li><b>Case 2 (line and circle).</b> Line $y=mx+q_1$ (or $x=b$), circle $(x-c)^2+(y-d)^2=r^2$, with $m,q_1,r^2\in\mathbb{F}$. Then
+$$r^2=(u-c)^2+(mu+q_1-d)^2,$$
+so $u$ is a root of a quadratic over $\mathbb{F}\cap\mathbb{R}$, hence $[\mathbb{F}(u):\mathbb{F}]\le2$. Since $v=mu+q_1\in\mathbb{F}(u)$ and $i\in\mathbb{F}$, we get $\alpha=u+iv\in\mathbb{F}(u)$ and $[\mathbb{F}(\alpha):\mathbb{F}]\le2$.</li>
+<li><b>Case 3 (two circles).</b> $(u-a)^2+(v-b)^2=r^2$ and $(u-c)^2+(v-d)^2=s^2$ both read $u^2+v^2+\dots=0$. Subtracting gives $tu+t'v+t''=0$ with $t,t',t''\in\mathbb{F}$, which is a line; pairing it with one of the circles brings us back to Case 2. ∎</li>
+</ul>
+</div></div>
+
+<div class="card thm"><span class="lbl">Theorem 2 (main criterion)</span>
+A complex number $z$ is constructible if and only if there is a tower of fields
+$$\mathbb{Q}=\mathbb{K}_0\subset\mathbb{K}_1\subset\dots\subset\mathbb{K}_n$$
+such that
+<ul>
+<li>$z\in\mathbb{K}_n$, and</li>
+<li>$[\mathbb{K}_{j+1}:\mathbb{K}_j]\le2$ for every $j$.</li>
+</ul>
+<b>Corollary.</b> If $z$ is constructible, then $[\mathbb{Q}(z):\mathbb{Q}]=2^m$ for some $m\ge0$.</div>
+
+<div class="card q"><span class="lbl">Question 12</span>
+Prove the "only if" direction, and deduce the Corollary.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol">
+<ul>
+<li>Let $1,-1,z_1=i,z_2,\dots,z_n=z$ be a construction chain (we may start with $i$ because $i$ is constructible, Question 2).</li>
+<li>Let $\mathbb{K}_j$ be the field generated over $\mathbb{Q}$ by $z_1,\dots,z_j$ <i>and their conjugates</i>. Then $\mathbb{K}_j$ contains $i$ and is closed under conjugation, so Lemma 4 applies to it.</li>
+<li>Each $z_{j+1}$ is an intersection of two lines, a line and a circle, or two circles through points with coordinates in $\mathbb{K}_j$; by Lemma 4, $[\mathbb{K}_j(z_{j+1}):\mathbb{K}_j]\le2$.</li>
+<li>The conjugate $\bar z_{j+1}$ is the corresponding intersection for the conjugated configuration, so adjoining it costs at most one more factor $2$.</li>
+<li>Thus $[\mathbb{K}_n:\mathbb{Q}]$ is a power of $2$.</li>
+<li>By the Tower Law (Lecture 1, Theorem 2), $[\mathbb{Q}(z):\mathbb{Q}]$ divides $[\mathbb{K}_n:\mathbb{Q}]$, hence it is a power of $2$.</li>
+<li>Conversely, each quadratic step is a square root, which Theorem 1 constructs. ∎</li>
+</ul>
+</div></div>
+
+<div class="card"><span class="lbl">Flowchart — from a drawing to a degree</span>
+<svg viewBox="0 0 700 330" width="100%" role="img" aria-label="from constructions to powers of two">
+<defs><marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#ffe94d"/></marker></defs>
+<rect x="150" y="8" width="400" height="44" rx="12" fill="#06161a" stroke="#22e5ff" stroke-width="2"/>
+<text x="350" y="36" text-anchor="middle" fill="#22e5ff" font-size="15" font-family="system-ui">Ruler + compass: lines and circles</text>
+<path d="M350 52L350 78" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<rect x="150" y="80" width="400" height="44" rx="12" fill="#0b1a06" stroke="#b6ff3b" stroke-width="2"/>
+<text x="350" y="108" text-anchor="middle" fill="#b6ff3b" font-size="15" font-family="system-ui">Points = intersections ⇒ coordinates in a field</text>
+<path d="M350 124L350 150" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<rect x="110" y="152" width="480" height="44" rx="12" fill="#1a0f04" stroke="#ff9a2e" stroke-width="2"/>
+<text x="350" y="180" text-anchor="middle" fill="#ff9a2e" font-size="15" font-family="system-ui">Each new point: solve a linear or quadratic equation</text>
+<path d="M350 196L350 222" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<rect x="110" y="224" width="480" height="44" rx="12" fill="#1a0410" stroke="#ff5cc8" stroke-width="2"/>
+<text x="350" y="252" text-anchor="middle" fill="#ff5cc8" font-size="15" font-family="system-ui">Tower Q ⊂ K₁ ⊂ … ⊂ Kₙ with each [K_{j+1}:K_j] ≤ 2</text>
+<path d="M350 268L350 290" stroke="#ffe94d" stroke-width="2" marker-end="url(#ar)"/>
+<text x="350" y="316" text-anchor="middle" fill="#ffe94d" font-size="17" font-family="system-ui">[Q(z):Q] must be a power of 2</text>
+</svg></div>
+
+<div class="card q"><span class="lbl">Question 13 — try it</span>
+Degree test: enter $[\mathbb{Q}(z):\mathbb{Q}]$ for a number $z$. <input type="number" id="dg" min="1" value="3"> <button onclick="degchk()">Could $z$ be constructible?</button>
+<div class="fb" id="dgfb"></div></div>
+
+<h3>Two natural questions about the size of $\mathbb{K}$</h3>
+
+<div class="card q"><span class="lbl">Question 13A — Is every quadratic extension of $\mathbb{Q}$ inside $\mathbb{K}$?</span>
+Let $L/\mathbb{Q}$ be a quadratic extension. Is $L\subseteq\mathbb{K}$?
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Every quadratic extension is $\mathbb{Q}(\sqrt d)$ with $d$ a squarefree integer. Where is $\sqrt d$?</div>
+<div class="sol">
+<b>Yes — every quadratic extension of $\mathbb{Q}$ is a subfield of $\mathbb{K}$.</b>
+<ul>
+<li>A quadratic extension of $\mathbb{Q}$ has the form $L=\mathbb{Q}(\sqrt d)$ with $d\in\mathbb{Z}$ squarefree, $d\neq1$.</li>
+<li>$d$ is an integer, so $d\in\mathbb{Q}\subseteq\mathbb{K}$ (since $1\in\mathbb{K}$ and $\mathbb{K}$ is a field).</li>
+<li>If $d&gt;0$: $\sqrt d\in\mathbb{K}$ by Theorem 1.</li>
+<li>If $d&lt;0$: $|d|&gt;0$, so $\sqrt{|d|}\in\mathbb{K}$, and $i\in\mathbb{K}$ (Question 2); hence $\sqrt d=i\sqrt{|d|}\in\mathbb{K}$.</li>
+<li>Since $\mathbb{K}$ is a field containing $\mathbb{Q}$ and $\sqrt d$, it contains $\mathbb{Q}(\sqrt d)=L$. ∎</li>
+</ul>
+<b>Careful with the converse.</b> It is <i>not</i> true that every element of $\mathbb{K}$ generates a quadratic extension of $\mathbb{Q}$: for example $\sqrt{1+\sqrt2}\in\mathbb{K}$ has degree $4$. And it is <i>not</i> true that $\mathbb{K}$ contains all algebraic numbers: $\sqrt[3]2\notin\mathbb{K}$ (Question 15).
+</div></div>
+
+<div class="card q"><span class="lbl">Question 13B — Is $[\mathbb{K}:\mathbb{Q}]$ finite or infinite?</span>
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Take repeated square roots of $2$. What are the degrees?</div>
+<div class="sol">
+<b>The extension is infinite: $[\mathbb{K}:\mathbb{Q}]=\infty$.</b>
+<ul>
+<li>Let $a_n=2^{1/2^n}$. Then $a_1=\sqrt2\in\mathbb{K}$, and if $a_n\in\mathbb{K}$ then $a_{n+1}=\sqrt{a_n}\in\mathbb{K}$ by Theorem 1. So $a_n\in\mathbb{K}$ for all $n$.</li>
+<li>The minimal polynomial of $a_n$ is $x^{2^n}-2$: it is irreducible by Eisenstein at $p=2$.</li>
+<li>Hence $[\mathbb{Q}(a_n):\mathbb{Q}]=2^n$.</li>
+<li>Since $\mathbb{K}$ contains subfields of degree $2^n$ for every $n$, the degree $[\mathbb{K}:\mathbb{Q}]$ cannot be finite. ∎</li>
+</ul>
+<b>Two more facts (sketch).</b>
+<ul>
+<li><b>$\mathbb{K}\subseteq\bar{\mathbb{Q}}$.</b> Each construction step adjoins a number algebraic of degree $\le2$ over the previous field, so by induction every constructible number is algebraic over $\mathbb{Q}$.</li>
+<li><b>$\mathbb{K}\neq\mathbb{C}$.</b> $\mathbb{K}\subseteq\bar{\mathbb{Q}}$ is countable, while $\mathbb{C}$ is uncountable.</li>
+<li><b>$\mathbb{K}$ is not algebraically closed.</b> $x^3-2$ has no root in $\mathbb{K}$, because $\sqrt[3]2$ has degree $3$ over $\mathbb{Q}$ (Question 15).</li>
+</ul>
+</div></div>
+
+<div class="card"><span class="lbl">Figure — where $\mathbb{K}$ sits</span>
+<div class="fig">
+<svg viewBox="0 0 520 300" width="420" role="img" aria-label="Nested fields: rationals inside constructible numbers inside algebraic numbers inside the complex numbers">
+<rect x="18" y="18" width="484" height="264" rx="10" fill="#07070b" stroke="#888" stroke-width="1.6"/>
+<text x="30" y="40" fill="#ccc" font-size="14" font-family="system-ui">ℂ</text>
+<rect x="60" y="56" width="400" height="204" rx="9" fill="#0a0f08" stroke="#b6ff3b" stroke-width="1.6"/>
+<text x="72" y="78" fill="#b6ff3b" font-size="14" font-family="system-ui">ℚ̄ — algebraic numbers</text>
+<rect x="122" y="108" width="276" height="130" rx="9" fill="#0b141a" stroke="#22e5ff" stroke-width="1.6"/>
+<text x="134" y="130" fill="#22e5ff" font-size="14" font-family="system-ui">𝕂 — constructible numbers</text>
+<rect x="182" y="168" width="148" height="48" rx="8" fill="#141005" stroke="#ffe94d" stroke-width="1.6"/>
+<text x="196" y="198" fill="#ffe94d" font-size="15" font-family="system-ui">ℚ</text>
+<text x="330" y="152" fill="#22e5ff" font-size="13" font-family="system-ui">√2</text>
+<text x="72" y="106" fill="#b6ff3b" font-size="13" font-family="system-ui">∛2</text>
+<text x="452" y="46" fill="#ff5cc8" font-size="13" font-family="system-ui">π</text>
+</svg>
+<div class="cap">$\mathbb{Q}\subsetneq\mathbb{K}\subsetneq\bar{\mathbb{Q}}\subsetneq\mathbb{C}$, with witnesses $\sqrt2\in\mathbb{K}\setminus\mathbb{Q}$, $\sqrt[3]2\in\bar{\mathbb{Q}}\setminus\mathbb{K}$, $\pi\in\mathbb{C}\setminus\bar{\mathbb{Q}}$. Each inclusion is strict, and $[\mathbb{K}:\mathbb{Q}]=\infty$.</div>
+</div>
+</div>
+
+<h2><span>§5</span> Three impossible constructions</h2>
+<div class="card q"><span class="lbl">Question 14 — Squaring the circle</span>
+Construct a square with the area of the unit circle, i.e. is $\sqrt\pi$ constructible?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">
+<ul>
+<li><b>No.</b> By Lindemann (1882), $\pi$ is transcendental over $\mathbb{Q}$.</li>
+<li>Hence $\sqrt\pi$ is transcendental too: otherwise $\pi=(\sqrt\pi)^2$ would be algebraic.</li>
+<li>A transcendental number lies in no finite extension of $\mathbb{Q}$, so $[\mathbb{Q}(\sqrt\pi):\mathbb{Q}]=\infty$, not a power of $2$. ∎</li>
+</ul>
+</div></div>
+
+<div class="card q"><span class="lbl">Question 15 — Duplicating the cube</span>
+Construct a cube of volume $2$: is $\alpha=\sqrt[3]2$ constructible?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">
+<ul>
+<li><b>No.</b> $x^3-2$ is irreducible over $\mathbb{Q}$ by Eisenstein with $p=2$.</li>
+<li>Hence $[\mathbb{Q}(\alpha):\mathbb{Q}]=3$, which is not a power of $2$. ∎</li>
+</ul>
+</div></div>
+
+<div class="card q"><span class="lbl">Question 16 — Trisecting an angle</span>
+Show the angle $\pi/3$ (60°) cannot be trisected.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Let $a=\cos(\pi/9)$ and use $\cos3\theta=4\cos^3\theta-3\cos\theta$.</div>
+<div class="sol">
+<ul>
+<li>The point $(\cos\frac\pi3,\sin\frac\pi3)=(\tfrac12,\tfrac{\sqrt3}2)$ is constructible.</li>
+<li>If $60^\circ$ could be trisected, then $(a,b)=(\cos\frac\pi9,\sin\frac\pi9)$ would be constructible.</li>
+<li>With $\theta=\pi/9$ in $\cos3\theta=4\cos^3\theta-3\cos\theta$: $4a^3-3a=\tfrac12$, so $8a^3-6a-1=0$.</li>
+<li>Put $x=2a-1$. Then $8a^3-6a-1=f(2a-1)$ where $f(x)=x^3+3x^2-3$.</li>
+<li>Eisenstein with $p=3$ shows $f$ is irreducible, so $[\mathbb{Q}(a):\mathbb{Q}]=[\mathbb{Q}(2a-1):\mathbb{Q}]=3$, not a power of $2$. ∎</li>
+</ul>
+<b>Alternative.</b> Put $y=2a$; then $y^3-3y-1=0$, which has no rational root $\pm1$, so it is irreducible and $[\mathbb{Q}(a):\mathbb{Q}]=3$.
+</div></div>
+
+<h2><span>§6</span> Regular polygons</h2>
+<div class="card thm"><span class="lbl">Theorem 3 (Gauss)</span>
+Let $p$ be an odd prime. Then:
+<ul>
+<li>a regular $p$-gon is constructible if and only if $p=2^{2^t}+1$ for some $t\ge0$;</li>
+<li>such primes are called <b>Fermat primes</b>; the known ones are $3,5,17,257,65537$.</li>
+</ul></div>
+
+<div class="card thm"><span class="lbl">Theorem 4</span>
+A regular $n$-gon is constructible if and only if
+<ul>
+<li>$n$ is a power of $2$ times a product of <b>distinct</b> Fermat primes.</li>
+</ul></div>
+
+<div class="card q"><span class="lbl">Question 17 — try it</span>
+Enter $n\ge3$: <input type="number" id="ng" min="3" value="17"> <button onclick="ngchk()">Is the regular $n$-gon constructible?</button>
+<div class="fb" id="ngfb"></div></div>
+
+<div class="card q"><span class="lbl">Question 18</span>
+Which of the regular 7-, 9-, 15-, 17-gons are constructible?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">
+<ul>
+<li>$7$ is prime but $7\neq2^{2^t}+1$: <b>no</b>.</li>
+<li>$9=3^2$ repeats the Fermat prime $3$: <b>no</b>.</li>
+<li>$15=3\cdot5$, a product of distinct Fermat primes: <b>yes</b>.</li>
+<li>$17=2^{2^2}+1$ is a Fermat prime: <b>yes</b>.</li>
+</ul>
+</div></div>
+
+<h2><span>§7</span> Quick quiz</h2>
+<div class="card q"><span class="lbl">Quiz 1</span>A number $z$ with $[\mathbb{Q}(z):\mathbb{Q}]=6$ is
+<div class="opts"><button class="opt" onclick="pick(this,1)">not constructible</button><button class="opt" onclick="pick(this,0)">constructible</button><button class="opt" onclick="pick(this,0)">constructible iff $z$ is real</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 2</span>Which is <i>not</i> a basic ruler-and-compass step?
+<div class="opts"><button class="opt" onclick="pick(this,0)">intersect two circles</button><button class="opt" onclick="pick(this,1)">measure a length with a marked ruler</button><button class="opt" onclick="pick(this,0)">line through two points</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 3</span>Duplicating the cube is impossible because $[\mathbb{Q}(\sqrt[3]2):\mathbb{Q}]=$
+<div class="opts"><button class="opt" onclick="pick(this,0)">2</button><button class="opt" onclick="pick(this,1)">3</button><button class="opt" onclick="pick(this,0)">4</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 4</span>The regular 17-gon is constructible because 17 is
+<div class="opts"><button class="opt" onclick="pick(this,0)">odd</button><button class="opt" onclick="pick(this,1)">a Fermat prime</button><button class="opt" onclick="pick(this,0)">$\equiv1\pmod 3$</button></div><div class="fb"></div></div>
+
+<h2><span>§8</span> SAQ — Short Answer Questions</h2>
+<p class="sub">Answer on paper first, then reveal.</p>
+<div class="card q"><span class="lbl">SAQ 1</span>Define a constructible real number.<br><button onclick="sol(this)">Answer</button><div class="sol">$x\in\mathbb{R}$ is constructible if the point $(x,0)$ is a constructible point, i.e. if $x=x+0i\in\mathbb{K}$.</div></div>
+<div class="card q"><span class="lbl">SAQ 2</span>Define a constructible complex number.<br><button onclick="sol(this)">Answer</button><div class="sol">$z=x+iy$ is constructible if the point $(x,y)$ is constructible; equivalently, if both $x$ and $y$ are constructible real numbers.</div></div>
+<div class="card q"><span class="lbl">SAQ 3</span>Name the operations under which $\mathbb{K}$ is closed.<br><button onclick="sol(this)">Answer</button><div class="sol">$+,-,\times,\div$ (a subfield of $\mathbb{C}$), square roots, and complex conjugation.</div></div>
+<div class="card q"><span class="lbl">SAQ 4</span>State the main criterion for constructibility.<br><button onclick="sol(this)">Answer</button><div class="sol">$z$ is constructible iff it lies in a tower $\mathbb{Q}=\mathbb{K}_0\subset\dots\subset\mathbb{K}_n$ with all $[\mathbb{K}_{j+1}:\mathbb{K}_j]\le2$.</div></div>
+<div class="card q"><span class="lbl">SAQ 5</span>If $z$ is constructible, what can $[\mathbb{Q}(z):\mathbb{Q}]$ be?<br><button onclick="sol(this)">Answer</button><div class="sol">Only a power of $2$: $1,2,4,8,\dots$.</div></div>
+<div class="card q"><span class="lbl">SAQ 6</span>Why can't we trisect $60^\circ$?<br><button onclick="sol(this)">Answer</button><div class="sol">$\cos20^\circ$ has minimal polynomial of degree $3$ (after scaling, $y^3-3y-1$), not a power of $2$.</div></div>
+<div class="card q"><span class="lbl">SAQ 7</span>Give a constructible number of degree $4$ over $\mathbb{Q}$.<br><button onclick="sol(this)">Answer</button><div class="sol">$\sqrt{1+\sqrt2}$ (a tower of two quadratic steps; minimal polynomial $x^4-2x^2-1$), or $\sqrt2+\sqrt3$.</div></div>
+<div class="card q"><span class="lbl">SAQ 8</span>Is the regular 11-gon constructible?<br><button onclick="sol(this)">Answer</button><div class="sol">No: $11$ is prime but $11-1=10$ is not a power of $2$, so $11$ is not a Fermat prime.</div></div>
+<div class="card q"><span class="lbl">SAQ 9</span>Is every quadratic extension of $\mathbb{Q}$ contained in $\mathbb{K}$?<br><button onclick="sol(this)">Answer</button><div class="sol">Yes: every such extension is $\mathbb{Q}(\sqrt d)$ with $d$ a squarefree integer, and $\sqrt d\in\mathbb{K}$ (Theorem 1, plus $i\in\mathbb{K}$ when $d&lt;0$).</div></div>
+<div class="card q"><span class="lbl">SAQ 10</span>Is $[\mathbb{K}:\mathbb{Q}]$ finite?<br><button onclick="sol(this)">Answer</button><div class="sol">No. $2^{1/2^n}\in\mathbb{K}$ has degree $2^n$ over $\mathbb{Q}$, and these degrees are unbounded, so $[\mathbb{K}:\mathbb{Q}]=\infty$; moreover $\mathbb{Q}\subsetneq\mathbb{K}\subsetneq\bar{\mathbb{Q}}\subsetneq\mathbb{C}$.</div></div>
+
+<h2><span>§9</span> References</h2>
+<div class="card">D. S. Dummit and R. M. Foote, <i>Abstract Algebra</i> (2nd ed.), Wiley (2002).<br>J. Rotman, <i>Galois Theory</i> (2nd ed.), Springer (1998).</div>
+
+<nav style="margin-top:34px"><a href="L4.html">← Lecture 4</a><a href="FE.html">☰ Index</a><a href="L6.html">Lecture 6 →</a></nav>
+</div>
+<script>
+var opened=new Set(),done=0;
+function sol(b){var s=b.parentNode.querySelector('.sol');if(!b.dataset.t)b.dataset.t=b.textContent;var on=s.classList.toggle('on');b.textContent=on?'Hide':b.dataset.t;opened.add(s);document.getElementById('cnt').textContent=opened.size;if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([s]);}
+function hint(b){b.parentNode.querySelector('.hintb').classList.toggle('on');}
+function pick(b,ok){var c=b.closest('.card');if(c.dataset.done)return;c.dataset.done=1;b.classList.add(ok?'right':'wrong');var fb=c.querySelector('.fb');fb.innerHTML=ok?'<span class="g">Correct!</span>':'<span class="o">Not quite — recall the power-of-2 criterion.</span>';if(ok){done++;document.getElementById('qs').textContent=done;document.getElementById('pb').style.width=(done*25)+'%';}}
+function degchk(){var n=parseInt(document.getElementById('dg').value),f=document.getElementById('dgfb');if(!(n>=1)){f.textContent='Enter a positive integer.';return;}
+ var p=(n&(n-1))===0;f.innerHTML=p?'<span class="g">'+n+' is a power of 2, so it passes the necessary test (this alone does not guarantee constructibility in general).</span>':'<span class="o">'+n+' is not a power of 2, so z is NOT constructible.</span>';}
+function ngchk(){var n=parseInt(document.getElementById('ng').value),f=document.getElementById('ngfb');if(!(n>=3)){f.textContent='Enter an integer n ≥ 3.';return;}
+ var m=n;while(m%2===0)m/=2;var F=[3,5,17,257,65537],ok=true,used=[];
+ for(var i=0;i<F.length;i++){var c=0;while(m%F[i]===0){m/=F[i];c++;}if(c>1)ok=false;if(c===1)used.push(F[i]);}
+ if(m!==1)ok=false;
+ f.innerHTML=ok?'<span class="g">Yes: '+n+' = power of 2 × '+(used.length?used.join('·'):'1')+'. Constructible.</span>':'<span class="o">No: '+n+' is not a power of 2 times distinct Fermat primes (among the known ones).</span>';}
+</script>
+</body>
+</html>

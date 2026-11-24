@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lecture 0 — Background for Field Extensions</title>
+<script>
+window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]}};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.js"></script>
+<style>
+:root{--cy:#22e5ff;--li:#b6ff3b;--gr:#2bd96b;--ye:#ffe94d;--or:#ff9a2e;--pk:#ff5cc8;--card:#0e0e12;--bd:#26262e;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:#000;color:#f2f2f2;font:17px/1.65 Georgia,'Times New Roman',serif}
+.wrap{max-width:860px;margin:0 auto;padding:18px 16px 70px}
+nav{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font:14px system-ui,sans-serif;margin-bottom:14px}
+nav a{color:var(--cy);text-decoration:none;border:1px solid var(--bd);padding:5px 12px;border-radius:20px}
+nav a:hover{border-color:var(--cy)}
+header{text-align:center;padding:22px 8px 10px}
+.tag{font:13px system-ui,sans-serif;letter-spacing:3px;color:var(--or);text-transform:uppercase}
+h1{font-size:2.1rem;margin:.2em 0;background:linear-gradient(90deg,var(--ye),var(--or),var(--pk),var(--cy));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1.2}
+.sub{color:#aaa;font-style:italic}
+h2{color:var(--ye);border-bottom:1px dashed var(--bd);padding-bottom:6px;margin-top:2.2em;font-size:1.45rem}
+h2 span{color:var(--pk)}
+.card{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--cy);border-radius:10px;padding:12px 16px;margin:14px 0}
+.card.def{border-left-color:var(--li)}.card.thm{border-left-color:var(--or)}.card.q{border-left-color:var(--pk)}
+.lbl{font:700 12px system-ui,sans-serif;letter-spacing:2px;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--cy)}
+.def .lbl{color:var(--li)}.thm .lbl{color:var(--or)}.q .lbl{color:var(--pk)}
+b{color:var(--li)}.c{color:var(--cy)}.y{color:var(--ye)}.o{color:var(--or)}.p{color:var(--pk)}.g{color:var(--gr)}
+button{font:600 14px system-ui,sans-serif;cursor:pointer;border-radius:8px;border:1px solid var(--gr);background:transparent;color:var(--gr);padding:6px 14px;margin:6px 6px 0 0}
+button:hover{background:var(--gr);color:#000}
+.sol{display:none;margin-top:10px;padding:10px 14px;border:1px solid var(--gr);border-radius:8px;background:#04140a;color:#d8ffe6}
+.sol.on{display:block;animation:f .35s}
+@keyframes f{from{opacity:0;transform:translateY(-4px)}to{opacity:1}}
+.hint{border-color:var(--ye);color:var(--ye)}.hint:hover{background:var(--ye)}
+.hintb{display:none;margin-top:8px;color:var(--ye);font-style:italic}.hintb.on{display:block}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opt{text-align:left;border-color:var(--bd);color:#f2f2f2;font-weight:400;font-family:Georgia,serif;font-size:16px;margin:0}
+.opt:hover{background:#15151c;border-color:var(--cy);color:#f2f2f2}
+.opt.right{border-color:var(--gr);background:#06210f}.opt.wrong{border-color:#ff4d4d;background:#260808}
+.fb{margin-top:8px;font:14px system-ui,sans-serif;min-height:1em;word-break:break-word}
+.score{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;text-align:right;font:13px system-ui,sans-serif;color:var(--ye);background:#000c;padding:4px 0}
+.bar{height:6px;background:#1a1a20;border-radius:4px;overflow:hidden;margin:2px 0 0}
+.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--cy),var(--li));transition:width .4s}
+.conv{border-left-color:var(--ye);background:#14120a}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%}
+input[type=number],input[type=text]{background:#000;color:var(--ye);border:1px solid var(--ye);border-radius:6px;padding:4px;font-size:16px}
+input[type=number]{width:80px}input[type=text]{width:130px}
+ol.d{padding-left:1.2em}ol.d li{margin:.35em 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a href="FE.html">☰ Index</a><a href="L1.html">Lecture 1 →</a></nav>
+<div class="score">Questions opened: <span id="cnt">0</span> · Quiz: <span id="qs">0</span>/5<div class="bar"><i id="pb"></i></div></div>
+
+<header>
+<div class="tag">Seven Lectures on Field Extensions</div>
+<h1>Lecture 0<br>Background You Need Before Lecture 1</h1>
+<div class="sub">Rings, ideals, $\mathbb{F}[x]$ as a PID, and maximal ideals ↔ irreducible polynomials.</div>
+</header>
+
+<div class="card conv"><span class="lbl" style="color:var(--ye)">Standing convention</span>
+Throughout this series, <b>ring means commutative ring with unity</b> $1\ne0$. A <b>field</b> is a ring in which every non-zero element is a unit; an <b>integral domain (ID)</b> is a ring with no non-zero zero divisors.</div>
+
+<h2><span>§1</span> Elements of a ring</h2>
+<div class="card def"><span class="lbl">Definitions</span>
+Let $a\in R$.
+<ol class="d">
+<li><b>Unit:</b> $ab=1$ for some $b$. The units form an abelian group $U(R)=R^\times$.</li>
+<li><b>Zero divisor:</b> $ab=0$ for some $b\ne0$ ($0$ counts when $R\ne0$). Set: $\mathcal Z(R)$.</li>
+<li><b>Nilpotent:</b> $a^k=0$ for some $k\ge1$. Set: $\mathrm{Nil}(R)$.</li>
+<li><b>Idempotent:</b> $a^2=a$.</li>
+<li><b>Irreducible:</b> <span class="y">non-zero, non-unit</span>, and $a=bc\Rightarrow b$ or $c$ is a unit.</li>
+<li><b>Prime:</b> <span class="y">non-zero, non-unit</span>, and $a\mid bc\Rightarrow a\mid b$ or $a\mid c$.</li>
+<li><b>Associates:</b> $b=au$ for a unit $u$; this is an equivalence relation.</li>
+</ol></div>
+
+<div class="card q"><span class="lbl">Question 1</span>
+Can an element be both a unit and a zero divisor?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol"><b>No.</b> If $a$ is a unit and $ab=0$, then $b=a^{-1}ab=a^{-1}\cdot0=0$, contradicting $b\ne0$. So $U(R)\cap\mathcal Z(R)=\emptyset$.</div></div>
+
+<div class="card q"><span class="lbl">Question 2</span>
+In a <b>finite</b> ring, is every element a unit or a zero divisor?
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">Look at $f_a:R\to R$, $x\mapsto ax$. On a finite set, injective ⇔ surjective.</div>
+<div class="sol"><b>Yes.</b> If $f_a$ is injective it is surjective, so $ab=1$ for some $b$: $a$ is a unit. If not injective, $ax_1=ax_2$ with $x_1\ne x_2$, so $a(x_1-x_2)=0$ with $x_1-x_2\ne0$: $a$ is a zero divisor. Hence $R=U(R)\cup\mathcal Z(R)$. (The same holds for $M_n(\mathbb{R})$ via determinants, for $\mathbb{Z}_n$, for $k[x]/\langle x^2\rangle$.)</div></div>
+
+<div class="card q"><span class="lbl">Question 3</span>
+Is a nilpotent element always a zero divisor? Is a zero divisor always nilpotent?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">Nilpotent ⇒ zero divisor: for $a\ne0$ take the least $k\ge2$ with $a^k=0$; then $a\cdot a^{k-1}=0$ and $a^{k-1}\ne0$. So $\mathrm{Nil}(R)\subseteq\mathcal Z(R)$. <b>Converse false:</b> in $\mathbb{Z}_6$, $\bar2\cdot\bar3=0$, but $\bar2^n\in\{\bar2,\bar4\}$ is never $0$.</div></div>
+
+<div class="card q"><span class="lbl">Question 4 — a finite domain</span>
+Show that a finite integral domain is a field.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">By Question 2 every non-zero element is a unit or a zero divisor; in a domain there are no non-zero zero divisors, so every non-zero element is a unit. This is why $\mathbb{Z}_p$ ($p$ prime) is a field.</div></div>
+
+<div class="card q"><span class="lbl">Try it — units in $\mathbb{Z}_n$</span>
+$a=$ <input type="number" id="ua" value="5"> $n=$ <input type="number" id="un" value="12"> <button onclick="unit()">Unit or zero divisor?</button>
+<div class="fb" id="ufb"></div></div>
+
+<div class="card q"><span class="lbl">Question 5 — prime vs irreducible</span>
+Show that in an integral domain every prime element is irreducible. Is the converse true?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">Let $p$ be prime and $p=bc$. Then $p\mid bc$, so say $p\mid b$, $b=pd$; then $p=pdc$, so $dc=1$ (cancel in a domain) and $c$ is a unit. Hence $p$ is irreducible. <b>Converse fails in general</b> (e.g. $3$ in $\mathbb{Z}[\sqrt{-5}]$: $3$ is irreducible, but $3\mid(1+\sqrt{-5})(1-\sqrt{-5})=6$ without dividing either factor), <b>but it holds in a PID</b> — which is why in $\mathbb{F}[x]$ "irreducible" and "prime" mean the same.</div></div>
+
+<h2><span>§2</span> Ideals, quotients and maximal ideals</h2>
+<div class="card def"><span class="lbl">Definitions</span>
+An <b>ideal</b> $I\subseteq R$ is an additive subgroup with $rI\subseteq I$. The <b>principal ideal</b> $\langle a\rangle=Ra$. $I$ is <b>maximal</b> if $I\ne R$ and no ideal lies strictly between $I$ and $R$. $\ \langle a\rangle\subseteq\langle b\rangle\iff b\mid a$; $\ \langle a\rangle=\langle b\rangle$ (in a domain) iff $a,b$ are associates; $\langle a\rangle=R$ iff $a$ is a unit.</div>
+<div class="card thm"><span class="lbl">Theorem 1</span>
+$I$ is a maximal ideal of $R$ $\iff$ $R/I$ is a field.</div>
+<div class="card q"><span class="lbl">Question 6</span>
+Prove Theorem 1.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">For ⇒ use $J=I+\langle a\rangle$ for $a\notin I$. For ⇐ use that a non-zero coset has an inverse.</div>
+<div class="sol">(⇒) $I\ne R$, so $1+I\ne0+I$. For $a\notin I$ the ideal $J=I+\langle a\rangle\supsetneq I$, so $J=R$ and $1=i+ra$; hence $(r+I)(a+I)=1+I$, so $a+I$ is invertible.<br>
+(⇐) Let $I\subsetneq J$ and pick $x\in J\setminus I$. Then $x+I$ has an inverse $y+I$: $1-xy\in I\subseteq J$. Also $xy\in J$, so $1\in J$ and $J=R$. ∎</div></div>
+
+<div class="card thm"><span class="lbl">First isomorphism theorem</span>
+For a ring homomorphism $\varphi:R\to S$: $\ker\varphi$ is an ideal and $R/\ker\varphi\cong\varphi(R)$. Evaluation maps $f\mapsto f(a)$ on $\mathbb{F}[x]$ are the main examples (Lecture 2).</div>
+
+<h2><span>§3</span> The ladder of domains</h2>
+<div class="card"><span class="lbl">Field ⊂ ED ⊂ PID ⊂ UFD ⊂ ID</span>
+<svg viewBox="0 0 700 300" width="100%" role="img" aria-label="Nested classes of domains">
+<rect x="10" y="10" width="680" height="280" rx="22" fill="#06161a" stroke="#22e5ff" stroke-width="2"/>
+<text x="350" y="36" text-anchor="middle" fill="#22e5ff" font-size="15" font-family="system-ui">Integral domains (ID) — e.g. Z[√−5]</text>
+<rect x="60" y="52" width="580" height="226" rx="20" fill="#0b1a06" stroke="#b6ff3b" stroke-width="2"/>
+<text x="350" y="78" text-anchor="middle" fill="#b6ff3b" font-size="15" font-family="system-ui">UFD — e.g. Z[x], F[x,y]</text>
+<rect x="110" y="94" width="480" height="172" rx="18" fill="#1a0f04" stroke="#ff9a2e" stroke-width="2"/>
+<text x="350" y="120" text-anchor="middle" fill="#ff9a2e" font-size="15" font-family="system-ui">PID — e.g. Z[(1+√−19)/2]</text>
+<rect x="160" y="136" width="380" height="118" rx="16" fill="#1a0410" stroke="#ff5cc8" stroke-width="2"/>
+<text x="350" y="162" text-anchor="middle" fill="#ff5cc8" font-size="15" font-family="system-ui">ED (Euclidean) — Z, F[x], Z[i]</text>
+<rect x="240" y="180" width="220" height="60" rx="14" fill="#14120a" stroke="#ffe94d" stroke-width="2"/>
+<text x="350" y="216" text-anchor="middle" fill="#ffe94d" font-size="15" font-family="system-ui">Fields — Q, R, C, Z_p</text>
+</svg></div>
+<div class="card q"><span class="lbl">Question 7</span>
+Give an example of an ID that is not a UFD, a UFD that is not a PID, a PID that is not an ED.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$\mathbb{Z}[\sqrt{-5}]$: $6=2\cdot3=(1+\sqrt{-5})(1-\sqrt{-5})$, two different factorizations into irreducibles. $\mathbb{Z}[x]$ (or $\mathbb{F}[x,y]$): UFD, but $\langle 2,x\rangle$ is not principal. $\mathbb{Z}[\frac{1+\sqrt{-19}}2]$: a PID that is not Euclidean. Also: $\mathbb{Z}$ is a PID but $\mathbb{Z}[x]$ is not, whereas $\mathbb{F}[x]$ <i>is</i> a PID for a field $\mathbb{F}$.</div></div>
+
+<h2><span>§4</span> The polynomial ring $\mathbb{F}[x]$</h2>
+<div class="card thm"><span class="lbl">Division algorithm</span>
+For $f,g\in \mathbb{F}[x]$, $g\ne0$, there are unique $q,r$ with $f=qg+r$ and $r=0$ or $\deg r<\deg g$. So $\mathbb{F}[x]$ is a <b>Euclidean domain</b> with norm $\deg$. Units of $\mathbb{F}[x]$ are the non-zero constants; $\deg(fg)=\deg f+\deg g$.</div>
+
+<div class="card thm"><span class="lbl">Theorem 2</span>
+$\mathbb{F}[x]$ is a PID: every ideal is $\langle g\rangle$, where $g$ is a non-zero element of least degree in the ideal (unique up to a constant, so unique if taken monic). Consequently $\mathbb{F}[x]$ is a UFD and there is a gcd with Bezout: $\gcd(f,g)=uf+vg$.</div>
+<div class="card q"><span class="lbl">Question 8</span>
+Prove Theorem 2.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol">Let $I\ne0$ be an ideal and $g\in I$ non-zero of least degree. For $f\in I$ write $f=qg+r$. Then $r=f-qg\in I$ with $\deg r<\deg g$, so $r=0$ and $f\in\langle g\rangle$. Thus $I=\langle g\rangle$. For Bezout, $\langle f,g\rangle=\langle d\rangle$; then $d\mid f,g$, $d=uf+vg$, and every common divisor divides $d$. ∎</div></div>
+
+<div class="card thm"><span class="lbl">Theorem 3 (key theorem)</span>
+For non-zero $p\in \mathbb{F}[x]$: $p$ is irreducible $\iff$ $\langle p\rangle$ is a maximal ideal $\iff$ $\mathbb{F}[x]/\langle p\rangle$ is a field.</div>
+<div class="card q"><span class="lbl">Question 9</span>
+Prove Theorem 3.
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show proof</button>
+<div class="hintb">Use that every ideal containing $\langle p\rangle$ is $\langle g\rangle$ with $g\mid p$. The last equivalence is Theorem 1.</div>
+<div class="sol">(⇒) Let $\langle p\rangle\subseteq I=\langle g\rangle$ (PID). Then $g\mid p$: $p=gq$. Irreducibility gives $g$ a unit ($I=\mathbb{F}[x]$) or $q$ a unit ($g$ associate to $p$, $I=\langle p\rangle$). So $\langle p\rangle$ is maximal.<br>
+(⇐) $\langle p\rangle$ maximal is proper, so $p$ is a non-unit, and $p\ne0$. If $p=ab$ then $\langle p\rangle\subseteq\langle a\rangle$: either $\langle a\rangle=\mathbb{F}[x]$ ($a$ a unit) or $\langle a\rangle=\langle p\rangle$, so $a=pu$ and $p=pub$, hence $ub=1$ and $b$ is a unit. So $p$ is irreducible. ∎</div></div>
+
+<div class="card thm"><span class="lbl">Theorem 4 (the correspondence)</span>
+The map $f\mapsto\langle f\rangle$ is a <b>bijection</b>
+$$\{\text{monic irreducible polynomials in }\mathbb{F}[x]\}\ \longleftrightarrow\ \{\text{maximal ideals of }\mathbb{F}[x]\}.$$
+Hence each maximal ideal is $\langle f\rangle$ for a <i>unique</i> monic irreducible $f$, and $\mathbb{F}[x]/\langle f\rangle$ is a field of degree $\deg f$ over $\mathbb{F}$.</div>
+<div class="card q"><span class="lbl">Question 10</span>
+Prove Theorem 4.
+<br><button onclick="sol(this)">Show proof</button>
+<div class="sol"><b>Well defined:</b> Theorem 3. <b>Injective:</b> $\langle f\rangle=\langle g\rangle$ means $f=ug$, $u\in \mathbb{F}^\times$; both monic forces $u=1$. <b>Surjective:</b> a maximal ideal $M=\langle h\rangle$ (PID). $h\ne0$ since $\langle0\rangle\subsetneq\langle x\rangle\subsetneq \mathbb{F}[x]$ is not maximal. By Theorem 3 $h$ is irreducible; dividing by its leading coefficient gives a monic generator, which is irreducible. ∎ <br><span class="y">Example:</span> maximal ideals of $\mathbb{C}[x]$ are $\langle x-a\rangle$, $a\in\mathbb{C}$; of $\mathbb{R}[x]$: $\langle x-a\rangle$ and $\langle x^2+bx+c\rangle$ with $b^2<4c$.</div></div>
+
+<div class="card q"><span class="lbl">Question 11</span>
+List all maximal ideals of $\mathbb{Z}_2[x]$ generated by polynomials of degree $\le2$.
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">Monic irreducibles over $\mathbb{Z}_2$ of degree 1: $x$, $x+1$. Degree 2: $x^2+x+1$ only ($x^2,x^2+1=(x+1)^2,x^2+x=x(x+1)$ are reducible). So the ideals are $\langle x\rangle,\langle x+1\rangle,\langle x^2+x+1\rangle$; the last gives a field with $2^2=4$ elements.</div></div>
+
+<div class="card thm"><span class="lbl">Root–factor theorem and degrees 2, 3</span>
+(1) $f(a)=0\iff(x-a)\mid f$ (divide: $f=(x-a)q+f(a)$). (2) A non-zero $f$ of degree $n$ has at most $n$ roots in a field. (3) For $\deg f\in\{2,3\}$: $f$ is irreducible over $\mathbb{F}$ $\iff$ $f$ has no root in $\mathbb{F}$. (For degree $\ge4$ a polynomial can be reducible with no roots, e.g. $(x^2+1)(x^2+2)$ over $\mathbb{R}$.)</div>
+<div class="card q"><span class="lbl">Try it — roots mod $p$</span>
+prime $p=$ <input type="number" id="mp" value="2"> coefficients (highest first): <input type="text" id="mc" value="1,1,1"> <button onclick="modp()">Find roots</button>
+<div class="fb" id="mfb"></div></div>
+
+<div class="card thm"><span class="lbl">Tools for irreducibility over $\mathbb{Q}$</span>
+<b>Gauss lemma:</b> a primitive $f\in\mathbb{Z}[x]$ is irreducible in $\mathbb{Z}[x]$ iff irreducible in $\mathbb{Q}[x]$; the product of primitive polynomials is primitive. <b>Rational root test:</b> a root $r/s$ (lowest terms) of $a_nx^n+\dots+a_0\in\mathbb{Z}[x]$ has $r\mid a_0$, $s\mid a_n$. <b>Eisenstein:</b> if for a prime $p$: $p\nmid a_n$, $p\mid a_0,\dots,a_{n-1}$, $p^2\nmid a_0$, then $f$ is irreducible over $\mathbb{Q}$. <b>Reduction mod $p$:</b> if $p\nmid a_n$ and $\bar f$ is irreducible over $\mathbb{Z}_p$, then $f$ is irreducible over $\mathbb{Q}$.</div>
+<div class="card q"><span class="lbl">Question 12</span>
+Show $x^4+1$ is irreducible over $\mathbb{Q}$ (it has no rational root, and is reducible modulo every prime!).
+<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Show solution</button>
+<div class="hintb">Substitute $x\mapsto x+1$ and apply Eisenstein with $p=2$.</div>
+<div class="sol">$(x+1)^4+1=x^4+4x^3+6x^2+4x+2$. Eisenstein with $p=2$: $2\mid4,6,4,2$ and $4\nmid2$. So it is irreducible, and so is $x^4+1$ (a factorization of $f(x)$ gives one of $f(x+1)$).</div></div>
+
+<h2><span>§5</span> Vector spaces and characteristic</h2>
+<div class="card def"><span class="lbl">Linear algebra over a field $\mathbb{F}$</span>
+A vector space $V$ over $\mathbb{F}$ has a <b>basis</b> (linearly independent spanning set); all bases have the same size $\dim_{\mathbb{F}}V$. If $\dim V=n$, any $n+1$ vectors are linearly dependent, any $n$ independent vectors form a basis, and a subspace $W$ has $\dim W\le\dim V$. <br>Fact used constantly later: if $\mathbb{K}\supseteq\mathbb{F}$ are fields then $\mathbb{K}$ is an $\mathbb{F}$-vector space.</div>
+<div class="card q"><span class="lbl">Question 13</span>
+Give the dimension and a basis of $\mathbb{C}$ over $\mathbb{R}$, of $\mathbb{Q}[x]/\langle x^2-2\rangle$ over $\mathbb{Q}$, and of $\mathbb{F}[x]/\langle f\rangle$ over $\mathbb{F}$ ($\deg f=n$).
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">$\mathbb{C}/\mathbb{R}$: $\{1,i\}$, dim 2. $\mathbb{Q}[x]/\langle x^2-2\rangle$: $\{1,\bar x\}$, dim 2. In general $\{1,\bar x,\dots,\bar x^{\,n-1}\}$, dim $n$: by division every coset has a unique representative of degree $<n$.</div></div>
+
+<div class="card def"><span class="lbl">Characteristic</span>
+The <b>characteristic</b> of a field $\mathbb{F}$ is the least $n\ge1$ with $n\cdot1=0$, or $0$ if none. It is either $0$ or a prime $p$. Then $\mathbb{F}$ contains a copy of $\mathbb{Q}$ (char 0) or $\mathbb{Z}_p$ (char $p$): the <b>prime field</b>. In particular a field of characteristic $p$ is never an extension of one of different characteristic.</div>
+<div class="card q"><span class="lbl">Question 14</span>
+Why is the characteristic of a field $0$ or prime? Why does a finite field have $p^n$ elements?
+<br><button onclick="sol(this)">Show solution</button>
+<div class="sol">If $n=ab$ with $a,b<n$ and $n\cdot1=0$, then $(a\cdot1)(b\cdot1)=0$ in a domain, so $a\cdot1=0$ or $b\cdot1=0$, contradicting minimality; hence $n$ is prime. A finite field $\mathbb{F}$ has char $p$ and contains $\mathbb{Z}_p$, so it is a $\mathbb{Z}_p$-vector space of some finite dimension $n$: $|\mathbb{F}|=p^n$.</div></div>
+
+<h2><span>§6</span> Quick quiz</h2>
+<div class="card q"><span class="lbl">Quiz 1</span>Which element is a unit in $\mathbb{Z}_{12}$?
+<div class="opts"><button class="opt" onclick="pick(this,0)">$\bar 2$</button><button class="opt" onclick="pick(this,0)">$\bar 4$</button><button class="opt" onclick="pick(this,1)">$\bar 5$</button><button class="opt" onclick="pick(this,0)">$\bar 6$</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 2</span>$\mathbb{Q}[x]/\langle p(x)\rangle$ is a field exactly when $p$ is
+<div class="opts"><button class="opt" onclick="pick(this,0)">non-constant</button><button class="opt" onclick="pick(this,1)">irreducible over $\mathbb{Q}$</button><button class="opt" onclick="pick(this,0)">of degree 2</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 3</span>Maximal ideals of $\mathbb{R}[x]$ correspond to monic irreducibles of degree
+<div class="opts"><button class="opt" onclick="pick(this,0)">1 only</button><button class="opt" onclick="pick(this,1)">1 or 2</button><button class="opt" onclick="pick(this,0)">1, 2 or 3</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 4</span>$|\mathbb{Z}_2[x]/\langle x^2+x+1\rangle|=$
+<div class="opts"><button class="opt" onclick="pick(this,0)">2</button><button class="opt" onclick="pick(this,1)">4</button><button class="opt" onclick="pick(this,0)">8</button></div><div class="fb"></div></div>
+<div class="card q"><span class="lbl">Quiz 5</span>Which ring is a PID but <i>not</i> a field?
+<div class="opts"><button class="opt" onclick="pick(this,0)">$\mathbb{Q}$</button><button class="opt" onclick="pick(this,1)">$\mathbb{Q}[x]$</button><button class="opt" onclick="pick(this,0)">$\mathbb{Z}[x]$</button></div><div class="fb"></div></div>
+
+<h2><span>§7</span> SAQ — Short Answer Questions</h2>
+<p class="sub">Answer on paper first, then reveal.</p>
+<div class="card q"><span class="lbl">SAQ 1</span>State: $I$ maximal in $R$ ⇔ ?<br><button onclick="sol(this)">Answer</button><div class="sol">$R/I$ is a field.</div></div>
+<div class="card q"><span class="lbl">SAQ 2</span>Why is $\mathbb{F}[x]$ a PID?<br><button onclick="sol(this)">Answer</button><div class="sol">It is Euclidean (division algorithm); an ideal is generated by an element of least degree.</div></div>
+<div class="card q"><span class="lbl">SAQ 3</span>State the bijection between maximal ideals and polynomials in $\mathbb{F}[x]$.<br><button onclick="sol(this)">Answer</button><div class="sol">$f\mapsto\langle f\rangle$ from monic irreducible polynomials onto maximal ideals.</div></div>
+<div class="card q"><span class="lbl">SAQ 4</span>What are the units of $\mathbb{F}[x]$?<br><button onclick="sol(this)">Answer</button><div class="sol">The non-zero constants.</div></div>
+<div class="card q"><span class="lbl">SAQ 5</span>When is a degree-3 polynomial irreducible over $\mathbb{F}$?<br><button onclick="sol(this)">Answer</button><div class="sol">Exactly when it has no root in $\mathbb{F}$.</div></div>
+<div class="card q"><span class="lbl">SAQ 6</span>State Eisenstein's criterion.<br><button onclick="sol(this)">Answer</button><div class="sol">If $p\nmid a_n$, $p\mid a_0,\dots,a_{n-1}$, $p^2\nmid a_0$, then $f\in\mathbb{Z}[x]$ is irreducible over $\mathbb{Q}$.</div></div>
+<div class="card q"><span class="lbl">SAQ 7</span>What are the possible characteristics of a field?<br><button onclick="sol(this)">Answer</button><div class="sol">$0$ or a prime $p$.</div></div>
+<div class="card q"><span class="lbl">SAQ 8</span>Let $\mathbb{F}$ be a field and $f\in\mathbb{F}[x]$ of degree $n\ge 0$, $f\ne0$. Show $f$ has at most $n$ roots in $\mathbb{F}$. What happens if $\mathbb{F}$ is only an integral domain? A commutative ring?<br><button class="hint" onclick="hint(this)">Hint</button><button onclick="sol(this)">Answer</button><div class="hintb">Induct on $n$ using $f(a)=0\iff(x-a)\mid f$.</div><div class="sol"><b>Proof.</b> $n=0$: a non-zero constant has no root. If $f$ has no root we are done; else let $f(a)=0$, so $f=(x-a)q$ with $\deg q=n-1$. If $b\ne a$ is another root then $(b-a)q(b)=0$ and $b-a\ne0$, so $q(b)=0$ <i>(this step needs: no zero divisors)</i>. By induction $q$ has at most $n-1$ roots, so $f$ has at most $n$. ∎<br><b>Integral domain:</b> the statement still holds, by the same proof or by embedding the domain in its field of fractions. <b>General commutative ring:</b> false. In $\mathbb{Z}_8$, $x^2-1$ has four roots $1,3,5,7$; in $\mathbb{Z}_6$, $x^2-x$ has four roots $0,1,3,4$. Zero divisors break the cancellation step.</div></div>
+<div class="card q"><span class="lbl">SAQ 9</span>Let $f\in\mathbb{F}[x]$ have degree $2$ or $3$. Show: $f$ is reducible over $\mathbb{F}$ if and only if $f$ has a root in $\mathbb{F}$. What about degree $4$? (Consider $(x^2+1)(x^2+2)$.)<br><button onclick="sol(this)">Answer</button><div class="sol">(⇒) If $f=gh$ with both non-constant, then $\deg g+\deg h\in\{2,3\}$ forces a factor of degree $1$, say $ax+b$ ($a\ne0$), whose root $-b/a$ is a root of $f$. (⇐) If $f(a)=0$ then $f=(x-a)q$ with $\deg q=\deg f-1\ge1$, so $q$ and $x-a$ are non-units: $f$ is reducible. ∎<br><b>Degree 4 fails:</b> $f=(x^2+1)(x^2+2)$ is reducible over $\mathbb{Q}$ (and over $\mathbb{R}$), but $x^2=-1$ and $x^2=-2$ have no solutions in $\mathbb{R}$, so $f$ has no root in $\mathbb{Q}$ or $\mathbb{R}$. Only "has a root ⇒ reducible" survives (for $\deg\ge2$); the converse needs degree $\le3$. Another example: $x^4+4=(x^2+2x+2)(x^2-2x+2)$ over $\mathbb{Q}$.</div></div>
+<div class="card q"><span class="lbl">SAQ 10</span>Every linear polynomial in $\mathbb{F}[x]$ has a root in $\mathbb{F}$, yet it is irreducible. Does this contradict SAQ 9?<br><button onclick="sol(this)">Answer</button><div class="sol">$ax+b$ with $a\ne0$ has the root $-b/a\in\mathbb{F}$. It is irreducible: if $ax+b=gh$ then $\deg g+\deg h=1$, so one factor has degree $0$, i.e. is a non-zero constant, a unit. <b>No contradiction:</b> "has a root ⇒ reducible" needs $\deg f\ge2$ (then $f=(x-a)q$ with $q$ non-constant). For $\deg f=1$, $q$ is a constant, a unit.</div></div>
+<div class="card q"><span class="lbl">SAQ 11</span>If $\alpha$ is a root of $f(x)\in\mathbb{F}[x]$, show $\alpha$ is a root of $\lambda f$ for every $\lambda\in\mathbb{F}$. Why does this let us work with monic polynomials?<br><button onclick="sol(this)">Answer</button><div class="sol">$(\lambda f)(\alpha)=\lambda f(\alpha)=\lambda\cdot0=0$. (For $\lambda=0$ this is the zero polynomial, which every element kills; for $\lambda\ne0$, $f$ and $\lambda f$ have <b>exactly</b> the same roots.) Taking $\lambda=a_n^{-1}$ makes $f$ monic without changing roots, so questions about roots and minimal polynomials may be asked for monic polynomials.</div></div>
+<div class="card q"><span class="lbl">SAQ 12</span>When are two polynomials $f,g\in\mathbb{F}[x]$ associates? How many monic associates does a non-zero polynomial have?<br><button onclick="sol(this)">Answer</button><div class="sol">$f,g$ are associates iff $f=\lambda g$ for some $\lambda\in\mathbb{F}^\times$ (the units of $\mathbb{F}[x]$ are the non-zero constants). Equivalently $f\mid g$ and $g\mid f$, or $\langle f\rangle=\langle g\rangle$. They then have the same degree and the same roots. Each non-zero $f$ has <b>exactly one</b> monic associate ($a_n^{-1}f$). Example: $x^2+1$ and $3x^2+3$ are associates in $\mathbb{Q}[x]$; $x^2+1$ and $x^2+2$ are not.</div></div>
+
+<div class="card"><span class="lbl">Checklist before Lecture 1</span>
+☐ units, zero divisors, irreducible vs prime &nbsp;☐ maximal ideal ⇔ field quotient &nbsp;☐ $\mathbb{F}[x]$ is ED ⇒ PID ⇒ UFD &nbsp;☐ irreducible ⇔ $\langle p\rangle$ maximal ⇔ $\mathbb{F}[x]/\langle p\rangle$ field &nbsp;☐ monic irreducibles ↔ maximal ideals &nbsp;☐ at most $n$ roots; degree 2, 3 root test (and why degree 4 differs); associates &nbsp;☐ Eisenstein; Gauss lemma &nbsp;☐ vector spaces: basis, dimension &nbsp;☐ characteristic and prime field</div>
+
+<nav style="margin-top:34px"><a href="FE.html">☰ Index</a><a href="L1.html">Lecture 1: Extensions &amp; Degree →</a></nav>
+</div>
+<script>
+var opened=new Set(),done=0;
+function sol(b){var s=b.parentNode.querySelector('.sol');if(!b.dataset.t)b.dataset.t=b.textContent;var on=s.classList.toggle('on');b.textContent=on?'Hide':b.dataset.t;opened.add(s);document.getElementById('cnt').textContent=opened.size;if(window.MathJax&&MathJax.typesetPromise)MathJax.typesetPromise([s]);}
+function hint(b){b.parentNode.querySelector('.hintb').classList.toggle('on');}
+function pick(b,ok){var c=b.closest('.card');if(c.dataset.done)return;c.dataset.done=1;b.classList.add(ok?'right':'wrong');var fb=c.querySelector('.fb');fb.innerHTML=ok?'<span class="g">Correct!</span>':'<span class="o">Not quite — revisit the relevant section.</span>';if(ok){done++;document.getElementById('qs').textContent=done;document.getElementById('pb').style.width=(done*20)+'%';}}
+function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=a%b;a=b;b=t;}return a;}
+function unit(){var a=parseInt(document.getElementById('ua').value),n=parseInt(document.getElementById('un').value),f=document.getElementById('ufb');if(!(n>=2)||isNaN(a)){f.textContent='Enter n ≥ 2 and an integer a.';return;}
+ a=((a%n)+n)%n;var g=gcd(a,n);if(g===1){for(var b=1;b<n;b++)if((a*b)%n===1){f.innerHTML='<span class="g">'+a+' is a unit in Z_'+n+'</span> (gcd = 1): '+a+'·'+b+' ≡ 1.';return;}}
+ if(a===0){f.innerHTML='<span class="o">0 is a zero divisor (0·1 = 0).</span>';return;}
+ f.innerHTML='<span class="o">'+a+' is a zero divisor in Z_'+n+'</span> (gcd = '+g+'): '+a+'·'+(n/g)+' ≡ 0 and '+(n/g)+' ≠ 0.';}
+function modp(){var p=parseInt(document.getElementById('mp').value),f=document.getElementById('mfb');var isP=p>=2;for(var d=2;d*d<=p;d++)if(p%d===0)isP=false;if(!isP||p>101){f.textContent='Enter a prime p ≤ 101.';return;}
+ var c=document.getElementById('mc').value.split(',').map(function(s){return parseInt(s.trim());});if(c.some(isNaN)||c.length<2){f.textContent='Enter coefficients like 1,1,1.';return;}
+ c=c.map(function(x){return((x%p)+p)%p;});while(c.length&&c[0]===0)c.shift();if(c.length<2){f.textContent='Need a polynomial of degree ≥ 1 mod p.';return;}
+ var deg=c.length-1,roots=[];for(var x=0;x<p;x++){var v=0;for(var i=0;i<c.length;i++)v=(v*x+c[i])%p;if(v===0)roots.push(x);}
+ var msg='Degree '+deg+' over Z_'+p+'. Roots in Z_'+p+': '+(roots.length?roots.join(', '):'none')+'. ';
+ if(deg<=3)msg+=roots.length?'<span class="o">Has a root, so it is reducible.</span>':'<span class="g">No root and degree ≤ 3, so it is IRREDUCIBLE.</span>';
+ else msg+=roots.length?'<span class="o">Has a root, so reducible.</span>':'<span class="y">No root, but degree ≥ 4: inconclusive (could be a product of two quadratics).</span>';
+ f.innerHTML=msg;}
+</script>
+</body>
+</html>
