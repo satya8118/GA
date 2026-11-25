@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Burnside’s p^a q^b Theorem – an interactive walkthrough</title>
+<script>window.MathJax={tex:{inlineMath:[['$','$']],displayMath:[['$$','$$']]},svg:{fontCache:'local'}};</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-svg.js"></script>
+<style>
+:root{--bg:#fbfaf7;--fg:#222;--mut:#777;--card:#fff;--line:#e4e1d8;--thm:#b4452f;--lem:#2f6f9f;--prf:#5c6b4a;--def:#7a4fa0;--ex:#b07a1a;--box:#666;--kw:#d9480f;--int:#0f8a7a}
+@media(prefers-color-scheme:dark){:root{--bg:#17181a;--fg:#e6e4df;--mut:#9a9890;--card:#202225;--line:#33363a;--thm:#e07a63;--lem:#6aa9d8;--prf:#9db386;--def:#b690dc;--ex:#e0b050;--box:#aaa;--kw:#ff9a5c;--int:#4fc9b8}}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:20px}
+body{margin:0;background:var(--bg);color:var(--fg);font:18px/1.7 Georgia,'Times New Roman',serif}
+nav{position:fixed;left:0;top:0;bottom:0;width:230px;padding:28px 18px;border-right:1px solid var(--line);font:14px/1.5 system-ui,sans-serif;overflow:auto}
+nav b{display:block;margin-bottom:12px}nav a{display:block;color:var(--mut);text-decoration:none;padding:3px 0 3px 10px;border-left:2px solid transparent}
+nav a:hover,nav a.on{color:var(--fg);border-color:var(--kw)}
+#bar{position:fixed;top:0;left:0;height:3px;background:var(--kw);width:0;z-index:9}
+main{margin-left:230px;max-width:780px;padding:50px 28px 120px}
+@media(max-width:900px){nav{display:none}main{margin:0 auto}}
+h1{font-size:2.1em;line-height:1.2;margin:.2em 0}h2{margin-top:2.4em;font-size:1.5em;border-bottom:1px solid var(--line);padding-bottom:.2em}
+.sub{color:var(--mut);font-style:italic}
+.kw{color:var(--kw);font-weight:600}
+.blk{border-left:4px solid var(--c);background:var(--card);border-radius:0 8px 8px 0;padding:12px 18px;margin:20px 0}
+.blk>.tag{font:600 12px system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--c);display:block;margin-bottom:4px}
+.thm{--c:var(--thm)}.lem{--c:var(--lem)}.def{--c:var(--def)}.ex{--c:var(--ex)}.rem{--c:var(--box)}.box{--c:var(--thm);border-style:dashed}
+.thm{background:color-mix(in srgb,var(--thm) 7%,var(--card))}
+.cited{--c:var(--thm);border-left-style:double;border-left-width:6px}
+details.prf{--c:var(--prf);border-left:4px solid var(--c);margin:16px 0;padding:6px 18px;background:color-mix(in srgb,var(--prf) 6%,var(--card));border-radius:0 8px 8px 0}
+details.prf>summary{cursor:pointer;font:600 13px system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.intu{--c:var(--int);border-left:4px solid var(--c);background:color-mix(in srgb,var(--int) 8%,var(--card));padding:8px 18px;margin:16px 0;border-radius:0 8px 8px 0}
+.intu .tag{font:600 12px system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.chk{border:1px solid var(--line);border-radius:10px;padding:12px 18px;margin:22px 0;background:var(--card)}
+.chk .tag{font:600 12px system-ui,sans-serif;color:var(--kw);letter-spacing:.08em;text-transform:uppercase}
+.chk summary{cursor:pointer;font:600 14px system-ui,sans-serif;color:var(--lem);margin-top:6px}
+.chk details>div{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
+.fig{text-align:center;margin:24px 0;font:14px system-ui,sans-serif;color:var(--mut)}
+svg text{fill:var(--fg);font:13px system-ui,sans-serif}
+.node rect{fill:var(--card);stroke-width:2}
+table.ct{margin:12px auto;border-collapse:collapse;font-size:16px}table.ct td,table.ct th{border:1px solid var(--line);padding:4px 14px;text-align:center}
+.cls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
+.cls button{font:16px Georgia,serif;padding:8px 14px;border-radius:20px;border:2px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer}
+.cls button.sel{border-color:var(--c);background:color-mix(in srgb,var(--c) 18%,var(--card))}
+mjx-container[display="true"]{overflow-x:auto;overflow-y:hidden;max-width:100%;padding:2px 0}
+.flow{display:flex;flex-direction:column;align-items:center;gap:6px;margin:24px 0;font:15px/1.4 Georgia,serif}
+.row{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;width:100%}
+.fb{border:2px solid var(--c);border-radius:10px;padding:8px 14px;background:var(--card);color:var(--fg);text-align:center;max-width:210px;flex:1 1 150px}
+.fb small{display:block;font:600 11px system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--c)}
+.fb.cit{border-style:dashed}.fb.big{border-width:4px;max-width:340px;width:100%;flex:none}
+.fb.l{--c:var(--lem)}.fb.t{--c:var(--thm)}.fb.d{--c:var(--def)}
+.arr{color:var(--mut);font-size:22px;line-height:1}.rowh{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;width:100%}
+.rowh .fb{flex:0 1 140px}
+.hyp{display:flex;flex-direction:column;gap:10px;margin:20px 0}
+.hr{display:flex;align-items:center;gap:14px;padding:10px 14px;border:1px solid var(--line);border-left:5px solid var(--c);border-radius:10px;background:var(--card);color:var(--fg);text-decoration:none;transition:transform .15s,box-shadow .15s}
+.hr:hover{transform:translateX(4px);box-shadow:0 2px 10px color-mix(in srgb,var(--c) 25%,transparent)}
+.hl{flex:0 0 170px;text-align:center;font-weight:600;padding:6px 10px;border-radius:20px;background:color-mix(in srgb,var(--c) 14%,var(--card));color:var(--c)}
+.ha{color:var(--mut);font-size:20px}.hd{flex:1;font-size:16px;line-height:1.5}
+.hd small{display:block;font:600 11px system-ui,sans-serif;letter-spacing:.07em;text-transform:uppercase;color:var(--mut)}
+@media(max-width:600px){.hr{flex-wrap:wrap}.hl{flex:1 1 100%}.ha{display:none}}
+</style></head><body>
+<div id="bar"></div>
+<nav><b>Contents</b>
+<a href="#intro">The big picture</a><a href="#reduce">1 · Reductions</a><a href="#proof">2 · Proof of Burnside</a>
+<a href="#rep">3 · Representation toolkit</a><a href="#main">4 · The main proposition</a><a href="#a5">5 · Why A₅ escapes</a></nav>
+<main>
+<h1>Burnside’s <span class="kw">p<sup>a</sup>q<sup>b</sup></span> Theorem</h1>
+<p>Every group of order $p^aq^b$ is solvable. The heart of the matter is showing that no <em>non-abelian simple</em> group has such an order. The proof mixes elementary group theory with a surprisingly small amount of character theory. Proofs are collapsed — try to guess them first.</p>
+
+<h2 id="intro">The big picture</h2>
+<div class="blk thm"><span class="tag">Theorem (Burnside)</span>Let $G$ be a group of order $p^{a}q^{b}$, where $p,q$ are primes and $a,b\ge 0$. Then $G$ is <span class="kw">solvable</span>. Equivalently, $G$ is <span class="kw">not simple</span> unless it is cyclic of prime order (or trivial).</div><p>Solvability follows from non-simplicity by induction on $|G|$: a minimal counterexample has a non-trivial proper normal subgroup $N$, and both $N$ and $G/N$ are solvable by minimality, so $G$ is too. The real work is therefore the non-simplicity statement, which is what we prove below.</p>
+<div class="flow">
+<div class="row">
+<div class="fb l"><small>Lemma 2</small>$\chi_{\mathrm{reg}}(g)=0$ for $g\ne e$</div>
+<div class="fb l"><small>Prop. 3</small>$\chi_{\mathrm{reg}}=\sum_i d_i\chi_i$</div>
+<div class="fb t cit"><small>Fact (cited)</small>$\gcd(m,d)=1\Rightarrow$ scalar or $\chi=0$</div>
+<div class="fb d"><small>$G$ simple</small>$Z_k=\{e\}$: no scalar action</div>
+</div>
+<div class="arr">↓</div>
+<div class="fb t big"><small>Main Proposition</small>class of size $p^t$ $\Rightarrow$ $G$ not simple<br>(via $-\tfrac1p$ an algebraic integer)</div>
+<div class="arr">↓</div>
+<div class="fb t big"><small>Burnside’s Theorem</small>$|G|=p^aq^b\Rightarrow G$ solvable</div>
+<div style="color:var(--mut);font-size:14px;font-family:system-ui,sans-serif">Dashed border = cited black box. Solid = proved here.</div>
+</div>
+
+<div class="blk rem"><span class="tag">Before you start</span>You should be comfortable with: <span class="kw">simple</span> (only normal subgroups are $\{e\}$ and $G$); the <span class="kw">conjugacy class</span> $\mathrm{cl}(x)=\{gxg^{-1}\}$ and <span class="kw">centralizer</span> $C_G(x)$; orbit–stabilizer, so $|\mathrm{cl}(x)|=[G:C_G(x)]$; Sylow’s theorem; and basic character facts ($\chi(e)=\dim$, characters are class functions, orthogonality). An <span class="kw">algebraic integer</span> is a root of a monic integer polynomial; sums and products of these are again algebraic integers, and a rational one is an ordinary integer.</div>
+<div class="blk rem"><span class="tag">Strategy in one sentence</span>Find a non-trivial class whose size is a power of a single prime (easy, using a Sylow subgroup), then show that such a class forces a non-trivial normal subgroup (hard, using characters).</div>
+<h2 id="reduce">1 · Easy reductions</h2>
+<div class="blk lem"><span class="tag">Lemma 1</span>Every finite abelian simple group is cyclic of prime order.</div>
+<details class="prf"><summary>Proof</summary>Let $g\ne e$. In an abelian group every subgroup is normal, so simplicity forces $\langle g\rangle=G$. If $|G|$ were composite, a proper non-trivial cyclic subgroup would exist, contradicting simplicity. ∎</details>
+<p>So we may assume $G$ is <span class="kw">non-abelian</span> and simple. If $b=0$, then $G$ is a $p$-group, and $p$-groups have non-trivial center, so $G$ is not simple. Hence $a,b\ge1$.</p>
+<div class="chk"><span class="tag">Check yourself</span><p>Why is a $p$-group (non-abelian) never simple?</p><details><summary>Reveal answer</summary><div>$p$-groups have non-trivial center $Z(G)$, which is a normal subgroup. Since $G$ is non-abelian, $Z(G)\ne G$, so it is a proper non-trivial normal subgroup.</div></details></div>
+
+<h2 id="proof">2 · Burnside’s theorem from the key proposition</h2>
+<div class="blk thm"><span class="tag">Proposition (Main)</span>Let $G$ be a finite non-abelian group with a conjugacy class $\mathcal C\ne\{e\}$ of size $p^t$ ($p$ prime, $t\ge0$). Then $G$ is <span class="kw">not simple</span>.</div>
+<p>The case $t=0$ is easy: $\mathcal C=\{g\}$ means $g\in Z(G)$, so the center is non-trivial. We prove the proposition in Section 4; first see how it gives the theorem.</p>
+<div class="intu"><span class="tag">Intuition</span><p>Look for an element whose conjugacy class has size a power of one prime. Orbit–stabiliser says class size = index of the centraliser. If the centraliser contains a whole Sylow $q$-subgroup, the index has no $q$ in it — it is a power of $p$.</p></div>
+<details class="prf"><summary>Proof of Burnside’s Theorem</summary>Assume $a,b\ge1$ and $G$ non-abelian simple. Let $Q$ be a Sylow $q$-subgroup, $|Q|=q^b$, and pick $x\ne e$ in $Z(Q)$ (non-trivial since $Q$ is a $q$-group). The <span class="kw">centraliser</span> $$C_G(x)=\{g\in G: gx=xg\}$$ contains $Q$, so $$[G:C_G(x)]=\frac{p^aq^b}{|C_G(x)|}$$ is a power of $p$. By orbit–stabiliser ($G$ acts on itself by conjugation) this index is the size of the class of $x$. Also $x\notin Z(G)$ since $Z(G)=\{e\}$ in a non-abelian simple group, so the class is non-trivial. The Main Proposition finishes. ∎</details>
+<div class="blk ex"><span class="tag">Example: run the proof on S₃ and A₄</span><b>S₃</b> ($p=3,q=2$): $Q=\langle(12)\rangle$, so take $x=(12)$. Only $Q$ commutes with $x$, so $C_G(x)=Q$ and the index is $6/2=3=3^1$, the size of the class of transpositions. <b>A₄</b> ($|A_4|=2^2\cdot 3$): take $Q=\langle(123)\rangle$ and $x=(123)$. Then $C_G(x)=Q$, index $12/3=4=2^2$, and indeed the 3-cycles split into classes of size 4. Neither group is simple ($A_3\trianglelefteq S_3$, $V_4\trianglelefteq A_4$), as the Main Proposition predicts.</div>
+<div class="chk"><span class="tag">Check yourself</span><p>Where did we use that $x\in Z(Q)$?</p><details><summary>Reveal answer</summary><div>It guarantees $Q\le C_G(x)$, so $q^b$ divides $|C_G(x)|$ and the index $[G:C_G(x)]$ is a power of $p$ only.</div></details></div>
+<div class="blk ex"><span class="tag">Example: S₃, order 2·3</span>Conjugacy classes of $S_3$ — click an element to see its class. Sizes $1,3,2$ sum to $6$: the <span class="kw">class equation</span>. The class of transpositions has size $3=3^1$, a prime power!
+<div class="cls" id="s3" style="margin-top:12px"></div><p id="s3msg" class="fig"></p></div>
+
+<div class="blk rem"><span class="tag">Recap</span>Lemma 1 and the $p$-group case reduce us to a non-abelian simple $G$ with $a,b\ge1$. A Sylow subgroup and its center give an element $x$ whose class has size $p^t$. It remains to show that such a class forces a normal subgroup.</div>
+<h2 id="rep">3 · The representation-theory toolkit</h2>
+<p>Everything here is over $\mathbb C$ and $G$ is finite. We introduce only what the main proof uses.</p>
+
+<h3>3.1 Representations</h3>
+<div class="blk def"><span class="tag">Definition (representation)</span>A <span class="kw">representation</span> of $G$ is a group homomorphism $$\rho:G\longrightarrow GL(V),\qquad \rho(gh)=\rho(g)\rho(h),\quad \rho(e)=I,$$ where $V$ is a finite-dimensional complex vector space. The <span class="kw">degree</span> of $\rho$ is $d=\dim V$. It is <span class="kw">irreducible</span> if $V$ has no proper non-zero subspace preserved by every $\rho(g)$. Two representations are <span class="kw">equivalent</span> if they differ by a change of basis.</div>
+<div class="blk ex"><span class="tag">Examples (S₃)</span>The <b>trivial</b> representation sends every $g$ to $1\in GL_1(\mathbb C)$. The <b>sign</b> representation sends $g$ to $\pm1$ according to parity. The <b>standard</b> representation of degree 2 lets $S_3$ act on the symmetries of an equilateral triangle: 3-cycles act as $120^\circ$ rotations and transpositions as reflections. These are all of the irreducibles of $S_3$.</div>
+<div class="blk cited"><span class="tag">Cited results</span><b>(Maschke)</b> Every representation of a finite group is a direct sum of irreducible representations.<br><b>(Number of irreducibles)</b> For a finite group $G$, $$\#\{\text{irreducible representations of }G\text{ up to equivalence}\}=\#\{\text{conjugacy classes of }G\}.$$ We call this common number $s$.</div>
+<div class="blk ex"><span class="tag">Example</span>$S_3$ has three conjugacy classes ($\{e\}$, the transpositions, the 3-cycles), hence exactly three irreducibles: trivial, sign, standard. $A_5$ has five classes (sizes $1,12,12,15,20$), hence five irreducibles, of degrees $1,3,3,4,5$.</div>
+<div class="chk"><span class="tag">Check yourself</span><p>An abelian group of order $n$ has how many irreducible representations, and of what degree?</p><details><summary>Reveal answer</summary><div>Every element is its own conjugacy class, so there are $n$ irreducibles. Since $n=\sum d_i^2$ (Proposition 3 below), all have degree $1$.</div></details></div>
+
+<h3>3.2 Characters</h3>
+<div class="blk def"><span class="tag">Definition (character)</span>The <span class="kw">character</span> of $\rho$ is the function $$\chi_\rho:G\longrightarrow\mathbb C,\qquad \chi_\rho(g)=\mathrm{Tr}\,\rho(g).$$</div>
+<div class="blk lem"><span class="tag">Basic properties</span>
+<ol type="i" style="margin:6px 0 0;padding-left:28px">
+<li>$\chi_\rho(e)=\dim V=d$.</li>
+<li>$\chi_\rho$ is a <span class="kw">class function</span>: $$\chi_\rho(xgx^{-1})=\chi_\rho(g)\quad\text{for all }x,g\in G.$$</li>
+<li>$\chi_\rho(g)$ is the sum of the $d$ eigenvalues of $\rho(g)$, and each eigenvalue is a root of unity. Hence $\chi_\rho(g)$ is an <span class="kw">algebraic integer</span>.</li>
+<li>Characters add over direct sums.</li>
+<li>The irreducible characters $\chi_1,\dots,\chi_s$ are <span class="kw">orthonormal</span> under $$\langle\alpha,\beta\rangle=\frac1{|G|}\sum_{g\in G}\alpha(g)\overline{\beta(g)},$$ so the multiplicity of $\chi_i$ in any character $\chi$ is $\langle\chi,\chi_i\rangle$.</li>
+</ol></div>
+<details class="prf"><summary>Proof of (i)–(iii)</summary>(i) $\rho(e)=I_d$ has trace $d$. (ii) $\mathrm{Tr}(\rho(x)\rho(g)\rho(x)^{-1})=\mathrm{Tr}\,\rho(g)$ since trace is invariant under conjugation. (iii) With $n=|G|$ we have $\rho(g)^n=\rho(g^n)=I$, so the minimal polynomial of $\rho(g)$ divides $X^n-1$, which has distinct roots. Hence $\rho(g)$ is diagonalizable with eigenvalues $\omega_1,\dots,\omega_d$ that are roots of unity, and $\chi_\rho(g)=\omega_1+\cdots+\omega_d$. Roots of unity are algebraic integers, and so are sums of them. (iv) and (v) are standard and cited.</details>
+<div class="chk"><span class="tag">Check yourself</span><p>Why does property (iii) need $G$ to be finite?</p><details><summary>Reveal answer</summary><div>It uses $g^{|G|}=e$. In an infinite group, $\rho(g)$ could have eigenvalues that are not roots of unity.</div></details></div>
+
+<h3>3.3 The regular representation</h3>
+<div class="blk def"><span class="tag">Definition (regular representation)</span>Let $V$ have a basis $\{e_h\}_{h\in G}$ indexed by the group elements. The <span class="kw">(left) regular representation</span> is $$\mathrm{reg}:G\longrightarrow GL(V),\qquad \mathrm{reg}(g)\,e_h=e_{gh}\quad(h\in G),$$ where $\mathrm{reg}(g)$ is extended linearly.</div>
+<div class="intu"><span class="tag">Why this is a homomorphism</span><p>For any basis vector, $$\mathrm{reg}(g)\mathrm{reg}(h)\,e_k=\mathrm{reg}(g)\,e_{hk}=e_{ghk}=\mathrm{reg}(gh)\,e_k,$$ so $\mathrm{reg}(g)\mathrm{reg}(h)=\mathrm{reg}(gh)$. Also $\mathrm{reg}(e)=I$. So each $\mathrm{reg}(g)$ is invertible, with inverse $\mathrm{reg}(g^{-1})$, and $\mathrm{reg}$ is a homomorphism into $GL(V)$. Each $\mathrm{reg}(g)$ is a permutation matrix: it just shuffles the basis vectors by left multiplication.</p></div>
+<div class="blk ex"><span class="tag">Example: $G=\mathbb Z/3=\{e,g,g^2\}$</span>In the ordered basis $e_e,e_g,e_{g^2}$, $\mathrm{reg}(g)$ is the cyclic permutation matrix $$\mathrm{reg}(g)=\begin{pmatrix}0&0&1\\1&0&0\\0&1&0\end{pmatrix}.$$ Every diagonal entry is $0$, so $\chi_{\mathrm{reg}}(g)=0$, while $\mathrm{reg}(e)=I_3$ has trace $3$.</div>
+<div class="blk lem"><span class="tag">Lemma 2</span>$$\chi_{\mathrm{reg}}(g)=0\ \text{ for }g\ne e,\qquad \chi_{\mathrm{reg}}(e)=|G|.$$</div>
+<div class="intu"><span class="tag">Intuition</span><p>$\mathrm{reg}(g)$ shuffles the basis without fixing any vector when $g\ne e$, so its matrix has zeros on the diagonal.</p></div>
+<details class="prf"><summary>Proof</summary>The $(h,h)$ diagonal entry of $\mathrm{reg}(g)$ is $1$ if $e_{gh}=e_h$, i.e. if $g=e$, and $0$ otherwise. So for $g\ne e$ every diagonal entry is $0$ and the trace vanishes. For $g=e$ the matrix is $I_{|G|}$. ∎</details>
+<div class="blk lem"><span class="tag">Proposition 3</span>Let $\varphi_1,\dots,\varphi_s$ be the irreducible representations with degrees $d_i$ and characters $\chi_i$. Then $$\chi_{\mathrm{reg}}=\sum_{i=1}^s d_i\,\chi_i.$$</div>
+<div class="intu"><span class="tag">Intuition</span><p>Each irreducible $\varphi_i$ appears in the regular representation as many times as its own degree. Reading degrees off at $e$ gives $|G|=\sum d_i^2$.</p></div>
+<details class="prf"><summary>Proof</summary>By property (v) the multiplicity of $\chi_i$ in $\chi_{\mathrm{reg}}$ is $$\langle\chi_{\mathrm{reg}},\chi_i\rangle=\frac1{|G|}\sum_{g\in G}\chi_{\mathrm{reg}}(g)\overline{\chi_i(g)}.$$ By Lemma 2 only $g=e$ contributes, giving $$\frac1{|G|}\cdot|G|\cdot\overline{\chi_i(e)}=d_i.\ ∎$$</details>
+<div class="blk ex"><span class="tag">Example: regular representation of S₃</span>Here $$\chi_{\mathrm{reg}}=\chi_{\mathrm{triv}}+\chi_{\mathrm{sign}}+2\,\chi_{\mathrm{std}},\qquad 6=1^2+1^2+2^2.$$ Evaluating on a transposition gives $0=1-1+2\cdot0$, as the Lemma predicts.</div>
+<div class="chk"><span class="tag">Check yourself</span><p>Why does the order matter in the definition? What goes wrong if we set $\mathrm{reg}(g)e_h=e_{hg}$?</p><details><summary>Reveal answer</summary><div>Then $\mathrm{reg}(g)\mathrm{reg}(h)e_k=e_{khg}$, while $\mathrm{reg}(gh)e_k=e_{kgh}$. This is an anti-homomorphism for non-abelian $G$, so one would use $e_{hg^{-1}}$ instead.</div></details></div>
+
+<h3>3.4 The one cited result</h3>
+<div class="blk cited"><span class="tag">Cited result (black box)</span><b>Fact.</b> Let $\mathcal C$ be a conjugacy class of size $m$ and $\rho$ an irreducible representation of degree $d$ with $\gcd(m,d)=1$. Then either $$\rho(g)=\lambda I\ \text{ for all }g\in\mathcal C\ (\text{some }\lambda\in\mathbb C^\times),\qquad\text{or}\qquad \chi_\rho(g)=0\ \text{ for all }g\in\mathcal C.$$</div>
+<details class="prf" style="--c:var(--thm)"><summary>Why believe the Fact? (sketch, not needed later)</summary>Since $\gcd(m,d)=1$, write $1=am+bd$. Then $$\frac{\chi(g)}d=a\cdot\frac{m\,\chi(g)}d+b\,\chi(g).$$ A standard fact says $m\chi(g)/d$ is an algebraic integer, so $\chi(g)/d$ is one too. It is an average of $d$ roots of unity, so every Galois conjugate has absolute value $\le1$. If it is non-zero, its norm is a non-zero integer of absolute value $\le1$, so every conjugate has absolute value exactly $1$. That means all eigenvalues of $\rho(g)$ agree, so $\rho(g)$ is a scalar. Otherwise $\chi(g)=0$.</details>
+<div class="chk"><span class="tag">Check yourself</span><p>In S₃, the 3-cycles form a class of size $m=2$ and the standard representation has $d=2$. Why does the Fact say nothing here?</p><details><summary>Reveal answer</summary><div>$\gcd(2,2)\ne1$. Indeed, $\rho(123)$ is a rotation by $120^\circ$, not a scalar, and $\chi(123)=-1\ne0$, so neither alternative holds. Coprimality is essential.</div></details></div>
+<div class="blk ex"><span class="tag">Example: character table of S₃</span>
+<table class="ct"><tr><th></th><th>$e$ (1)</th><th>transp. (3)</th><th>3-cycles (2)</th></tr>
+<tr><th>trivial, $d=1$</th><td>1</td><td>1</td><td>1</td></tr>
+<tr><th>sign, $d=1$</th><td>1</td><td>−1</td><td>1</td></tr>
+<tr><th>standard, $d=2$</th><td>2</td><td style="background:color-mix(in srgb,var(--kw) 30%,transparent)"><b>0</b></td><td>−1</td></tr></table>
+Take $\mathcal C$ = transpositions, $m=3$. The degree $d=2$ is coprime to $3$, and indeed $\chi=0$ there. The sign rep ($d=1$) acts by the scalar $-1$ — the other alternative in the Fact. Check $\chi_{\mathrm{reg}}$ on a transposition: $1\cdot(1)+1\cdot(-1)+2\cdot(0)=0$ ✓.</div>
+<div class="chk"><span class="tag">Check yourself</span><p>Why are the $\chi_i(g)$ algebraic integers?</p><details><summary>Reveal answer</summary><div>$g^{|G|}=e$, so each eigenvalue of $\rho(g)$ is a root of unity; $\chi_i(g)$ is a sum of roots of unity, hence an algebraic integer.</div></details></div>
+
+<div class="blk rem"><span class="tag">Recap</span>We now have three tools. In the next section we combine them to prove the Main Proposition.
+<div class="flow"><div class="row">
+<div class="fb l"><small>Tool 1</small>$\chi_{\mathrm{reg}}(g)=0$ for $g\ne e$</div>
+<div class="fb l"><small>Tool 2</small>$\chi_{\mathrm{reg}}=\sum_i d_i\chi_i$</div>
+<div class="fb t cit"><small>Tool 3 (cited)</small>$\gcd(m,d)=1\Rightarrow$ scalar or $\chi=0$</div>
+</div></div></div>
+<h2 id="main">4 · Proof of the Main Proposition</h2>
+<div class="intu"><span class="tag">Intuition</span><p>Assume $G$ is simple, so every non-trivial irreducible representation is faithful, which kills scalar action. The Fact then forces $\chi_k(g)=0$ whenever $p\nmid d_k$. Plug into $\chi_{\mathrm{reg}}(g)=0$: you get $-1/p$ as an algebraic integer. Absurd!</p></div>
+<div class="chk"><span class="tag">Predict first</span><p>Suppose $G$ is non-abelian simple and $\varphi_k$ is a non-trivial irreducible representation. What is its kernel? What does that say about which elements can act as scalars?</p><details><summary>Reveal answer</summary><div>The kernel is normal and not all of $G$, so it is $\{e\}$ and $\varphi_k$ is injective. Scalars form a normal subgroup of $GL_{d_k}$, so the elements acting as scalars form a normal subgroup of $G$, which must be trivial or $G$. It cannot be $G$, so only $e$ acts as a scalar.</div></details></div>
+<div class="flow"><div class="rowh">
+<div class="fb l"><small>Assume</small>$G$ simple</div><span class="arr">→</span>
+<div class="fb l"><small>Step 1</small>$\varphi_k$ injective, $d_k>1$</div><span class="arr">→</span>
+<div class="fb l"><small>Step 2</small>$Z_k=\{e\}$</div><span class="arr">→</span>
+<div class="fb t"><small>Steps 3–4</small>$-\tfrac1p\in\overline{\mathbb Z}$, contradiction</div>
+</div></div>
+<details class="prf"><summary>Proof</summary>
+<p><b>Step 1 (faithfulness).</b> Let $G$ be non-abelian simple, so $Z(G)=\{e\}$. Number the irreducibles $\varphi_1,\dots,\varphi_s$ (recall $s$ is the number of conjugacy classes), with $\varphi_1$ trivial ($d_1=1$). For $k>1$, $\ker\varphi_k$ is a normal subgroup not equal to $G$, so $\ker\varphi_k=\{e\}$: each $\varphi_k$ is <span class="kw">injective</span>. In particular $d_k>1$ (otherwise $G$ embeds in the abelian group $\mathbb C^\times$).</p>
+<p><b>Step 2 (no scalars).</b> Let $$Z_k=\{x\in G:\varphi_k(x)=\lambda I\text{ for some }\lambda\in\mathbb C^\times\}=\varphi_k^{-1}\big(Z(GL_{d_k}\mathbb C)\big).$$ As the preimage of a normal subgroup, $Z_k\trianglelefteq G$. By simplicity $Z_k\in\{\{e\},G\}$, and $Z_k=G$ would make $G\cong\varphi_k(G)$ abelian. Hence $Z_k=\{e\}$: no non-trivial $g\in\mathcal C$ acts as a scalar.</p>
+<p><b>Step 3 (vanishing).</b> If $p\nmid d_k$ then $\gcd(|\mathcal C|,d_k)=\gcd(p^t,d_k)=1$. By the Fact, $\chi_k(g)=0$ for $g\in\mathcal C$, $k>1$.</p>
+<p><b>Step 4 (contradiction).</b> For $g\in\mathcal C$, $g\neq e$: $$0=\chi_{\mathrm{reg}}(g)=1+\sum_{i\ge2}d_i\chi_i(g)=1+p\sum_{p\mid d_i}\frac{d_i}{p}\chi_i(g).$$ So $-\tfrac1p$ is an integral combination of the $\chi_i(g)$, which are algebraic integers. Thus $-1/p$ is an algebraic integer; but the only rational algebraic integers are in $\mathbb Z$. Contradiction. ∎</p></details>
+<div class="blk rem"><span class="tag">Recap: how the proof fit together</span>
+<div class="flow">
+<div class="row">
+<div class="fb l"><small>Tool 1</small>$\chi_{\mathrm{reg}}(g)=0$ for $g\ne e$</div>
+<div class="fb l"><small>Tool 2</small>$\chi_{\mathrm{reg}}=\sum_i d_i\chi_i$</div>
+<div class="fb t cit"><small>Tool 3 (cited)</small>$\gcd(|\mathcal C|,d)=1\Rightarrow$ scalar or $\chi=0$</div>
+</div>
+<div class="arr">↓</div>
+<div class="fb d big"><small>Tool 3 + simplicity</small>no scalars, so $\chi_k(g)=0$ whenever $p\nmid d_k$</div>
+<div class="arr">↓</div>
+<div class="fb l big"><small>Tools 1 and 2</small>$0=1+\sum_{i\ge2}d_i\chi_i(g)$, so only the terms with $p\mid d_i$ survive</div>
+<div class="arr">↓</div>
+<div class="fb t big"><small>Conclusion</small>$-\tfrac1p$ is an algebraic integer. This is impossible, so $G$ is not simple.</div>
+</div></div>
+<div class="chk"><span class="tag">Check yourself</span><p>Why is $Z_k$ a normal subgroup of $G$?</p><details><summary>Reveal answer</summary><div>$Z_k=\varphi_k^{-1}(Z(GL_{d_k}\mathbb C))$, and the center of $GL_{d_k}$ is normal. The preimage of a normal subgroup under a homomorphism is normal.</div></details></div>
+<div class="chk"><span class="tag">Check yourself</span><p>Where is the hypothesis $|\mathcal C|=p^t$ used?</p><details><summary>Reveal answer</summary><div>Only in Step 3: it makes $p\nmid d_k$ imply $\gcd(|\mathcal C|,d_k)=1$, which lets us apply the Fact.</div></details></div>
+<div class="chk"><span class="tag">Check yourself</span><p>Why can $-1/p$ not be an algebraic integer?</p><details><summary>Reveal answer</summary><div>A rational number that is a root of a monic integer polynomial must be an integer (rational root theorem), and $-1/p\notin\mathbb Z$.</div></details></div>
+
+<h2 id="a5">5 · Why A₅ escapes (and must)</h2>
+<div class="blk ex"><span class="tag">Example: A₅, order 60</span>A₅ is simple and non-abelian, so it must have no non-trivial class of prime-power size. Its class sizes are
+<div class="fig"><svg viewBox="0 0 600 70" width="100%"><g stroke="var(--fg)" stroke-width="1"><rect x="0" y="10" width="10" height="40" fill="var(--box)"/><rect x="10" y="10" width="150" height="40" fill="var(--lem)" opacity=".7"/><rect x="160" y="10" width="200" height="40" fill="var(--thm)" opacity=".7"/><rect x="360" y="10" width="120" height="40" fill="var(--ex)" opacity=".8"/><rect x="480" y="10" width="120" height="40" fill="var(--def)" opacity=".7"/></g>
+<text x="85" y="35" text-anchor="middle">15</text><text x="260" y="35" text-anchor="middle">20</text><text x="420" y="35" text-anchor="middle">12</text><text x="540" y="35" text-anchor="middle">12</text><text x="5" y="66">1</text></svg>
+$1+15+20+12+12=60$. None of $15,20,12$ is a prime power. ✓</div></div>
+<div class="chk"><span class="tag">Check yourself</span><p>Why does Burnside’s theorem not contradict the existence of $A_5$?</p><details><summary>Reveal answer</summary><div>$|A_5|=60=2^2\cdot3\cdot5$ involves three primes, so the theorem does not apply — and indeed no class has prime-power size.</div></details></div>
+<h2>Where each hypothesis is used</h2>
+<div class="hyp"><a class="hr" href="#main" style="--c:var(--lem)"><span class="hl">$G$ simple</span><span class="ha">→</span><span class="hd"><small>Step 1–2</small>Every non-trivial irreducible is faithful: $\ker\varphi_k=\{e\}$, and no non-trivial element acts as a scalar: $Z_k=\{e\}$.</span></a><a class="hr" href="#main" style="--c:var(--def)"><span class="hl">$G$ non-abelian</span><span class="ha">→</span><span class="hd"><small>Step 1–2</small>$Z(G)=\{e\}$, the degrees satisfy $d_k>1$, and $Z_k\ne G$.</span></a><a class="hr" href="#main" style="--c:var(--thm)"><span class="hl">$|\mathcal C|=p^t$</span><span class="ha">→</span><span class="hd"><small>Step 3</small>If $p\nmid d_k$ then $\gcd(|\mathcal C|,d_k)=1$, so the cited Fact applies.</span></a><a class="hr" href="#proof" style="--c:var(--ex)"><span class="hl">Order $p^aq^b$</span><span class="ha">→</span><span class="hd"><small>Section 2</small>A Sylow $q$-subgroup gives $Q\le C_G(x)$, so the index $[G:C_G(x)]$ is a power of $p$.</span></a><a class="hr" href="#main" style="--c:var(--int)"><span class="hl">Algebraic integers</span><span class="ha">→</span><span class="hd"><small>Step 4</small>$-1/p\notin\overline{\mathbb Z}$ gives the contradiction.</span></a></div>
+<div class="chk"><span class="tag">Try it yourself</span><p>Where does the argument break for a group of order $p^aq^br^c$, such as $A_5$?</p><details><summary>Reveal answer</summary><div>The index of the centralizer of a central element of a Sylow $r$-subgroup is only guaranteed to avoid $r$; it can still involve both $p$ and $q$, so the class size need not be a prime power. $A_5$ confirms this: its non-trivial class sizes are $12,12,15,20$.</div></details></div>
+</main></main>
+<script>
+const C={e:['e'],t:['(12)','(13)','(23)'],c:['(123)','(132)']},col={e:'--box',t:'--thm',c:'--lem'},nm={e:'identity: size 1',t:'transpositions: size 3 = 3¹',c:'3-cycles: size 2 = 2¹'};
+const box=document.getElementById('s3'),msg=document.getElementById('s3msg');
+Object.entries(C).forEach(([k,v])=>v.forEach(x=>{const b=document.createElement('button');b.textContent=x;b.dataset.k=k;
+b.onclick=()=>{box.querySelectorAll('button').forEach(o=>{const on=o.dataset.k==k;o.classList.toggle('sel',on);o.style.setProperty('--c',`var(${col[k]})`)});msg.textContent='Class of '+x+' → '+nm[k]};box.appendChild(b)}));
+const bar=document.getElementById('bar'),links=[...document.querySelectorAll('nav a')];
+addEventListener('scroll',()=>{const h=document.documentElement;bar.style.width=100*h.scrollTop/(h.scrollHeight-h.clientHeight)+'%';
+let cur=null;document.querySelectorAll('h2').forEach(s=>{if(s.getBoundingClientRect().top<120)cur=s.id});links.forEach(a=>a.classList.toggle('on',a.hash=='#'+cur))});
+
+</script></body></html>
