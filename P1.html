@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Problem Set 1 · Field Extensions</title>
+<script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+<style>
+:root {color-scheme:dark;background:#0c131a;color:#edf3f8;font:1rem/1.65 system-ui,sans-serif}
+body {margin:0}
+main {max-width:54rem;margin:auto;padding:clamp(1rem,4vw,3rem)}
+nav {display:flex;gap:.65rem 1.5rem;flex-wrap:wrap}
+a {color:#a5eaff}
+h1 {font-size:clamp(2rem,6vw,3.4rem);line-height:1.1;margin:1.4rem 0 .35rem}
+h2 {font-size:1.23rem;line-height:1.3;color:#ffdf83;margin:0}
+article {margin:1.2rem 0;padding:clamp(.85rem,3vw,1.35rem);background:#151f29;border:1px solid #3b566a;border-radius:.65rem}
+p {margin:.65rem 0}
+details {background:#0f1821;border:1px solid #41566b;border-radius:.35rem;margin-top:.65rem}
+summary {padding:.55rem .8rem;cursor:pointer;font-weight:650;color:#a5eaff}
+details p {margin:.25rem .8rem .85rem}
+:focus-visible {outline:2px solid #ffdf83;outline-offset:3px}
+</style>
+</head>
+<body><main>
+<nav aria-label="Field Extensions"><a href="FE.html">← Back to Field Extensions</a><a href="P2.html">Problem Set 2</a></nav>
+<h1>Problem Set 1</h1><p>Irreducible polynomials over \(\mathbb Q\) and \(\mathbb R\)</p>
+<p>Try each problem before opening its hint or solution.</p>
+<article id="problem-1"><h2>1. Irreducible polynomials of degree \(n\)</h2><p>For every degree \(n\), there is an irreducible polynomial of degree \(n\) over \(\mathbb Q\). If false, provide a counterexample. If true, provide a proof.</p><details><summary>Hint</summary><p>For positive \(n\), try \(x^n-2\) and apply Eisenstein’s criterion at \(2\).</p></details><details><summary>Solution</summary><p>For every positive integer \(n\), the statement is true. The leading coefficient of \(x^n-2\) is \(1\), all other coefficients are divisible by \(2\), and the constant term \(-2\) is not divisible by \(4\). Eisenstein’s criterion gives irreducibility over \(\mathbb Q\). If the statement includes \(n=0\), then \(n=0\) is a counterexample because every nonzero constant is a unit in \(\mathbb Q[x]\).</p></details></article>
+<article id="problem-2"><h2>2. The rational root theorem</h2><p>State and prove the rational root theorem for a polynomial in \(\mathbb Z[x]\). What does it say when the polynomial is monic?</p><details><summary>Hint</summary><p>Write a rational root as \(a/b\) in lowest terms and clear denominators by multiplying by \(b^n\).</p></details><details><summary>Solution</summary><p><strong>Theorem.</strong> Let \(f(x)=c_nx^n+\cdots+c_0\in\mathbb Z[x]\) with \(n\ge1\) and \(c_nc_0\ne0\). If \(a/b\) is a root with \(a,b\in\mathbb Z\), \(b&gt;0\), and \(\gcd(a,b)=1\), then \(a\mid c_0\) and \(b\mid c_n\).</p>
+<p><strong>Proof.</strong> Clearing denominators gives</p>
+<p>\[c_na^n+c_{n-1}a^{n-1}b+\cdots+c_1ab^{n-1}+c_0b^n=0.\]</p>
+<p>All terms except \(c_0b^n\) are divisible by \(a\). Hence \(a\mid c_0b^n\), and coprimality gives \(a\mid c_0\). Likewise, all terms except \(c_na^n\) are divisible by \(b\), giving \(b\mid c_na^n\) and therefore \(b\mid c_n\). If \(f\) is monic, \(b=1\), so every rational root is an integer. When the constant term is zero, first extract the largest power of \(x\) and apply the theorem to the remaining factor if it has positive degree.</p></details></article>
+<article id="problem-3"><h2>3. Irreducibility of \(x^3-x-1\)</h2><p>Prove that \(x^3-x-1\) is irreducible over \(\mathbb Q\). Why does this method prove irreducibility for cubics? Does the same conclusion follow for a quartic with no rational root?</p><details><summary>Hint</summary><p>The only rational root candidates are \(1\) and \(-1\). A reducible cubic has a linear factor.</p></details><details><summary>Solution</summary><p>By the rational root theorem, the possible roots are \(1\) and \(-1\). The polynomial takes the value \(-1\) at both, so it has no rational root. In any factorization of a cubic into two positive-degree factors, one factor has degree \(1\), giving a rational root. Thus the cubic is irreducible. A quartic can factor as two quadratics: \((x^2+1)(x^2+2)\) is reducible over \(\mathbb Q\) and has no rational roots.</p></details></article>
+<article id="problem-4">
+<h2>4. Irreducibility under translation</h2>
+<p>Let \(F\) be a field and \(f(x)\in F[x]\). Prove that \(f(x)\) is irreducible over \(F\) if and only if \(f(x+a)\) is irreducible over \(F\) for every \(a\in F\).</p>
+<details><summary>Hint</summary><p>Translate a factorization by substituting \(x+a\) or \(x-a\). What happens to the degrees of the factors?</p></details>
+<details><summary>Solution</summary><p>Fix \(a\in F\). Substitution \(x\mapsto x+a\) preserves degree and has inverse \(x\mapsto x-a\). If \(f(x)=g(x)h(x)\) with both factors of positive degree, then \(f(x+a)=g(x+a)h(x+a)\) has the same type of factorization. Conversely, if \(f(x+a)=u(x)v(x)\) with both factors of positive degree, substituting \(x-a\) gives \(f(x)=u(x-a)v(x-a)\). Thus for each \(a\in F\), a positive-degree polynomial \(f(x)\) is irreducible exactly when \(f(x+a)\) is. For constant polynomials, both irreducibility claims are false, since translation fixes constants.</p></details>
+</article>
+<article id="problem-5"><h2>5. The prime-index cyclotomic polynomial</h2><p>Let \(p\) be prime. Prove that \(G_p(x)=x^{p-1}+x^{p-2}+\cdots+x+1\) is irreducible over \(\mathbb Q\).</p><details><summary>Hint</summary><p>Translate by \(1\). Use \(G_p(x+1)=((x+1)^p-1)/x\) and apply Eisenstein’s criterion at \(p\).</p></details><details><summary>Solution</summary><p>From \((x-1)G_p(x)=x^p-1\), the binomial theorem gives</p>
+<p>\[G_p(x+1)=\sum_{k=1}^{p}\binom pk x^{k-1},\]</p>
+<p>where, uniformly including \(p=2\), the coefficient of \(x^{k-1}\) is \(\binom pk\) for \(1\le k\le p\). For \(1\le k&lt;p\), the numerator \(p!\) contains \(p\) and the denominator \(k!(p-k)!\) does not, so \(p\mid\binom pk\). The constant term \(p\) is not divisible by \(p^2\), and the leading coefficient is \(1\). Eisenstein proves irreducibility of \(G_p(x+1)\). Translation is invertible on \(\mathbb Q[x]\), so \(G_p(x)\) is irreducible as well. Its roots are precisely the nonidentity \(p\)th roots of unity, all primitive, so \(G_p=\Phi_p\).</p></details></article>
+<article id="problem-6"><h2>6. Irreducibility of all cyclotomic polynomials</h2><p>Define \(\Phi_n(x)\) using the primitive \(n\)th roots of unity. Prove that \(\Phi_n(x)\in\mathbb Z[x]\) and is irreducible over \(\mathbb Q\) for every \(n\ge1\).</p><details><summary>Hint</summary><p>Use \(x^n-1=\prod_{d\mid n}\Phi_d(x)\) for integrality. For irreducibility, fix an irreducible monic factor \(f\) and a root \(\alpha\) of \(f\). Show that \(\alpha^q\) is also a root of \(f\) for each prime \(q\nmid n\). Reduce modulo \(q\) if \(\alpha^q\) lies in another factor.</p></details><details><summary>Solution</summary><p><strong>Integer coefficients.</strong> Define \(\Phi_n(x)=\prod_{\zeta}(x-\zeta)\), with \(\zeta\) ranging over the complex roots of unity of exact order \(n\). Sorting the roots of \(x^n-1\) by their orders gives \(x^n-1=\prod_{d\mid n}\Phi_d(x)\). Starting with \(\Phi_1=x-1\), divide \(x^n-1\) by the product for proper divisors \(d\mid n\). Induction makes this divisor monic in \(\mathbb Z[x]\), so long division has integer quotient and remainder. The factorization over \(\mathbb C\) gives remainder zero and quotient \(\Phi_n\).</p>
+<p><strong>A root and its prime powers.</strong> Let \(f\) be a monic irreducible factor of \(\Phi_n\) over \(\mathbb Q\) and let \(\alpha\) be a root of \(f\). By Gauss’s lemma all monic rational factors of \(\Phi_n\) have integer coefficients. For a prime \(q\nmid n\), \(\alpha^q\) is primitive. If \(\alpha^q\) is not a root of \(f\), it is a root of a different monic irreducible factor \(g\) of \(\Phi_n\). Then \(g(\alpha^q)=0\), so \(f(x)\mid g(x^q)\) in \(\mathbb Q[x]\) and in \(\mathbb Z[x]\) by monic division.</p>
+<p><strong>Reduce modulo \(q\).</strong> Write bars for reductions in \(\mathbb F_q[x]\). We have \(\bar f(x)\mid \bar g(x^q)=\bar g(x)^q\). Since \(\bar f\) is still monic of positive degree, it has an irreducible factor in common with \(\bar g\). But \(fg\mid x^n-1\) over \(\mathbb Z[x]\), so this common factor would occur at least twice in \(x^n-1\) over \(\mathbb F_q\). The derivative \(nx^{n-1}\) is coprime to \(x^n-1\) because \(q\nmid n\), ruling that out. Hence \(\alpha^q\) is a root of \(f\).</p>
+<p><strong>Reach all primitive roots.</strong> Every primitive \(n\)th root is \(\alpha^a\) for some positive \(a\) coprime to \(n\). All prime factors of \(a\) are coprime to \(n\). Applying the preceding argument successively, starting from \(\alpha\), shows that every \(\alpha^a\) is a root of \(f\). Thus \(f=\Phi_n\), proving irreducibility.</p></details></article>
+
+<article id="problem-7">
+<h2>7. Irreducible polynomials over \(\mathbb R\)</h2>
+<p>Prove in three ways that every polynomial of degree at least \(3\) with real coefficients is reducible over \(\mathbb R\).</p>
+<details><summary>Hint</summary><p>Try conjugate roots, the degree of \(\mathbb C/\mathbb R\), and the fixed field of a Sylow \(2\)-subgroup of a splitting field.</p></details>
+<details><summary>Solution</summary>
+<h3>Proof 1. Conjugate roots</h3>
+<p>By the Fundamental Theorem of Algebra, \(f\) has a complex root \(z\). If \(z\) is real, \(x-z\) divides \(f\) in \(\mathbb R[x]\). Otherwise \(f(\bar z)=\overline{f(z)}=0\), since the coefficients are real. The two distinct roots give the real quadratic</p>
+<p>\[(x-z)(x-\bar z)=x^2-2\operatorname{Re}(z)x+|z|^2.\]</p>
+<p>On dividing \(f\) by this quadratic in \(\mathbb R[x]\), the remainder has degree at most \(1\) and vanishes at both roots, so it is zero. The linear or quadratic divisor gives a factorization into two positive-degree factors because \(\deg f\ge3\).</p>
+<h3>Proof 2. The degree of \(\mathbb C/\mathbb R\)</h3>
+<p>Suppose \(f\) is irreducible. By the Fundamental Theorem of Algebra it has a root \(z\in\mathbb C\). The monic scalar multiple of \(f\) is the minimal polynomial of \(z\) over \(\mathbb R\), so \(\deg f=[\mathbb R(z):\mathbb R]\). The tower law gives</p>
+<p>\[2=[\mathbb C:\mathbb R]=[\mathbb C:\mathbb R(z)]\,[\mathbb R(z):\mathbb R].\]</p>
+<p>Thus \(\deg f\) is at most \(2\), a contradiction.</p>
+<h3>Proof 3. Sylow’s theorem and Galois theory</h3>
+<p>Every real polynomial of odd degree has a real root by the intermediate value theorem. Every complex number has a square root by polar form, so every quadratic over \(\mathbb C\) splits by the quadratic formula.</p>
+<p>Let \(L\) be a splitting field of \(f(x)(x^2+1)\) over \(\mathbb R\) and identify the subfield generated by a root of \(x^2+1\) with \(\mathbb C\). The extension \(L/\mathbb R\) is finite Galois because the characteristic is zero. Let \(G=\operatorname{Gal}(L/\mathbb R)\), let \(P\) be a Sylow \(2\)-subgroup, and put \(E=L^P\).</p>
+<p>By Galois correspondence, \([E:\mathbb R]=[G:P]\) is odd. For each \(\alpha\in E\), the tower law shows that its minimal polynomial over \(\mathbb R\) has odd degree. It therefore has a real root, and irreducibility forces its degree to be \(1\). Thus \(E=\mathbb R\), so \(P=G\) and \(G\) is a \(2\)-group.</p>
+<p>If \(L\ne\mathbb C\), then \(H=\operatorname{Gal}(L/\mathbb C)\) is a nontrivial finite \(2\)-group. Such a group has a subgroup of index \(2\), whose fixed field would be a quadratic extension of \(\mathbb C\). This is impossible because every quadratic over \(\mathbb C\) splits. Therefore \(L=\mathbb C\).</p>
+<p>If \(f\) were irreducible, a root \(\alpha\in L\) would give \(\deg f=[\mathbb R(\alpha):\mathbb R]\le [L:\mathbb R]=2\). This proof establishes the needed splitting-field fact without invoking the Fundamental Theorem of Algebra.</p>
+</details>
+</article>
+<section aria-labelledby="splitting-fields">
+<h2 id="splitting-fields">Splitting fields and uniqueness over the base field</h2>
+<article id="problem-8">
+<h2>8. A field containing a root and a splitting field</h2>
+<p>State the two conditions for \(E/F\) to be a splitting field of \(f\in F[x]\). Find a splitting field of \(x^3-2\) over \(\mathbb Q\) and its degree. Does adjoining the real cube root suffice?</p>
+<details><summary>Hint</summary><p>Write the three roots using a primitive cube root of unity.</p></details>
+<details><summary>Solution</summary><p>The polynomial must split in \(E[x]\), and its roots must generate \(E\) over \(F\). Let \(\alpha=\sqrt[3]{2}\) and \(\omega=e^{2\pi i/3}\). The roots are \(\alpha,\omega\alpha,\omega^2\alpha\). The real field \(\mathbb Q(\alpha)\) misses the two nonreal roots. The field \(\mathbb Q(\alpha,\omega)\) contains all three and is generated by them because \(\omega=(\omega\alpha)/\alpha\). By Eisenstein, \([\mathbb Q(\alpha):\mathbb Q]=3\). The polynomial \(x^2+x+1\) is irreducible over the real field \(\mathbb Q(\alpha)\), since neither root is real. The tower law gives degree \(6\).</p></details>
+</article>
+<article id="problem-9">
+<h2>9. Two concrete models of a splitting field</h2>
+<p>Show that \(\mathbb Q(\sqrt2)\) and \(A=\mathbb Q[x]/(x^2-2)\) are splitting fields of \(x^2-2\). Construct two \(\mathbb Q\)-isomorphisms between them. If both are embedded into a common overfield by maps that fix \(\mathbb Q\), can the images differ?</p>
+<details><summary>Hint</summary><p>The class \(\theta\) of \(x\) satisfies \(\theta^2=2\). Where can \(\theta\) go?</p></details>
+<details><summary>Solution</summary><p>The polynomial is irreducible by Eisenstein. Hence \(A\) is a field, with its copy of \(\mathbb Q\) given by the constant classes. Its roots \(\theta,-\theta\) generate \(A\). Likewise, the roots \(\sqrt2,-\sqrt2\) generate \(\mathbb Q(\sqrt2)\). The two maps \(a+b\theta\mapsto a\pm b\sqrt2\) are induced by evaluation at the two roots and give isomorphisms fixing the base field. The models have different kinds of elements, but within a common overfield the images coincide. Each image contains both roots there and is generated by them over \(\mathbb Q\).</p></details>
+</article>
+<article id="problem-10">
+<h2>10. Existence of a splitting field and the factorial bound</h2>
+<p>For \(f\in F[x]\) of degree \(n\ge1\), construct a splitting field \(E\) and prove \([E:F]\le n!\).</p>
+<details><summary>Hint</summary><p>Adjoin a root of an irreducible factor and apply induction to the remaining factor of degree \(n-1\).</p></details>
+<details><summary>Solution</summary><p>For \(n=1\), take \(E=F\). For \(n&gt;1\), choose a monic irreducible factor \(p\) of \(f\) and form \(F_1=F[x]/(p)\), identifying \(F\) with its constant classes. The class \(\alpha\) of \(x\) is a root of \(p\) and hence of \(f\), and \([F_1:F]=\deg p\le n\). Write \(f=(x-\alpha)g\) over \(F_1\). By induction, \(g\) has a splitting field \(E\) over \(F_1\) of degree at most \((n-1)!\). Since \(F_1=F(\alpha)\), this \(E\) is generated over \(F\) by \(\alpha\) and the roots of \(g\), so it is a splitting field of \(f\). Multiply the degrees to get the bound.</p></details>
+</article>
+<article id="problem-11">
+<h2>11. Extending a base-field isomorphism by one root</h2>
+<p>Let \(\sigma:F\to F'\) be a field isomorphism. For \(p\in F[x]\), write \(p^\sigma\) for the polynomial obtained by applying \(\sigma\) to each coefficient. Show that monic irreducible \(p\) maps to monic irreducible \(p^\sigma\). If \(\alpha\) is a root of \(p\) and \(\beta\) a root of \(p^\sigma\) in extensions of their respective fields, prove there is exactly one isomorphism \(F(\alpha)\to F'(\beta)\) extending \(\sigma\) and taking \(\alpha\) to \(\beta\).</p>
+<details><summary>Hint</summary><p>Transport the two principal ideals using the coefficient map and pass to quotient rings.</p></details>
+<details><summary>Solution</summary>
+<h3>Transport the polynomial relation</h3>
+<p>For \(h(x)=\sum_j c_jx^j\), put \(h^\sigma(x)=\sum_j\sigma(c_j)x^j\). The coefficient map is an isomorphism \(F[x]\to F'[x]\), with inverse obtained by applying \(\sigma^{-1}\). It preserves degree and monicity. Any factorization of \(p^\sigma\) into positive-degree factors would therefore give a factorization of \(p\). Thus \(p^\sigma\) is irreducible.</p>
+<figure style="margin:1rem .8rem;overflow-x:auto">
+\[\begin{array}{ccc}
+F(\alpha)&\xrightarrow{\;\tau\;}&F'(\beta)\\
+\big\uparrow&&\big\uparrow\\
+F&\xrightarrow{\;\sigma\;}&F'
+\end{array}\]
+<figcaption>The upward arrows are inclusions. Both routes send \(c\in F\) to \(\sigma(c)\), and the top map sends \(\alpha\) to \(\beta\).</figcaption>
+</figure>
+<h3>Why the formula is well-defined</h3>
+<p>Since \(p\) is the minimal polynomial of \(\alpha\), \(F[\alpha]=F(\alpha)\), and two expressions \(h(\alpha)\) and \(k(\alpha)\) represent the same element exactly when \(p\mid h-k\). Applying \(\sigma\) to the coefficients gives \(p^\sigma\mid h^\sigma-k^\sigma\). Evaluating at \(\beta\) now gives \(h^\sigma(\beta)=k^\sigma(\beta)\).</p>
+<figure style="margin:1rem .8rem;overflow-x:auto">
+\[
+h(\alpha)=k(\alpha)
+\;\Longleftrightarrow\;p\mid h-k
+\;\Longleftrightarrow\;p^\sigma\mid h^\sigma-k^\sigma
+\;\Longleftrightarrow\;h^\sigma(\beta)=k^\sigma(\beta).
+\]
+<figcaption>The two middle conditions describe equality in the corresponding polynomial quotients. The last equivalence uses that \(p^\sigma\) is the minimal polynomial of \(\beta\).</figcaption>
+</figure>
+<p>Therefore \(\tau(h(\alpha))=h^\sigma(\beta)\) is well-defined. It preserves addition, multiplication and \(1\) because coefficient transport and evaluation do. Its inverse applies \(\sigma^{-1}\) to the coefficients of an expression in \(\beta\) and evaluates at \(\alpha\). For a constant expression \(c\), the formula gives \(\tau(c)=\sigma(c)\). For \(h(x)=x\), it gives \(\tau(\alpha)=\beta\). These values force the formula on every polynomial expression in \(\alpha\), proving uniqueness for the chosen \(\beta\).</p>
+<h3>Worked example with a nonidentity base map</h3>
+<p>Take \(F=F'=\mathbb Q(\sqrt2)\) and let \(\sigma\) send \(\sqrt2\) to \(-\sqrt2\), fixing \(\mathbb Q\). Put \(p(x)=x^2-\sqrt2\) and \(\alpha=\sqrt[4]{2}\) (the positive real root). The polynomial \(x^4-2\) is Eisenstein at \(2\), so \([\mathbb Q(\alpha):\mathbb Q]=4\). Since \(\alpha^2=\sqrt2\), the tower law gives \([F(\alpha):F]=2\), proving that \(p\) is irreducible over \(F\).</p>
+<p>Here \(p^\sigma(x)=x^2+\sqrt2\). Choose \(\beta=i\alpha\), so \(\beta^2=-\sqrt2\), and obtain</p>
+<p>\[\tau(u+v\alpha)=\sigma(u)+\sigma(v)i\alpha\qquad(u,v\in F).\]</p>
+<p>In particular \(\tau(1+\sqrt2\,\alpha)=1-\sqrt2\,i\alpha\). Notice how the defining relation is transported: \(\tau(\alpha)^2=-\sqrt2=\sigma(\alpha^2)\).</p>
+</details>
+<details><summary>Follow-up exercise</summary>
+<p>In the worked example, can any isomorphism extending \(\sigma\) send \(\alpha\) to \(\alpha\)? Find all the isomorphisms \(F(\alpha)\to F(i\alpha)\) extending \(\sigma\).</p>
+<details><summary>Solution to the follow-up</summary><p>Any such isomorphism sends \(\alpha\) to a root of \(x^2+\sqrt2\), since the square of its image must be \(\sigma(\alpha^2)=-\sqrt2\). The two choices are \(i\alpha\) and \(-i\alpha\), and neither equals \(\alpha\). Both choices lie in and generate \(F(i\alpha)\) over \(F\). The proof gives one map for each choice, so there are exactly two. This is the root choice used in Question 12.</p></details>
+</details>
+</article>
+<article id="problem-12">
+<h2>12. Key lemma on extending isomorphisms to splitting fields</h2>
+<p>Let \(\sigma:F\to F'\) be a field isomorphism and \(f\in F[x]\) a nonconstant polynomial. If \(E\) is a splitting field of \(f\) over \(F\), and \(E'\) is a splitting field of \(f^\sigma\) over \(F'\), prove that \(\sigma\) extends to an isomorphism \(E\to E'\).</p>
+<details><summary>Hint</summary><p>Induct on \([E:F]\). If \(f\) does not already split over \(F\), pick a nonlinear irreducible factor and use Question 11.</p></details>
+<details><summary>Solution</summary><p>Splitting fields have finite degree because they adjoin finitely many algebraic roots. If \([E:F]=1\), then \(f\) splits over \(F\), so \(f^\sigma\) splits over \(F'\) and \(E'=F'\). Use \(\sigma\) itself.</p>
+<p>Otherwise \(f\) has a monic irreducible factor \(p\) of degree greater than \(1\). Choose a root \(\alpha\in E\) of \(p\) and a root \(\beta\in E'\) of \(p^\sigma\), which divides \(f^\sigma\). Question 11 gives an isomorphism \(\sigma_1:F(\alpha)\to F'(\beta)\) extending \(\sigma\). Over the enlarged base fields, \(E\) and \(E'\) are still the splitting fields of the respective polynomials. Indeed, each is generated by the original roots together with its enlarged base, which is already contained in the field generated by those roots. Also \(f^{\sigma_1}=f^\sigma\). The tower law gives \([E:F(\alpha)]=[E:F]/\deg p&lt;[E:F]\). Induction extends \(\sigma_1\) to an isomorphism \(E\to E'\), which also extends \(\sigma\).</p></details>
+</article>
+<article id="problem-13">
+<h2>13. Main theorem on uniqueness of splitting fields</h2>
+<p>Let \(E_1\) and \(E_2\) be splitting fields of the same nonconstant polynomial \(f\in F[x]\) over \(F\). Prove that \(E_1\) and \(E_2\) are \(F\)-isomorphic. Explain what \(F\)-isomorphic means and show by an example that the isomorphism need not be unique.</p>
+<details><summary>Hint</summary><p>Apply the key lemma with the identity on \(F\), then return to Question 9.</p></details>
+<details><summary>Solution</summary><p>Set \(F'=F\) and \(\sigma=\mathrm{id}_F\) in Question 12. Then \(f^\sigma=f\), and the lemma gives an isomorphism \(E_1\to E_2\) whose restriction to \(F\) is the identity. This is precisely an \(F\)-isomorphism. In Question 9 there are two different \(\mathbb Q\)-isomorphisms because either square root of \(2\) can be the image of \(\theta\). Thus the splitting field determines a unique isomorphism class over \(F\), while a particular isomorphism can depend on choices.</p></details>
+</article>
+<article id="problem-14">
+<h2>14. Counting the extensions of a base-field isomorphism</h2>
+<p>In Question 12, prove that there are at most \([E:F]\) isomorphisms \(E\to E'\) extending \(\sigma\). Show that equality holds if \(f^\sigma\) has distinct roots.</p>
+<details><summary>Hint</summary><p>Count the choices for the image of \(\alpha\), then count the extensions for each choice.</p></details>
+<details><summary>Solution</summary><p>Induct on \([E:F]\), starting with the unique map when \(E=F\). In the induction step of Question 12, put \(d=\deg p\) and let \(r\) be the number of distinct roots of \(p^\sigma\). Every extension sends \(\alpha\) to one of these \(r\) roots. Each choice determines a unique \(\sigma_1\) by Question 11, and induction gives at most \([E:F(\alpha)]\) extensions of that \(\sigma_1\). Distinct choices give disjoint sets of maps, so the total is at most \(r[E:F(\alpha)]\le d[E:F(\alpha)]=[E:F]\). If \(f^\sigma\) has distinct roots, then \(r=d\), and for each choice the same distinct-root hypothesis holds over the enlarged target base in the induction step. Each bound is therefore an equality.</p></details>
+</article>
+<article id="problem-15">
+<h2>15. Applications over \(\mathbb F_2\) and \(\mathbb Q\)</h2>
+<ol><li>Show that \(\mathbb F_2[x]/(x^2+x+1)\) is a splitting field of \(x^2+x+1\) over \(\mathbb F_2\).</li><li>Find a splitting field of \(x^4-2\) over \(\mathbb Q\) and determine its degree.</li><li>How many \(\mathbb Q\)-automorphisms does the splitting field in Question 8 have?</li></ol>
+<details><summary>Hint</summary><p>In part 1, try adding \(1\) to a root. In part 2, multiply the positive real fourth root by powers of \(i\). In part 3, use Question 14.</p></details>
+<details><summary>Solution</summary><ol><li>The quadratic has no root in \(\mathbb F_2\), so the quotient is a field. If \(\theta\) is the class of \(x\), the roots are \(\theta\) and \(\theta+1\), since \((\theta+1)^2+(\theta+1)+1=\theta^2+\theta+1=0\). They generate the quotient.</li><li>For \(u=\sqrt[4]{2}\), the roots are \(u,iu,-u,-iu\). Their field is \(\mathbb Q(u,i)\), since the ratio \((iu)/u\) gives \(i\). Eisenstein at \(2\) gives \([\mathbb Q(u):\mathbb Q]=4\). Adjoining \(i\) to this real field has degree \(2\), so the splitting field has degree \(8\).</li><li>The three roots of \(x^3-2\) are distinct, so Question 14 with \(\sigma=\mathrm{id}_{\mathbb Q}\) gives exactly \(6\) automorphisms. The image of \(\alpha\) can be any of the three roots, and the image of \(\omega\) can be either primitive cube root. Each map is determined by these choices. There are six possible pairs and six maps, so every pair occurs.</li></ol></details>
+</article>
+</section>
+</main></body></html>
